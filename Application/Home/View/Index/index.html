@@ -111,16 +111,16 @@ filter : progid:DXImageTransform.Microsoft.AlphaImageLoader ( sizingMethod='scal
 .k3{ width:282px; height:42px; border:1px solid #96a5b4; font-size:14px; color:#aaaaaa; display:block; margin:0 auto; margin-top:10px; border-radius:3px;font-family:"微软雅黑";line-height: 40px;margin-left: 28px;}
 .k4{ width:282px; height:42px; border:1px solid #96a5b4; font-size:14px; color:#aaaaaa; display:block; margin:0 auto; margin-top:10px; border-radius:3px;font-family:"微软雅黑";line-height: 40px;margin-left: 28px;}
 
-.one{ width:260px; height:40px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0; font-family:"微软雅黑";line-height: 39px;margin-left: 22px;}
-.two{ width:260px; height:40px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0; font-family:"微软雅黑";line-height: 39px;margin-left: 22px;}
+.one{ width:258px; height:40px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0; font-family:"微软雅黑";line-height: 39px;margin-left: 22px;}
+.two{ width:258px; height:40px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0; font-family:"微软雅黑";line-height: 39px;margin-left: 22px;}
 .three{ width:264px; height:42px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0; font-family:"微软雅黑";line-height: 39px;margin-left: 18px;}
 .four{ width:264px; height:42px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0; font-family:"微软雅黑";line-height: 39px;margin-left: 18px;appearance: none;}
 
 .one,.two,.three,.four,.y4,.y5,.y6,.textarea:focus{outline: none;}
 
-.y4{width:260px; height:40px; border:none; font-size:14px; color:black; display:block; margin:0;;font-family:"微软雅黑";line-height: 40px;margin-left: 22px;}
-.y5{width:260px; height:40px; border:none; font-size:14px; color:black; display:block; margin:0;;font-family:"微软雅黑";line-height: 40px;margin-left: 22px;}
-.y6{width:260px; height:40px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0;;font-family:"微软雅黑";line-height: 40px;margin-left: 22px;}
+.y4{width:256px; height:40px; border:none; font-size:14px; color:black; display:block; margin:0;;font-family:"微软雅黑";line-height: 40px;margin-left: 22px;}
+.y5{width:256px; height:40px; border:none; font-size:14px; color:black; display:block; margin:0;;font-family:"微软雅黑";line-height: 40px;margin-left: 22px;}
+.y6{width:256px; height:40px; border:none; font-size:14px; color:#aaaaaa; display:block; margin:0;;font-family:"微软雅黑";line-height: 40px;margin-left: 22px;}
 
 .y1{width:280px; height:38px; border:2px solid #009FCC; font-size:14px; color:#aaaaaa; display:block; margin:0 auto; margin-top:10px; border-radius:1px;font-family:"微软雅黑";text-indent:16px;line-height: 40px;margin-left: 28px;box-shadow: 0 0 10px #009FCC;color: black;}
 .y2{width:282px; height:40px; border:1px solid #96a5b4; font-size:14px; color:#aaaaaa; display:block; margin:0 auto; margin-top:10px; border-radius:1px;font-family:"微软雅黑";text-indent:16px;line-height: 40px;margin-left: 28px;color: black;}
@@ -142,9 +142,16 @@ select {
 /*box-shadow: 0 0 10px #009FCC;*/
 
 .three,.four,.y1,.y2,.y3{
-background: url(img/dao6.png) no-repeat right;
+background: url(Public/img/dao6.png) no-repeat right;
 }
 
+.k1,.k2 {
+background: url(Public/img/png3.png) no-repeat 3px 13px; 
+}
+
+.k3,.k4 {
+background: url(Public/img/png4.png) no-repeat 3px 13px;
+}
 
 .select{background-color: none;}
 
@@ -152,48 +159,62 @@ background: url(img/dao6.png) no-repeat right;
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
+<title>艾加Portal</title>
 </head>
 <body>
-<p name="type">echo {$type}</p>
 <div id="con">
   
   <div class="login-div" id="login-div">
-     <form name="frm_logon" action="<!--{$INC_DIR}-->/login.php"
-				autocomplete='off' id="frm_logon" method="post">
+     <form name="frm_logon" action="/think/index.php/Home/Index/login"
+				autocomplete='off' id="frm_logon" method="post" role="form">
      <div class="loginbox" id="loginbox">
        <div class="loginboxtop">
          <div class="wzbox">
          
-         <a href=""></a>
+         <a href="">HCP Portal</a>
          </div>
        </div>
        <div id="k1" class="k1">
        
-       <input id="username" name="username" class="one" type="text" value="请输入账号" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='text';}else{this.className='y4';} " onblur="if(!value) {value=defaultValue;this.className='y6';this.type='text';}else{this.className='y5';} " >
+       <input id="username" name="username" class="one" type="text" value="请输入账号" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='text';}else{this.className='y4';} " onblur="if(!value) {value=defaultValue;this.className='y6';this.type='text';}else{this.className='y5';} " 
+       																						onfocus="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='text';}else{this.className='y4';} ">
        </div>
        <div id="k2" class="k2">
        
-       <input id="password" name="password" class="two" type="text" value="请输入密码" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}" onblur="if(!value) {value=defaultValue;this.className='y6'; this.type='text';}else{this.className='y5';}">
+       <input id="password" name="password" class="two" type="text" value="请输入密码" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}" onblur="if(!value) {value=defaultValue;this.className='y6'; this.type='text';}else{this.className='y5';}"
+       																						onfocus="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}">
        </div>
        
        <div id="k3" class="k3">
-		<select name="lang" id="lang" class="three" onchange="document.location='index.php?lang='+this.value;" onclick="f1()">
+		<select name="lang" id="lang" class="three" onclick="f1()" onfocus="f1()">
+	     <!-- onchange="document.location='index.php?lang='+this.value;" -->
+	    
 	    <option value="0">请选择</option>
-	    <volist name="langlist" id="vo1">
-	    <option value="{$vo1.lang}" selected>{$s_lang_code}</option>
-	    </volist>
+	    <!-- <volist name="langlist" id="vo1">
+	    <option value="{$vo1.lang}" selected>{$langlist}</option>
+	    </volist> -->
+	    <foreach name="Mut" item="vo">
+							<option value="{$vo.language_code}" <if condition="($vo.id eq $data.id)"></if>>
+								{$vo.language_code}/{$vo.language_name}
+							</option>
+						</foreach>
 	   </select>
 		
 		</div>
 		<div id="k4" class="k4">
 		
-		<select name="companyno" id="companyno" class="four">
+		<select name="companyno" id="companyno" class="four" >
 		<option value="0">请选择</option>
-	    	<volist name="cpnlist" id="vo2">
-	    	<option value="{$vo2.companyno}">{$vo2.companyno}</option>
+	    	<!-- <volist name="cpnlist" id="vo2">
+	    	<option value="{$vo2.companyno}" selected>{$cpnlist}</option>
 	    	
-	    	</volist>
+	    	</volist> -->
+	    	
+	    	<foreach name="Com" item="vo">
+							<option value="{$vo.segment_no_sz}" <if condition="($vo.id eq $data.id)"></if>>
+								{$vo.segment_no_sz}/{$vo.segment_name}
+							</option>
+						</foreach>
 		</select>
 		</div>
 
@@ -201,7 +222,7 @@ background: url(img/dao6.png) no-repeat right;
 	
        </div>
        <!-- <div class="ts">看不清，换一张</div> -->
-       <input class="button-submit" type="submit" id="lgoin" name="logon" value="111" ">
+       <input class="button-submit" type="submit" id="lgoin" name="logon" value="登录" ">
 	   
      </form>
   </div>
