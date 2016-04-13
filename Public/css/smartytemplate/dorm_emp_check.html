@@ -1,0 +1,210 @@
+
+
+<style type="text/css">
+	select {width:100px;}
+	.short-text{width:80px;}
+</style>
+</head>
+<body class="page-container">
+	<form enctype="multipart/form-data" method="post" name="form1" id="form1">
+		<input type="hidden" name="doaction" value="query"/>
+	<!--{include file="block_box_header.html" title="$BLOCK_TITLE" showLine = '1'}-->
+	<table class="bordertable">
+		<tr>
+			<th><!--{$DATE_LABEL|default:'查房日期'}--></th>
+			<td><input type="text" name="check_date" id="check_date" class="input-date" value="<!--{$smarty.post.check_date|default:$smarty.now|date_format:"%Y-%m-%d"}-->"/></td>
+			<th><!--{$NTH_LABEL|default:'次数'}--></th>
+			<td><input type="text" name="check_times" value="<!--{$smarty.post.check_times|default:1}-->"/></td>
+			<th><!--{$AREA_LABEL|default:'区域'}--></th>
+			<td>
+				<select name="area_code" id="area_code">
+					<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+					 <!--{html_options options=$area_list selected=$smarty.post.area_code}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th><!--{$AREA_LABEL|default:'栋别'}--></th>
+			<td>
+				<select name="building_grp_no" id="building_grp_no">
+					<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+					<!--{html_options options=$building_grp_list selected=$smarty.post.building_grp_no}-->
+				</select>
+			</td>
+			<th><!--{$AREA_LABEL|default:'楼号'}--></th>
+			<td>
+				<select name="building_no" id="building_no">
+					<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+					<!--{html_options options=$building_list selected=$smarty.post.building_no}-->
+				</select>
+			</td>
+			<th><!--{$AREA_LABEL|default:'房间号'}--></th>
+			<td>
+				<input type="text" name="room_no" id="room_no" value="<!--{$smarty.post.room_no}-->"/>
+			</td>
+			<td rowspan="2"><input type="button" id="btn_qry" class="button-submit" value="<!--{$QRY_LABEL|default:'查询'}-->"/></td>
+		</tr>
+	</table>
+	<!--{include file="block_box_footer.html"}-->
+	</form>
+	<!--{if $smarty.post.area_code }-->
+	<!--{include file="block_box_header.html"}-->
+	<form name="form2" method="post">
+		<input type="hidden" name="doaction" value="save"/>
+		<table class="bordertable">
+			<tr>
+				<th><!--{$DEPT_LABEL|default:'部门'}--></th>
+				<th><!--{$SHIFT_LABEL|default:'班别'}--></th>
+				<th><!--{$BED_NO_LABEL|default:'床号'}--></th>
+				<th><!--{$EMP_ID_LABEL|default:'工号'}--></th>
+				<th><!--{$EMP_NAME_LABEL|default:'姓名'}--></th>
+				<th><!--{$IDCARD_NO_LABEL|default:'身份证号码'}--></th>
+				<th><!--{$GENDER_LABEL|default:'性别'}--></th>
+				<th><!--{$BED_STATUS_LABEL|default:'床位状态'}--></th>
+				<th><!--{$FACT_EMPID_LABEL|default:'实际工号'}--></th>
+				<th><!--{$FACT_IDCARD_LABEL|default:'实际身份证'}--></th>
+				<th><!--{$FACT_NAME_LABEL|default:'实际姓名'}--></th>
+				<th><!--{$FACT_GENDER_LABEL|default:'实际性别'}--></th>
+				<th><!--{$REMARK_LABEL|default:'备注'}--></th>
+				<th><!--{$NORMAL_LABEL|default:'正常'}--></th>
+			</tr>
+			<!--{section name="i" loop=$emp_list}-->
+			<tr>
+				<td><!--{$emp_list[i].ROOM_BY_DEPT}--></td>
+				<td><!--{$emp_list[i].ROOM_BY_SHIFT_DESC}--></td>
+				<td><!--{$emp_list[i].BED_NO}--></td>
+				<td><!--{$emp_list[i].EMP_ID|default:'&nbsp;'}--></td>
+				<td><!--{$emp_list[i].EMP_NAME}--></td>
+				<td><!--{$emp_list[i].IDCARD_NO}--></td>
+				<td><!--{$emp_list[i].GENDER}--></td>
+				<td>
+					<input type="hidden" name="room_bed_seq[]" value="<!--{$emp_list[i].ROOM_BED_SEQ}-->"/>
+					<input type="hidden" name="room_bed_master_seq[]" value="<!--{$emp_list[i].ROOM_BED_MASTER_SEQ}-->"/>
+					<select name="bed_status[]">
+						<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+						<!--{html_options options=$bed_status_list selected=$smarty.post.bed_status|default:$emp_list[i].BED_STATUS}-->
+					</select>
+				</td>
+				<td>
+					<input type="text" class="short-text" name="fact_emp_id[]" value="<!--{$emp_list[i].FACT_EMP_ID}-->"/>
+				</td>
+				<td><input type="text" name="fact_idcard[]" value="<!--{$emp_list[i].FACT_IDCARD_NO}-->"/></td>
+				<td><input type="text" class="short-text" name="fact_emp_name[]" value="<!--{$emp_list[i].FACT_EMP_NAME}-->"/></td>
+				<td><input type="text" style="width:16px;" name="fact_gender[]" value="<!--{$emp_list[i].FACT_GENDER}-->"/></td>
+				<td><input type="text" name="comments[]" value="<!--{$emp_list[i].COMMENTS}-->"/></td>
+				<td><input type="checkbox" id="is_noraml_chk" class="isnormalchk"/></td>
+			</tr>
+			<!--{sectionelse}-->
+			<tr>
+				<td colspan="13"><!--{$NO_DATA_FOUND_MSG|default:'无符合条件的资料。'}--></td>
+			</tr>
+			<!--{/section}-->
+			
+		</table>
+		<!--{if count($emp_list)>0 }-->
+		<div style="text-align:center;"><input type="submit" class="button-submit" value="<!--{$SAVE_LABEL|default:'保存查房结果'}-->"/></div>
+	<!--{/if}-->
+	</form>
+	<!--{include file="block_box_footer.html"}-->
+	<!--{/if}-->
+	<script type="text/javascript">
+		/**
+	     * 把 ajax 返回的 json data 装载到 Select List 中
+	     * @param string list
+	     * @param array data
+	     * @param string month
+	     * @author Dennis
+	     */
+	    function addOptionToList(list,data)
+	    {
+	        // Clear list before add options
+	        $('#'+list).html('');
+	        // append options via jquery 
+			var html = '<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>';
+			for (var j=0; j<data.length; j++)
+	        {
+	            //s = (data[j][0] == month ? 'selected' : '');
+	           html += '<option value='+data[j][0]+'>'+data[j][1]+'</option>';
+	        }// end for loop
+			$('#'+list).append(html);
+	    }// end addOptionToList()
+
+		$().ready(function(){
+
+			$('#check_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});	
+			// clear child value on change
+			$('#area_code').change(function(){
+				// clear child
+				$('#building_grp_no').val('');
+				// clear grandson
+				$('#building_no').val('');
+				// ajax get child data and fill to child select
+				if ($(this).val() != ''){
+					$.ajax({
+					    url: '?scriptname=dorm_emp_check',
+					    data:'doaction=ajaxcall&func=getBuildingGrpByArea&areacode='+$(this).val(), 
+					    type: 'POST',
+					    dataType: 'json',
+					    timeout: 1000,
+					    error: function(){
+					        alert('Error Get Building Group Data');
+					    },
+					    success: function(json){
+					        addOptionToList('building_grp_no',json);
+					    }
+					});
+				}
+			});
+
+			// clear child value on change
+			$('#building_grp_no').change(function(){
+				$('#building_no').val('');
+				if ($(this).val() != ''){
+					$.ajax({
+					    url: '?scriptname=dorm_emp_check',
+					    data:'doaction=ajaxcall&func=getBuildingByGrp&areacode='+$('#area_code').val()+'&building_grp_no='+$(this).val(), 
+					    type: 'POST',
+					    dataType: 'json',
+					    timeout: 1000,
+					    error: function(){
+					        alert('Error Get Building Data');
+					    },
+					    success: function(json){
+					        addOptionToList('building_no',json);
+					    }
+					});
+				}
+			});
+
+			// check condition before query 
+			$('#btn_qry').click(function(){
+				var r = true;
+				$("#form1").find(":input,select").each(function(){
+					if($(this).val() === ""){
+						$(this).focus();
+						var label_txt = $(this).parent().prev().html();
+					    alert(label_txt+"<!--{$CANNOT_NULL_MSG|default:'不能为空'}-->");
+					    r = false;
+					    return false;
+					 }
+				});
+				if (r) $('#form1').submit();
+			});
+
+			// auto copy data to fact filed
+			// quickly copy the default values
+			$('.isnormalchk').click(function(){
+				if ($(this).attr('checked') == true){
+					var emp_id = $(this).parent().siblings(":nth-child(4)").text();
+					var emp_name = $(this).parent().siblings(":nth-child(5)").text();
+					var idcard_no = $(this).parent().siblings(":nth-child(6)").text();
+					var gender = $(this).parent().siblings(":nth-child(7)").text();
+					
+					$(this).parent().siblings(":nth-child(9)").find(':input').val(emp_id);
+					$(this).parent().siblings(":nth-child(10)").find(':input').val(idcard_no);
+					$(this).parent().siblings(":nth-child(11)").find(':input').val(emp_name);
+					$(this).parent().siblings(":nth-child(12)").find(':input').val(gender);
+				}
+			});
+		});
+	</script>

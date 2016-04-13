@@ -1,0 +1,753 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<style type="text/css">
+    <!--
+    select{width:90px;}
+    th{word-break:keep-all;word-wrap:normal;white-space:nowrap;}
+    .s-input-date {width:90px;}
+    fieldset{margin:0px;padding:5px 5px 0px 5px;}
+    -->
+</style>
+</head>
+<body class="page-container">
+<!--{if !isset($success_cnt)}-->
+    <!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+    <fieldset>
+        <legend>查詢條件</legend>
+        <form name="form1" id="form1" method="post">
+            <input type="hidden" name="do_action" value="querydata"/>
+            <table class="bordertable">
+                <tr>
+                    <td class="column-label" width="18%">到職日期起讫</td>
+                    <td>
+                        <input type="text" name="indate_begin" id="indate_begin" value="<!--{$smarty.post.indate_begin}-->" class="input-date s-input-date" />
+                        <input type="text" name="indate_end"   id="indate_end"   value="<!--{$smarty.post.indate_end}-->"   class="input-date s-input-date" />
+                    </td>
+                 </tr>
+                 <tr>
+                    <td>
+                        <label for="contain_fail">只查轉檔失敗</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" name="contain_fail" id="contain_fail" value="Y"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">
+                        <input type="submit" name="queryall" value="查詢"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+    <form name="form2" action="" method="post">
+		<input type="hidden" name="do_action" id="do_action" value=""/>
+        <fieldset>
+            <legend>相同值欄位</legend>
+            <table class="bordertable">
+                <tr>
+                    <td class="column-label">到職日期 </td>
+                    <td><input type="text" name="indate_master" id="indate_master" class="input-date s-input-date"/>
+					<td class="column-label">年資日期</td>
+                    <td><input type="text" name="experiencestartdate_master" id="experiencestartdate_master" class="input-date s-input-date required"/></td>
+					<!--
+					<td class="column-label">外國人</td>
+                    <td><input type="checkbox" name="is_foreign_master" value="Y"/></td>
+					-->
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="column-label">給薪類別</td>
+                    <td>
+                        <select name="salary_type_master" id="salary_type_master" class="required" id="salary_type_master">
+                            <option value=""> - </option>
+                            <!--{html_options options=$salary_type_list}-->
+                        </select>
+                    </td>
+                    <td class="column-label">稅別</td>
+                    <td>
+                        <select name="tw_tax_id_master" id="tw_tax_id_master"  class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$personal_tax_list}-->
+                        </select>
+                    </td>
+                    <td></td>
+                    <td></td>
+				</tr>
+				<tr>
+                    <td class="column-label">部門</td>
+                    <td>
+                        <input type="hidden" name="dept_seqno_master" id="dept_seqno"/>
+                        <input type="text" id="dept_name"
+                            lov_name = "dept_lov"
+                            rtn_val1_id="dept_seqno"
+                            rtn_val2_id="dept_name"
+                            class="input-lov s-input-date required"/>
+                    </td>
+                    <td class="column-label">職稱</td>
+                    <td>
+                        <input type="hidden" name="title_seqno_master" id="title_seqno"/>
+                        <input type="text" id="title_name"
+                            lov_name = "title_lov"
+                            rtn_val1_id="title_seqno"
+                            rtn_val2_id="title_name"
+                            class="input-lov s-input-date required"/>
+                    </td>
+					<td></td>
+					<td></td>
+                </tr>
+                <tr>
+                    <td class="column-label">人員類別</td>
+                    <td>
+                        <select name="contract_master" id="contract_master" class="required">
+                           <option value=""> - </option>
+                           <!--{html_options options=$person_type_list}-->
+                        </select>
+                    </td>
+                    <td class="column-label">員工分類</td>
+                    <td>
+                        <select name="costallocation_master" id="costallocation_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$emp_type_list}-->
+                        </select>
+                    </td>
+                    <td class="column-label">入職來源</td>
+                    <td>
+                        <select name="temp_company_master" id="temp_company_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$emp_from_list}-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+					<td class="column-label">工時制度</td>
+					<td>
+						<select id="param_pkg_list" name="param_pkg_list_master">
+                            <option value=""> - </option>
+                            <!--{html_options options=$pkg_param_list}-->
+                        </select>
+					</td>
+                    <td colspan="4" class="ui-state-highlight">工時制度打包了以下參數，切換工時制度以下參會跟著變化</td>
+                </tr>
+                <tr>					
+                    <td class="column-label">計薪期間</td>
+                    <td>
+                        <select name="period_master_id_master" id="period_master_id_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$salary_period_list}-->
+                        </select>
+                    </td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+                </tr>
+                <tr>
+					<td class="column-label">刷卡別</td>
+                    <td>
+                        <select name="carding_master" id="carding_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$carding_type_list selected='02'}-->
+                        </select>
+                    </td>
+                    <td class="column-label">加班費代號</td>
+                    <td>
+                        <select name="overtime_type_id_master" id="overtime_type_id_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$ot_fee_type_list}-->
+                        </select>
+                    </td>
+                    <td class="column-label">假扣代號</td>
+                    <td>
+                        <select name="absence_type_id_master" id="absence_type_id_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$abs_fee_type_list}-->
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="column-label">全勤獎代號</td>
+                    <td>
+                        <select name="abs_bonus_id_master" id="abs_bonus_id_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$abs_bonus_list}-->
+                        </select>
+                    </td>
+                    <td  class="column-label">年假代號</td>
+                    <td>
+                        <select name="year_leave_id_master" id="year_leave_id_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$year_abs_type_list}-->
+                        </select>
+                    </td>
+					<td class="column-label">直/間接</td>
+                    <td>
+                        <select name="jobcategory_master" id="jobcategory_master" class="required">
+                            <option value=""> - </option>
+                            <!--{html_options options=$job_cate_list}-->
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            </fieldset>
+            <div align="center">
+				<input type="submit" name="delete"     id="btn_del_select" value="刪除所選"/>
+				<input type="submit" name="transtohcp" id="btn_trans_hcp"  value="轉入所選"/>
+            </div>
+            
+            <table class="bordertable">
+                <tr class="header-style">
+                    <th><input type="checkbox" id="chkall"></th>
+                    <th>身份證</th>
+                    <th>姓名</th>                    
+                    <th>部門</th>
+                    <th>職稱</th>
+                    <th>員工分類</th>
+                    <th>人員類別</th>
+                    <th>到職日期</th>
+                    <th>年資日期</th>
+                    <th>入職來源</th>
+                    <th>給薪别</th>
+                    <th>计薪期间</th>
+                    <th>卡别</th>
+                    <th>加班費代號</th>
+                    <th>假扣代號</th>
+                    <th>年假代號</th>
+                    <th>直/間接</th>
+                    <th>稅别</th>
+                    <th>全勤獎代號</th>
+                    <th>轉檔失敗原因</th>
+                </tr>
+                <!--{section name=i loop=$emp_list}-->
+                <tr class="<!--{if $emp_list[i].IS_FAIL == 'Y'}-->ui-state-highlight<!--{/if}-->">
+                    <td><input type="checkbox" name="tmp_seqno[]" value="<!--{$emp_list[i].ID}-->" class="rowchk"></td>
+                    <td>
+                        <input type="hidden" name="id_card[<!--{$emp_list[i].ID}-->]" value="<!--{$emp_list[i].ID_CARD}-->"/>
+                        <a href="?scriptname=card_edit_information&tmpid=<!--{$emp_list[i].ID}-->&doaction=getTmpData"><!--{$emp_list[i].ID_CARD}--></a>
+                    </td>
+                    <td nowrap><!--{$emp_list[i].NAME}--></td>                   
+                    <td>
+                        <input type="hidden" name="dept_seqno[<!--{$emp_list[i].ID}-->]"
+                               id="dept_seqno_<!--{$emp_list[i].ID_CARD}-->" class="dept_seqno"/>
+                        <input type="text" name="dept_name[<!--{$emp_list[i].ID}-->]"
+                               lov_name = 'dept_lov'
+                               rtn_val1_id="dept_seqno_<!--{$emp_list[i].ID_CARD}-->"
+                               rtn_val2_id="dept_name_<!--{$emp_list[i].ID_CARD}-->"
+                               id="dept_name_<!--{$emp_list[i].ID_CARD}-->"
+                               class="input-lov s-input-date dept_name"
+                               title="部門/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->"/>
+                    </td>
+                    <td>
+                        <input type="hidden" name="title_seqno[<!--{$emp_list[i].ID}-->]"
+                         id="title_seqno_<!--{$emp_list[i].ID_CARD}-->" class="title_seqno"/>
+                        <input type="text" name="title_name[<!--{$emp_list[i].ID}-->]"
+                               lov_name = 'title_lov'
+                               rtn_val1_id="title_seqno_<!--{$emp_list[i].ID_CARD}-->"
+                               rtn_val2_id="title_name_<!--{$emp_list[i].ID_CARD}-->"
+                               id="title_name_<!--{$emp_list[i].ID_CARD}-->"
+                               class="input-lov s-input-date title_name"
+                               title="职称/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->"/>
+                    </td>
+					 <td>
+                        <select name="costallocation[<!--{$emp_list[i].ID}-->]" class="costallocation_master"
+                           title="員工分類/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                        <!--{html_options options=$emp_type_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="contract[<!--{$emp_list[i].ID}-->]" class="contract_master"
+                           title="人員類別/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                           <!--{html_options options=$person_type_list selected=$emp_list[i].CONTRACT}-->
+                        </select>
+                    </td>                   
+					 <td>
+                    	<input type="text" class="input-date s-input-date indate_master" name="indate[<!--{$emp_list[i].ID}-->]" value="<!--{$emp_list[i].INDATE}-->"/>
+                    </td>
+                    <td>
+						<input type="text" class="input-date s-input-date experiencestartdate_master" name="experiencestartdate[<!--{$emp_list[i].ID}-->]" value="<!--{$emp_list[i].EXPERIENCESTARTDATE}-->"/>
+					</td>
+                    <td>
+                        <select name="temp_company[<!--{$emp_list[i].ID}-->]" class="temp_company_master"
+                           title="入職來源/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$emp_from_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="salary_type[<!--{$emp_list[i].ID}-->]"
+                                title="給薪别/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->"
+								class="salary_type_master">
+                            <option value=""></option>
+                            <!--{html_options options=$salary_type_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="period_master_id[<!--{$emp_list[i].ID}-->]" class="period_master_id_master"
+                           title="計薪期間/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$salary_period_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="carding[<!--{$emp_list[i].ID}-->]" class="carding_master"
+                           title="卡别/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$carding_type_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="overtime_type_id[<!--{$emp_list[i].ID}-->]" class="overtime_type_id_master"
+                           title="加班費代號/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$ot_fee_type_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="absence_type_id[<!--{$emp_list[i].ID}-->]" class="absence_type_id_master"
+                           title="假扣代號/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$abs_fee_type_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="year_leave_id[<!--{$emp_list[i].ID}-->]" class="year_leave_id_master"
+                           title="年假代號/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$year_abs_type_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="jobcategory[<!--{$emp_list[i].ID}-->]" class="jobcategory_master"
+                           title="直/間接/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$job_cate_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="tw_tax_id[<!--{$emp_list[i].ID}-->]" class="tw_tax_id_master"
+                                title="稅别/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$personal_tax_list}-->
+                        </select>
+                    </td>
+                    <td>
+                        <select name="abs_bonus_id[<!--{$emp_list[i].ID}-->]" class="abs_bonus_id_master"
+                           title="全勤獎代號/<!--{$emp_list[i].ID_CARD}-->/<!--{$emp_list[i].NAME}-->">
+                            <option value=""></option>
+                            <!--{html_options options=$abs_bonus_list}-->
+                        </select>
+                    </td>
+                    <td><!--{$emp_list[i].FAIL_REASON}--></td>
+                </tr>
+                <!--{sectionelse}-->
+                <tr>
+                    <td colspan="20" class="ui-state-highlight">無符合條件資料.</td>
+                </tr>
+                <!--{/section}-->
+            </table>
+             <!--{if count($emp_list)>0}-->
+            <div><!--{$paging_toolbar}--></div>
+        <!--{/if}-->
+    </form>
+    <!--{include file="block_box_footer.html"}-->
+
+    <div id="dept_lov_dlg" title="選擇部門">
+        <table class="bordertable">
+            <tr>
+                <td>
+                    部門代碼/名稱:
+                    <input type="text" id="dept_qwd">
+                    <input type="button" class="input-short" id="dept_qry_btn" value="查詢"/>
+                </td>
+            </tr>
+        </table>
+
+        <table class="bordertable" id="tab_dept_list">
+            <thead>
+                <tr>
+                    <th width="20"></th>
+                    <th>部門代碼</th>
+                    <th>部門名稱</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--{section name=i loop=$top10_dept_list}-->
+                <tr>
+                    <td>
+                        <input type="radio" name="dlg_tab_dept_list" value="<!--{$top10_dept_list[i].SEQNO}-->"/>
+                    </td>
+                    <td><!--{$top10_dept_list[i].ID}--></td>
+                    <td><!--{$top10_dept_list[i].NAME}--></td>
+                </tr>
+                <!--{/section}-->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="title_lov_dlg" title="選擇職稱">
+        <table class="bordertable">
+            <tr>
+                <td>職稱代碼/名稱:
+                    <input type="text" id="title_qwd">
+                    <input type="button" class="input-short" id="title_qry_btn" value="查詢"/>
+                </td>
+            </tr>
+        </table>
+
+        <table class="bordertable" id="tab_title_list">
+            <thead>
+	            <tr>
+	                <th width="20"></th>
+	                <th>職稱代碼</th>
+	                <th>職稱名稱</th>
+	            </tr>
+            </thead>
+            <tbody>
+                <!--{section name=i loop=$top10_title_list}-->
+                <tr>
+                    <td>
+                        <input type="radio" name="dlg_tab_title_list" value="<!--{$top10_title_list[i].SEQNO}-->"/>
+                    </td>
+                    <td><!--{$top10_title_list[i].ID}--></td>
+                    <td><!--{$top10_title_list[i].NAME}--></td>
+                </tr>
+                <!--{/section}-->
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        $().ready(function(){
+        	// 根据计税区域判断是否是台湾公司
+        	var is_tw_company = '<!--{$is_tw_com}-->';
+        	<!--{if $smarty.post.contain_fail == 'Y'}-->
+        	$('#contain_fail').attr('checked',true);
+        	<!--{/if}-->
+            var $lov_tgt_v1 = ''; // Lov 返回值 1 Hidden 欄位
+            var $lov_tgt_v2 = ''; // Lov 返回值 2
+
+            // all clendar input
+            $('.input-date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+
+            $('.input-lov').click(function(){
+                var lov_name = $(this).attr('lov_name');
+                //alert('v1 id->'+$(this).attr('rtn_val1_id')+'\n\rv2 id->'+$(this).attr('rtn_val2_id'))
+                $lov_tgt_v1 = $('#'+$(this).attr('rtn_val1_id'));
+                $lov_tgt_v2 = $('#'+$(this).attr('rtn_val2_id'));
+                $('#'+lov_name+'_dlg').dialog('open');
+            });
+
+			$('#chkall').click(function(){
+				$('.rowchk').attr('checked',$(this).attr('checked'));
+			});
+			/*
+			* delete selected rows
+			*/
+			$('#btn_del_select').click(function(){
+				var chk_cnt = $('.rowchk:checked').length;
+				if (chk_cnt == 0)
+				{
+					alert('請選取一筆記錄再刪除');
+					return false;
+				}
+				if (confirm('確定的刪除所選記錄?')){
+					$('#do_action').val('delete');
+				}else{
+					return false;
+				}
+			});
+
+			/**
+			* 轉資料到 HCP 正式 DB
+			*/
+			$('#btn_trans_hcp').click(function(){
+				var chk_cnt = $('.rowchk:checked').length;
+				if (chk_cnt == 0)
+				{
+					alert('請選取一筆記錄再轉入');
+					return false;
+				}
+				/**
+				* 台湾公司以下不检查
+				*/
+				var allow_null_cols = new Array();
+				if (is_tw_company == 'Y')
+				{
+					allow_null_cols[0] = 'tw_tax_id_master';    // 税别
+					allow_null_cols[1] = 'year_leave_id_master';// 年假代号
+					allow_null_cols[2] = 'temp_company_master'; // 入职来源
+				}
+				$('.required').each(function(){
+					$this = $(this);
+					if ($this.val()=='' && $.inArray($this.attr('name'),allow_null_cols) == -1)
+					{
+						alert($this.parent().prev().text()+'不能為空');
+						$this.css('background-color','#ffffcc');
+						$this.focus();
+						can_submit = false;
+						return false;
+					}else{
+						can_submit = true;
+						$this.css('background-color','#fff');
+					}
+				});
+				if (!can_submit)
+				{
+					return false;
+				}
+				$('#do_action').val('transtohcp');
+			});
+			
+            $('#param_pkg_list').change(function(){
+                if($(this).val() != '')
+                {
+                    $.ajax({
+                        type:"post",
+                        url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+                        data:'ajaxcall=1&func=getParamPkgRow&q='+$(this).val(),
+                        async: false,
+                        timeout:1000,
+                        dataType:'json',
+                        success: function(json){
+                            setParamVal(json);
+                        },// end function
+                        error: function (json)
+                        {
+                            alert('取工時制度資料出錯，請稍候重試.');
+                            return false;
+                        }// end function
+                    });
+                }
+            });
+
+            function setParamVal(param_row)
+            {
+            	/*{"OT_FEE_TYPE_ID":"346","ABS_FEE_TYPE_ID":"402","YEAR_ABS_ID":"243",
+            		"IS_GRD_DEGREE":"N","EMP_CATE_ID":"JO01","SALARY_PERIOD_ID":"381",
+            		"SALARY_TYPE_ID":"1","CADING_TYPE":"02","ABS_BONUS_ID":null}*/
+                $('#period_master_id_master').val(param_row['SALARY_PERIOD_ID']);
+                $('#carding_master').val(param_row['CARDING_TYPE']);
+                $('#overtime_type_id_master').val(param_row['OT_FEE_TYPE_ID']);
+				$('#absence_type_id_master').val(param_row['ABS_FEE_TYPE_ID']);
+                $('#year_leave_id_master').val(param_row['YEAR_ABS_ID']);
+                $('#jobcategory_master').val(param_row['EMP_CATE_ID']);
+                $('#abs_bonus_id_master').val(param_row['ABS_BONUS_ID']);
+                // 同步到 detail add by dennis 2012-12-18                
+                $('.period_master_id_master').val(param_row['SALARY_PERIOD_ID']);
+                $('.carding_master').val(param_row['CARDING_TYPE']);
+                $('.overtime_type_id_master').val(param_row['OT_FEE_TYPE_ID']);
+				$('.absence_type_id_master').val(param_row['ABS_FEE_TYPE_ID']);
+                $('.year_leave_id_master').val(param_row['YEAR_ABS_ID']);
+                $('.jobcategory_master').val(param_row['EMP_CATE_ID']);
+                $('.abs_bonus_id_master').val(param_row['ABS_BONUS_ID']);
+            }
+
+            /**
+            * Help function
+            * add row to table
+            * @param tab_id string the result table id
+            * @param rows_data array json array data
+            * @author Dennis
+            */
+            function addRow2Tab(tab_id,rows_data)
+            {
+                var c = rows_data.length;
+                var rows = '';
+                for(var i=0; i<c; i++)
+                {
+                    rows +=
+                    "<tr>"+
+                        "<td><input type='radio' name='dlg_"+tab_id+"' value='"+rows_data[i]['SEQNO'] +"'/></td>" +
+                        "<td>" + rows_data[i]['ID'] + "</td>" +
+                        "<td>" + rows_data[i]['NAME'] + "</td>"+
+                    "</tr>";
+                }
+                rows = rows != '' ? rows : '<tr><td colspan="3" class="ui-state-highlight">未找到資料</td></tr>';
+                $("#"+tab_id+" tbody").html(rows);
+            }
+
+            //  Begin LOV Scripts for Dept
+            $('#dept_lov_dlg').dialog({
+                autoOpen: false,
+                height: 300,
+                width: 400,
+                modal: true,
+                buttons:[{
+                    text:'確定',
+                    click: function() {
+                        var $ckd_rdo = $('input[name=dlg_tab_dept_list]:checked');
+                        var dept_seqno = $ckd_rdo.val();
+                        if (typeof dept_seqno != 'undefined') {
+                            if (typeof $lov_tgt_v1 == 'object') {
+                            	$lov_tgt_v1.val(dept_seqno);
+                            	if ($lov_tgt_v2.attr('id') == 'dept_seqno')
+                            		$('.dept_seqno').val(dept_seqno);
+                            }
+                            if (typeof $lov_tgt_v2 == 'object') {
+                            	var val_desc = $ckd_rdo.parent().next().next().text();
+                            	$lov_tgt_v2.val(val_desc);
+                            	if ($lov_tgt_v2.attr('id') == 'dept_name')
+                            	$('.dept_name').val(val_desc);
+                            }
+                            $(this).dialog('close');
+                        }else{
+                            alert('請選取一個部門 ');
+                            return false;
+                        }
+                    },
+                 },
+                 {
+                     text: "取消",
+                     click: function(){
+                         $(this).dialog("close");
+                     }
+                 }]
+            });
+
+            $('#dept_qry_btn').button().click(function(){
+                var qstr = $('#dept_qwd').val();
+                if (qstr == '')
+                {
+                    alert('請輸入部門名稱或是部門代碼');
+                    return false;
+                }
+                $.ajax({
+                    type:"post",
+                    url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+                    data:'ajaxcall=1&func=getDeptList&q='+qstr,
+                    async: false,
+                    timeout:1000,
+                    dataType:'json',
+                    success: function(json){
+                        addRow2Tab('tab_dept_list',json);
+                    },// end function
+                    error: function (json)
+                    {
+                        alert('查詢部門資料出錯，請重試.');
+                        return false;
+                    }// end function
+                });
+            });
+            // end LOV Scripts for Dept
+
+            $('#title_lov_dlg').dialog({
+                autoOpen: false,
+                height: 300,
+                width: 400,
+                modal: true,
+                buttons:[{
+                    text:'確定',
+                    click: function() {
+                        var $ckd_rdo = $('input[name=dlg_tab_title_list]:checked');
+                        var title_seqno = $ckd_rdo.val();
+                        if (typeof title_seqno != 'undefined') {
+                            if (typeof $lov_tgt_v1 == 'object'){
+                            	$lov_tgt_v1.val(title_seqno);
+                            	if ($lov_tgt_v2.attr('id') == 'title_seqno')
+                            		$('.title_seqno').val(title_seqno);
+                            }
+                            if (typeof $lov_tgt_v2 == 'object'){
+                            	var title_desc = $ckd_rdo.parent().next().next().text();
+                            	$lov_tgt_v2.val(title_desc);
+                            	if ($lov_tgt_v2.attr('id') == 'title_name')
+                            		$('.title_name').val(title_desc);
+                            }
+                            $(this).dialog('close');
+                        }else{
+                            alert('請選取一個職稱 ');
+                            return false;
+                        }
+                    },
+                 },
+                 {
+                     text: "取消",
+                     click: function(){
+                         $(this).dialog("close");
+                     }
+                 }]
+            });
+            $('#title_qry_btn').button().click(function(){
+                var qstr = $('#title_qwd').val();
+                if (qstr == '')
+                {
+                    alert('請輸入職稱名稱或是職稱代碼');
+                    return false;
+                }
+                $.ajax({
+                    type:"post",
+                    url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+                    data:'ajaxcall=1&func=getTitleList&q='+qstr,
+                    async: false,
+                    timeout:1000,
+                    dataType:'json',
+                    success: function(json){
+                        addRow2Tab('tab_title_list',json);
+                    },// end function
+                    error: function (json)
+                    {
+                        alert('查詢職稱資料出錯，請重試.');
+                        return false;
+                    }// end function
+                });
+            });
+            
+            /*
+            * 同步 Master Data to Detail
+            * add by Dennis 2012-12-18
+            */
+            $('#indate_master,#experiencestartdate_master,#salary_type_master,#tw_tax_id_master,#contract_master,#costallocation_master,#temp_company_master').bind('change',function () {
+            	var classname = $(this).attr('id');
+            	$('.' + classname).val($(this).val());
+            });          
+            
+        });
+    </script>
+<!--{else}-->
+    <div class="ui-state-highlight">
+            轉入成功 <!--{$success_cnt}-->筆，失敗<!--{$fail_cnt}-->.清單如下:
+    </div>
+    <br clear="all"/>
+    <hr size="1"/>
+    <!--{if $success_cnt > 0 }-->
+    <table class="bordertable">
+        <caption style="text-align:center;"><h2>轉入成功清單</h2></caption>
+        <tr>
+            <th>序</th>
+            <th>身份證號</th>
+            <th>工號</th>
+            <th>姓名</th>
+        </tr>
+        <!--{section name=i loop=$success_list}-->
+        <tr>
+            <td><!--{$smarty.section.i.index+1}--></td>
+            <td><!--{$success_list[i].ID_CARD}--></td>
+            <td><!--{$success_list[i].ID_NO_SZ}--></td>
+            <td><!--{$success_list[i].NAME_SZ}--></td>
+        </tr>
+        <!--{/section}-->
+    </table>
+    <!--{/if}-->
+    
+    <!--{if $fail_cnt >0 }-->
+    <table class="bordertable">
+        <caption style="text-align:center;">轉入失敗清單</caption>
+        <tr>
+            <th>序</th>
+            <th>身份證號</th>
+            <th>姓名</th>
+            <th>失敗原因</th>
+        </tr>
+        <!--{section name=i loop=$fail_list}-->
+        <tr>
+            <td><!--{$smarty.section.i.index+1}--></td>
+            <td><!--{$fail_list[i].ID_CARD}--></td>
+            <td><!--{$fail_list[i].NAME}--></td>
+            <td><!--{$fail_list[i].FAIL_REASON}--></td>
+        </tr>
+        <!--{/section}-->
+    </table>
+    <!--{/if}-->
+    <div align="center"><a href="?scritpname=card_add_information">返回上一頁</a></div>
+<!--{/if}-->

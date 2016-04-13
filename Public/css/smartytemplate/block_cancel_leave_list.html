@@ -1,0 +1,44 @@
+
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$ABSENCE_DATE_LABEL}--></th>
+		<th nowrap><!--{$ABSENCE_CODE_LABEL}--></th>
+		<th nowrap><!--{$ABSENCE_NAME_LABEL}--></th>
+		<th nowrap><!--{$BEGINTIME_LABEL}--></th>
+		<th nowrap><!--{$ENDTIME_LABEL}--></th>
+		<th nowrap><!--{$HOURS_LABEL}--></th>
+		<th nowrap><!--{$DAYS_LABEL}--></th>
+		<th nowrap><!--{$REMARK_LABEL}--></th>
+		<th nowrap><!--{$ACTION_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$leave_list}-->
+	<tr>
+		<td><!--{$smarty.section.i.rownum}--></td>
+		<td nowrap><!--{$leave_list[i].CDAY}--></td>
+		<td nowrap><!--{$leave_list[i].ABSENCE_CODE}--></td>
+		<td nowrap><!--{$leave_list[i].ABSENCE_NAME}--></td>
+		<td nowrap><!--{$leave_list[i].BEGINTIME}--></td>
+		<td nowrap><!--{$leave_list[i].ENDTIME}--></td>
+		<td>
+			<!--{$leave_list[i].HOURS|string_format:"%.2f"}-->
+		</td>
+		<td>
+			<!--{$leave_list[i].DAYS|string_format:"%.2f"}-->
+		</td>
+		<td nowrap><!--{$leave_list[i].REMARK}--></td>
+		<td nowrap>
+			<a onclick="return confirm('<!--{$CONFIRM_DELETE_MSG}-->');" 
+			  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=delete&leave_seqno=<!--{$leave_list[i].ABSENCE_ID}-->">
+	            <img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="銷假" title="銷假">
+	         </a>
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="13">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

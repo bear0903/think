@@ -1,0 +1,518 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<script type='text/javascript' src='<!--{$JS_DIR}-->/translate.js'></script>
+<script type='text/javascript' src='<!--{$JS_DIR}-->/idcard_check.js'></script>
+<script type='text/javascript'>
+    <!--{if !isset($smarty.session.keyinmode)}-->
+    var OCX_OBJ = {};
+    /*
+    * OCX_OBJ读卡成功后的回调函数
+    * 必須命名爲 GetData() 否則讀不出資料
+    */    
+    function GetData()
+    {
+        with(document.form1){
+            //name.value = OCX_OBJ.Name;	//<-- 姓名--!>
+            name.value = OCX_OBJ.NameL;		//<-- 姓名--!>
+            //sex.value = OCX_OBJ.Sex;		//<-- 性别--!>
+            sex.value = OCX_OBJ.SexL;		//<-- 性别--!>
+            //nation.value = OCX_OBJ.Nation;//<-- 民族--!>
+            nation.value = OCX_OBJ.NationL;	//<-- 民族--!>
+            born.value = OCX_OBJ.Born;		//<-- 出生--!>
+            //bornl.value = OCX_OBJ.BornL;	//<-- 出生--!>
+            address.value = OCX_OBJ.Address;//<-- 地址--!>
+            cardno.value = OCX_OBJ.CardNo;	//<-- 卡号--!>
+            police.value = OCX_OBJ.Police;	//<-- 发证机关--!>
+            //activity.value = OCX_OBJ.Activity;		//<-- 有效期--!>
+            activitylfrom.value = OCX_OBJ.ActivityLFrom;//<-- 有效期--!>
+            activitylto.value = OCX_OBJ.ActivityLTo;	//<-- 有效期--!>
+            photo.value = OCX_OBJ.GetPhotoBuffer();
+            //jpgPhotoFace1.value = OCX_OBJ.GetFaceJpgBase64(0);//双面
+            //jpgPhotoFace1.value = OCX_OBJ.GetFaceJpgBase64(1);//正面
+            //jpgPhotoFace2.value = OCX_OBJ.GetFaceJpgBase64(2);//反面
+        }
+        $('#origin').val(getArea($('#cardno').val()));
+        <!--{if $smarty.session.user.language == 'ZHT'}-->
+        // 简体转繁体
+        $("input[type='text']").each(function(){
+            var _v = $(this).val();
+            //alert(_v.s2t());
+            if(_v){
+                $(this).val(_v.s2t());
+            }
+        });
+        <!--{/if}-->
+		setStarSign($('#born').val());
+        var row_data = getFormData();
+        // auto save id card data to database after read
+        saveData(row_data);
+    }
+    /*
+    * OCX_OBJ读卡失败后的回调函数, 必須命名爲 ClearData
+    */
+    function ClearData()
+    {
+        $('form input:not("#indate")').val('');
+        /*
+        with(document.form1){
+            name.value = ""
+            sex.value = "";
+            nation.value = "";
+            born.value = "";
+            address.value = "";
+            cardno.value = "";
+            police.value = "";
+            //activity.value = "";
+            activitylfrom.value = "";
+            activitylto.value = "";
+            photo.value = "";
+            cons_desc.vlaue = "";// 星座
+            //jpgPhotoFace1.value =  "";
+            //jpgPhotoFace2.value =  "";
+        }*/
+    }
+    /*
+    * Get 身份證讀卡器返回的消息,並轉換成可讀的 msg
+    * OCX_OBJ读卡消息回调函数，名稱必須 為  GetErrMsg
+    */
+    function getErrMsg()
+    {
+        var msg = OCX_OBJ.ErrMsg;
+        var type = 'info';
+        if (msg == '未检测到机具')
+        {
+            type = 'error';
+            msg = '未檢測到身份證閱讀設備連結到本電腦。<br>如果已連結，請檢查身份證閱讀器上的電源指示燈是否有亮，請檢查後<button onclick="document.location=document.location;">刷新本頁面</button>。';
+        }
+        if (msg == '发现机具' || msg == '请放卡')
+        {
+            msg = '身份證閱讀設備已連結就緒，請放身份證到閱讀區。';
+        }
+        if (msg == '找到卡，开始读卡...')
+        {
+            msg = '設備正在閱讀身份證...';
+        }
+        // Display the message to page
+        setMessage(type,msg);
+    }
+
+    function startRead()//开始读卡
+    {
+        if (typeof OCX_OBJ.start != 'undefined' &&
+            OCX_OBJ.GetState() == 0)
+        {
+            // Set IDCard Photo Path Local Path Only
+            //OCX_OBJ.PhotoPath = "C:";
+            OCX_OBJ.Start(); //循环读卡
+            //单次读卡(点击一次读一次)
+            //if (OCX_OBJ.GetState() == 0){
+                //OCX_OBJ.ReadCard()
+            //}
+        }
+    }
+
+    /* unused function
+    function print()//打印
+    {
+        OCX_OBJ.PrintFaceImage(0,30,10);//0 双面，1 正面，2 反面
+    }*/
+
+    /**
+    * Init ID Card Reader
+    * 初始化設備
+    */
+    function initDevice()
+    {
+        var msg = '';
+        OCX_OBJ = document.getElementById("ocx"); // 不能用 jquery 的 $('#ocx')
+        if (typeof OCX_OBJ.start != 'undefined')
+        {
+            startRead();
+        }else{
+            msg = '身份證閱讀器設備驅動未安裝成功.請先安裝驅動，連結好設備後<a href="#" onclick="document.location=document.location;">刷新本頁面</a>';
+        }
+        if (!$.browser.msie) {
+            msg = '身份證閱讀器只支持 IE 瀏覽器,您可以啟動人工輸入模式.';
+        }
+        if (msg != '') setMessage('error',"錯誤:"+msg);
+    }
+
+    /*
+    * Add by Dennis  2011-11-14
+    * remove body unload event, and add fowllowing code
+    */
+    $(window).unload(function(){
+        if (typeof OCX_OBJ.start != 'undefined')
+            OCX_OBJ.stop();
+    });
+    <!--{/if}-->
+	function setStarSign(d)
+	{
+		var starsign = getStarSign(d);
+		$('#constellation').val(starsign['k']);
+		$('#cons_desc').val(starsign['v']);
+	}
+
+    /**
+    * Set Message to Page
+    * @param msg_type  string error, info, etc.
+    * @param msg_txt   string the message
+    * @return void
+    * @author Dennis
+    */
+    function setMessage(msg_type,msg_txt)
+    {
+        var msg_html = "<div class='";
+        msg_html += msg_type;
+        msg_html += "'><h3 style='margin:0px;padding:0px;'>";
+        msg_html += msg_txt;
+        msg_html += "</h3></div>";
+        $('#status').html(msg_html);
+    }
+    /**
+    * Collection form data and combine to url format
+    */
+    function getFormData()
+    {
+        var row_data = '';
+        $('form :input').each(function(){
+            row_data += $(this).attr('name')+'='+$(this).val()+'&';
+        });
+        return row_data;
+    }
+    /**
+    * Save Personnel Data to temp table
+    * Only Check duplicate in temp table
+    * @param string row_data
+    * @author Dennis
+    */
+    function saveData(row_data)
+    {
+         $.ajax({
+            type:"post",
+            url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+            data:row_data+'ajaxcall=1',
+            async: false,
+            timeout:1000,
+            dataType:'json',
+            success: function(json){
+                if (json['is_blacklist']  == 'Y' ||
+                    json['is_tmp_exists'] == 'Y' ||
+                    json['is_child']	  == 'Y' ||
+                    json['is_unaudit']    == 'Y' ||
+					json['is_onjob']      == 'Y')
+                {
+                    setMessage('error',json['msg']+'資料未儲存.');
+                    return false;
+                }
+                if (json['is_success'] == 'Y'){
+                    setMessage('info',json['msg']);
+                    //alert(json['msg']); don't show alert message after read success
+                    //alert($('#cls_data_switch').attr('checked'));
+                    if ($('#cls_data_switch').attr('checked'))
+                    {
+                        ClearData();
+                    }
+                }
+            },// end function
+            error: function (json)
+            {
+                setMessage('error','身份证資料未儲存，請重試.'+json);
+            }// end function
+        });
+    }
+    
+
+    $().ready(function(){
+    	// 根据计税区域判断是否是台湾公司
+    	var is_tw_company = '<!--{$is_tw_com}-->';
+        /**
+        * init idcard reader device
+        */
+        initDevice();
+        /**
+        * Get 星座
+        */
+        $('#born').change(function(){
+            setStarSign($(this).val());
+        });
+        /**
+        * 从身份证号里取得生日,籍贯 
+        */
+        $('#cardno').change(function(){
+        	var cardno = $(this).val();
+        	var msg = checkCnIdCard(cardno);
+        	if (cardno != '' && is_tw_company != 'Y'){
+        		if (msg != 'Y'){ 
+        			alert(msg);
+        			$("#constellation,#cons_desc,#born,#origin,#sex").val('');
+        			return;
+        		}
+        		var origin_v = getArea(cardno);
+	        	$('#origin').val(origin_v);
+	        	$('#address').val(origin_v);
+	        	$('#born').val(cardno.substr(6,8));
+	        	setStarSign($('#born').val());
+	        	$('#sex').val(getGenderFromCnIdCard(cardno));
+        	}else{
+        		msg = checkTwIdCard(cardno);
+        		if (msg != 'Y'){
+        			alert(msg)
+        			return;
+        		}
+        		$('#sex').val(getGenderFromTwIdCard(cardno));
+        	}
+        });       
+        
+        /**
+        * 人工输入和设备录入切换
+        */
+        $('form input').css('background','#eee');
+
+        function clearForm()
+        {
+            $('form input:not("#indate")').val('');
+        }
+        /**
+        * Switch to Key in mode
+        */
+        $('#keyin_swith').change(function(){
+            if($(this).attr('checked'))
+            {
+                setMessage('info','請輸入身份證基本資料');
+                $('form input:not("#cons_desc")').attr('readonly',false);
+                //$('#cons_desc').attr('readonly',true); // 星座不能輸入
+                $('#keyin_save_btn').show();
+                $('form input:not("#cons_desc")').css('background-color','#fff');
+                $('#indate').addClass('input-date');
+                $('#date_tip').show();
+                $('#indate').datepicker({dateFormat:'yymmdd',changeMonth:true,changeYear:true});
+            }else{
+                //$('form input:not("#indate")').val('');
+                clearForm();
+                $('#date_tip').hide();
+                $('form input').css('background-color','#eee');
+                $('form input').attr('readonly',true);
+                $('#keyin_save_btn').hide();
+
+                if ($.browser.msie)
+                    getErrMsg();
+                else
+                    setMessage('error','身份證閱讀器只支持 IE 瀏覽器,您可以啟動人工輸入模式.');
+            }
+        });
+        
+        /**
+        * Submit key in data
+        */
+        $('#btn_submit_form').click(function(){
+        	var allow_null_cols = new Array();
+			if (is_tw_company == 'Y')
+			{
+				allow_null_cols[0] = 'nation';
+			}
+            var can_submit = false;
+            var $cardno = $('#cardno');
+            if ($cardno.val() == '') {
+            	alert('身份證號碼必須輸入.');
+            	can_submit = false;
+            	return false;
+            }
+            var msg = is_tw_company == 'Y' ? 
+            		  checkTwIdCard($cardno.val()) : 
+            		  checkCnIdCard($cardno.val());
+            		  
+            if (msg != 'Y'){
+            	alert(msg);
+            	can_submit = false;
+            	$cardno.css('background-color','#ffffcc');
+            	$cardno.focus();
+            	return false;
+            }            
+            $('form input[type=text]').each(function(){
+                var $this = $(this);
+                if ($this.val() =='' && $.inArray($this.attr('id'),allow_null_cols) == -1){
+                    alert($this.parent().prev().text()+'必須輸入');
+                    $this.css('background-color','#ffffcc');
+                    $this.focus();
+                    can_submit = false;
+                    return false;
+                }else{
+                    can_submit = true;
+                    $this.css('background-color','#fff');
+                }
+            });
+            /**
+            * Check 生日错误
+            */
+            if ($('#cons_desc').val() == 'Error')
+            {
+                alert('生日輸入錯誤');
+                $('#born').css('background-color','#ffffcc');
+                $('#born').focus();
+                can_submit = false;
+                return false;
+            }
+            
+            if (can_submit)
+            {
+                var row_data = getFormData();
+                //alert(row_data); return;
+                saveData(row_data);
+            }
+        });
+        /*
+        * Press Enter to next input
+        */
+        $(":input[type='text']").keypress(function(event){
+			if(event.which == 13) {
+				$this = $(this);
+				if ($this.parent().parent().next().find('[type="text"]').length > 0){
+					$this.parent().parent().next().find('[type="text"]')[0].focus();
+				}else {
+					$(":input[type='text']").first().focus();
+				}
+			}
+        });
+        
+    });
+</script>
+
+<script language="javascript" for="ocx" event="GetData">
+    GetData();  //设置回调函数
+</script>
+<script language="javascript" for="ocx" event="GetErrMsg">
+    getErrMsg();  //设置回调函数
+</script>
+<script language="javascript" for="ocx" event="ClearData">
+    ClearData();  //设置回调函数
+</script>
+
+<style type="text/css">
+<!--
+    div#card_connect_notice .x-box-mc ul{margin-bottom:0;}
+    form input{background:#eee;}
+-->
+</style>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+<div id="card_connect_notice">
+<!--{include file="block_box_header.html"}-->
+    <div style='margin:0px;padding:0px;' id="status"></div>
+<!--{include file="block_box_footer.html"}-->
+</div>
+<form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+<input type="hidden" name="photo" id="photo"/>
+<input type="hidden" name="activitylfrom" id="activitylfrom"/>
+<input type="hidden" name="activitylto" id="activitylto"/>
+<input type="hidden" name="police" id="police"/>
+<input type="hidden" name="jpgPhotoFace1" id="jpgPhotoFace1"/>
+<table class="bordertable">
+	<tr>
+        <td class="column-label">身份證號</td>
+        <td>
+            <input type="text" name="cardno" id="cardno" class="input-text" maxlength="18" style="width:300px;" readonly="true"/>
+        </td>
+        <td rowspan="5">
+            <object name="ocx" width="102" height="126" id="ocx"
+            classid="CLSID:220C3AD1-5E9D-4B06-870F-E34662E2DFEA"
+            codebase="../ocx/IdrOcx.cab#version=1,0,1,2">
+            </object>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label" width="15%">姓名</td>
+        <td>
+            <input type="text" name="name" id ="name" class="input-text" maxlength="20" readonly="true"/>
+        </td>        
+    </tr>
+    <tr>
+        <td class="column-label">民族</td>
+        <td>
+            <input type="text" name="nation" id="nation" class="input-text" readonly="true"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">住址</td>
+        <td>
+            <input type="text" name="address" id="address" class="input-text" style="width:300px;" readonly="true"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">性别</td>
+        <td>
+            <input type="text" name="sex" id="sex" maxlength="1" class="input-text" readonly="true"/>
+        </td>        
+    </tr>
+    
+    <tr>
+        <td class="column-label">籍貫</td>
+        <td colspan="2">
+            <input type="text" name="origin" id="origin" class="input-text" readonly="true"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">生日</td>
+        <td  colspan="2">
+            <input type="text" name="born" id="born" class="input-text" maxlength="8" readonly="true"/>
+            <span id="date_tip" style="display:none;">輸入的日期格式:YYYYMMDD 如: 19880808</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">星座</td>
+        <td  colspan="2">
+            <input type="hidden" name="constellation" id="constellation"/>
+            <input type="text" name="cons_desc" id="cons_desc" class="input-text" readonly="true"/>
+            自動帶出，無需輸入
+        </td>
+    </tr>    
+    
+    <!--
+    <tr>
+        <td class="column-label">簽發日期</td>
+        <td colspan="2">
+            <input type="text" name="activitylfrom" id="activitylfrom" class="input-text" style="width:300px;" readonly="true"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">失效日期</td>
+        <td colspan="2">
+            <input type="text" name="activitylto" id="activitylto" class="input-text" style="width:300px;" readonly="true"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">發證機關</td>
+        <td colspan="2">
+            <input type="text" name="police" id="police" class="input-text" style="width:300px;" readonly="true"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">身份證正反面</td>
+        <td colspan="2">
+            <input type="text" name="jpgPhotoFace1" id="jpgPhotoFace1" class="input-text" style="width:300px;" readonly="true"/>
+        </td>
+    </tr>
+     -->
+    <tr>
+        <td class="column-label">到職日期</td>
+        <td colspan="2">
+            <input type="text" name="indate" id="indate"
+            value="<!--{$smarty.now|date_format:'%Y%m%d'}-->"
+            class="input-date" readonly="true"
+            maxlength="8"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label">人工錄入選項</td>
+        <td colspan="2">
+            <input type="checkbox" name="keyin" id="keyin_swith"/><label for="keyin_swith">啟用人工輸入</label>
+            <input type="checkbox" id="cls_data_switch"/><label for="cls_data_switch">保存成功後清除資料</label>
+        </td>
+    </tr>
+</table>
+</form>
+<div style="display:none; text-align:center;" id="keyin_save_btn">
+    <button id="btn_submit_form">提交到暫存檔</button>
+</div>
+<!--{include file="block_box_footer.html"}-->

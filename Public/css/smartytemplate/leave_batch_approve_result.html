@@ -1,0 +1,93 @@
+<style>
+	.select-operateor{
+		width:80px;
+	}
+</style>
+<script src="<!--{$JS_DIR}-->/functions.js"></script>
+</head>
+<body class="page-container">
+	<!--{ include file="block_box_header.html" title=$BLOCK_TITLE|default:$smarty.get.appdesc showLine=1}-->
+	<form name="form_search" id="form1"
+		action="?scriptname=<!--{$smarty.get.scriptname}-->" method="post"
+		target="_self">
+		<input type="hidden" name="doaction" value="query" />
+		<table class="bordertable">
+			<tr>
+				<td>批次号</td>
+				<td>
+				<select name="_op_requeset_no" id="_op_requeset_no"
+					class="select-operateor"><option value=""></option>
+						<option value="=">=</option>
+						<option value=">">&gt;</option>
+						<option value=">=">&gt;=</option>
+						<option value="<">&lt;</option>
+						<option value="<=">&lt;=</option>
+				</select> <input type="text" name="request_no" id="request_no"
+					class="input-text" value="<!--{$smarty.post.request_no}-->" /></td>
+			</tr>
+			<tr>
+				<td>状态</td>
+				<!-- S-手工取消，N-新增，C-完成，R-运行中 -->
+				<td><select name="_op_req_status" id="_op_req_status"
+					class="select-operateor"><option value=""></option>
+						<option value="=">等于</option>
+						<option value="!=">不等于</option>
+				</select> <select name="req_status" id="req_status">
+						<option value=""></option>
+						<option value="N">等待</option>
+						<option value="R">运行中</option>
+						<option value="C">完成</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="submit" name="submit_button" id="submit"
+					class="button-submit" value="查询" /> <input type="button"
+					name="reset" id="" class="button-submit" value="重置"
+					onClick="clear_form('form1');" /></td>
+			</tr>
+		</table>
+	</form>
+	
+	<table class="bordertable">
+		<tr>
+			<th nowrap>批次号</th>
+			<th nowrap>状态</th>
+			<th nowrap>結果</th>
+			<th nowrap>提交时间</th>
+			<th nowrap>完成时间</th>
+			<th nowrap>运行时间(分钟)</th>
+			<th nowrap>执行进度（完成笔数/总笔数）</th>
+			<th>查看明细</th>
+		</tr>
+		
+		<!--{section name="i" loop=$batch_result_list}-->
+		<tr>
+			<td><!--{$batch_result_list[i].REQUEST_NO}--></td>
+			<td><!--{$batch_result_list[i].PROCESSING_STATUS}--></td>
+			<td><!--{$batch_result_list[i].RESULT_INFO}--></td>
+			<td><!--{$batch_result_list[i].SUBMIT_DATE}--></td>
+			<td><!--{$batch_result_list[i].COMPLETE_DATE}--></td>
+			<td><!--{$batch_result_list[i].EXE_MINUTES}--></td>
+			<td><!--{$batch_result_list[i].PROCESSED_ROWS}-->/<!--{$batch_result_list[i].TOTAL_ROWS}--></td>
+			<td>
+				<a href="../ess/redirect.php?scriptname=ESNH102&requestno=<!--{$batch_result_list[i].REQUEST_NO}-->&appdesc=<!--{$appdesc|default:'请假簽核明细'|urlencode}-->">
+				<img  src="../img/pe.png" border="0" title="查看明细"></a>
+			</td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="8">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+		</tr>
+		<!--{/section}-->
+	</table>
+	
+<script>
+	$().ready(function(){
+		$('#_op_requeset_no').val('<!--{$smarty.post._op_requeset_no|html_entity_decode}-->');
+		$('#_op_req_status').val('<!--{$smarty.post._op_req_status}-->');
+		$('#req_status').val('<!--{$smarty.post.req_status}-->');
+	});
+</script>

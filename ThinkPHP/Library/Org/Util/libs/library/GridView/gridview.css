@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+
+/* GridView Style */
+.gridview {
+	background-color: #e1e1e1;
+	border-collapse:collapse;
+}
+.gridview td,th{
+	border-style:solid;
+	border-width:1px;
+	border-color:#e1e1e1;
+}
+.gridview .header-style {
+	background-color: #c1c1c1;
+	color: #333399;
+}
+
+.girdview .footer-style {
+	
+}
+
+.gridview .row-style {
+	
+}
+
+.gridview .normal-row-style {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+.gridview .alternating-row-style {
+	background-color: #e1e1e1;
+}
+
+.gridview .selected-row-style {
+	background-color: #C9F6F6;
+	color: #003366;
+}
+
+.gridview .mouseover-row-style {
+	background-color: #CCE6FF;
+}
+
+.gridview .edit-row-style {
+	
+}
+
+.gridview .column-style {
+	
+}

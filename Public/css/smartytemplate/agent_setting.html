@@ -1,0 +1,145 @@
+
+<script type="text/javascript" src="<!--{$JS_DIR}-->/date.js"></script>
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'代理人設置' showLine=1}-->
+<form id="editForm" name="editForm" METHOD="POST">
+<table class="bordertable">
+<tbody>
+	<tr>
+		<td class="column-label" width="20%"><!--{$AGENT_EMP_NO_LABEL|default:'代理员工'}--> *</td>
+		<td>
+			<input type="hidden" name="agent_id" id="agent_id">
+			<input type="text" name="agent_code" id="agent_code" readonly class="input-lov"
+			 required='Y' title="請輸入<!--{$AGENT_EMP_NO_LABEL|default:'代理员工'}-->"  />
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$AGENT_EMP_NAME_LABEL|default:'姓名'}--> *</td>
+		<td>
+			<input type="text" name="agent_name" id="agent_name" readonly class="input-lov" required='Y' title="請輸入<!--{$AGENT_EMP_NAME_LABEL|default:'姓名'}-->" />
+		</td>
+	</tr>
+	<!-- 代理类型: 1:全权代理; 2: 受限代理 这一栏位为必输入 boll 2009-12-28-->	
+	<tr>
+		<td class="column-label"><!--{$AGENT_TYPE_LABEL|default:'代理類型'}--> *</td>
+		<td>
+			<input type="radio"  name="assign_type" id="assign_type_1" value='1' checked>
+			<label for="assign_type_1"><!--{$FULL_AGENT_LABEL|default:'全权代理'}--></label>(<!--{$AGENT_TYPE1_MSG|default:'代理期间相关签核只发送邮件给代理人'}-->)<br/>
+			
+			<input type="radio"  name="assign_type" id="assign_type_2" value='2'>
+			<label for="assign_type_2"><!--{$LIMITED_AGENT_LABEL|default:'受限代理'}--></label>(<!--{$AGENT_TYPE2_MSG|default:'代理期间相关签核同时发邮件给自己和代理人'}-->)
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$BEGIN_TIME_LABEL|default:'開始時間'}--> *</td>
+		<td>
+			<input type="text" 
+				   name="begin_date" 
+				   id="begin_date"
+				   value="<!--{$smarty.post.begin_date}-->" 
+				   required='Y' title="請輸入<!--{$BEGIN_TIME_LABEL|default:'開始時間'}-->"
+				   class="input-date"
+				   style="width:82px;"/>
+			
+            <!--{include file="block_hour_minute.html" prefix="begin" }-->
+        </td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$END_TIME_LABEL|default:'結束時間'}--> *</td>
+		<td>
+			<input type="text" 
+				   name="end_date" 
+				   id="end_date"
+				   value="<!--{$smarty.post.end_date}-->" 
+				   required='Y' title="請輸入<!--{$END_TIME_LABEL|default:'結束時間'}-->"
+				   class="input-date"
+				   style="width:82px;"/>
+             <!--{include file="block_hour_minute.html" prefix="end"}-->
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$ALL_ABSENCE_LABEL|default:'請假簽核'}--> </td>
+		<td >
+		   <input id="all_absence" NAME="ALL_ABSENCE" TYPE="checkbox" 
+			value="Y" <!--{if $row.ALL_ABSENCE=='Y'}-->checked<!--{/if}-->/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$ALL_OVERTIME_LABEL|default:'加班簽核'}--> </td>
+		<td >
+		   <input id="all_overtime" NAME="ALL_OVERTIME"  TYPE="checkbox" 
+			value="Y" <!--{if $row.ALL_OVERTIME=='Y'}-->checked<!--{/if}-->/>
+		</td>
+	</tr>
+		<tr>
+		<td class="column-label"><!--{$ALL_NOCARD_LABEL|default:'忘刷簽核'}--> </td>
+		<td >
+		   <input id="all_nocard" NAME="ALL_NOCARD" TYPE="checkbox" 
+			value="Y" <!--{if $row.ALL_NOCARD=='Y'}-->checked<!--{/if}-->/>
+		</td>
+	</tr>
+		<tr>
+		<td class="column-label"><!--{$ALL_RESIGN_LABEL|default:'離職/留停簽核'}--> </td>
+		<td >
+		   <input id="all_resign" NAME="ALL_RESIGN" TYPE="checkbox" 
+			value="Y" <!--{if $row.ALL_RESIGN=='Y'}-->checked<!--{/if}-->/>
+		</td>
+	</tr>
+		<tr>
+		<td class="column-label"><!--{$CANCEL_ABS_LABEL|default:'銷假簽核'}--> </td>
+		<td >
+		   <input id="all_trans" NAME="ALL_TRANS" TYPE="checkbox" 
+			value="Y" <!--{if $row.ALL_TRANS=='Y'}-->checked<!--{/if}-->/>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="button" id="doPost"  value="<!--{$SUBMIT_BTN_LABEL|default:'提交'}-->" class="button-submit" title="Submit Apply to Workflow"/>
+			<input type=submit name="submit" id="submitEditForm" value=submit style="visibility: hidden;">
+		</td>
+	</tr>
+</tbody>
+</table>
+<input type="hidden" name="do" value="<!--{$action|default:'Save'}-->">
+</form>
+
+<!--{include file="block_box_footer.html"}-->
+
+
+<script type="text/javascript">
+
+	//  代理人通过lov选取
+	$("#agent_name").click(function(){	
+		if($("#assign_type_0").attr('checked')) return false;
+		var url="../mgr/redirect.php?scriptname=employee_lov";
+		var txt_id = document.getElementById("agent_id");
+	    var txt_no = document.getElementById("agent_code");
+	    var txt_name = document.getElementById("agent_name");
+	    showLov(url,txt_id,txt_no,txt_name);
+	});
+	$("#agent_code").click(function(){	
+		if($("#assign_type_0").attr('checked')) return false;
+		var url="../mgr/redirect.php?scriptname=employee_lov";
+		var txt_id = document.getElementById("agent_id");
+	    var txt_no = document.getElementById("agent_code");
+	    var txt_name = document.getElementById("agent_name");
+	    showLov(url,txt_id,txt_no,txt_name);
+	});
+
+	// 提交
+	$("#doPost").click(function(){
+		postData();
+	});
+	function postData(){
+		var ok=checkUserInputData('editForm');
+		if(!ok) return false;
+		$('#submitEditForm').click();
+	}
+	$().ready(function(){
+		$('#begin_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+		$('#end_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+	});
+</script>

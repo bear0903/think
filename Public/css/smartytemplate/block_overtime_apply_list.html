@@ -1,0 +1,99 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript" charset = "utf-8"></script>
+
+<form name="form2" method="post">
+<table class="bordertable">
+	<tr>
+		<!--{if $doaction == 'batchdel'}-->
+		<th nowrap>
+			<input type="checkbox" id="checkall" onclick="CheckAll(document.form2,this.checked)"/>
+			<input type="hidden" name="doaction" value="batchdel"/>
+			<label for="checkall"><!--{$CHECKALL_LABEL|default:'全選'}--></label>
+		 </th>
+		<!--{/if}-->
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$ACTION_LABEL}--></th><!--變更操作欄位 by nicolas 20110223-->
+		<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--><!--變更操作欄位 by nicolas 20110224-->
+		<th nowrap><!--{$DEPT_NAME_LABEL}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+		<th nowrap><!--{$OVERTIME_DATE_LABEL}--></th>
+		<th nowrap><!--{$BEGIN_TIME_LABEL}--></th>
+		<th nowrap><!--{$END_TIME_LABEL}--></th>
+		<th nowrap><!--{$HOURS_LABEL}--></th>
+		<th nowrap><!--{$OVERTIME_REASON_LABEL}--></th>
+		<th nowrap><!--{$OVERTIME_TYPE_LABEL}--></th>
+		<th nowrap><!--{$OT_FEE_TYPE_LABEL}--></th>
+		<!--<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--></th>-->
+		<th nowrap><!--{$EXCEPTION_DESC_LABEL}--></th>
+		<!--<th nowrap><!--{$ACTION_LABEL}--></th>-->
+	</tr>
+	<!--{section name="i" loop=$overtime_workflow_list}-->
+	<tr>
+		<!--{if $doaction == 'batchdel'}-->
+		<td>
+			<!--{if $overtime_workflow_list[i].FLOW_STATUS <'02'}-->
+			<input type="checkbox" name="overtime_flowseqno[]" value="<!--{$overtime_workflow_list[i].OVERTIME_FLOW_SEQNO}-->"/>
+			<!--{/if}-->
+		</td>
+		<!--{/if}-->
+		<td nowrap><!--{$smarty.section.i.rownum}--></td>
+		<!--變更操作欄位 by nicolas 20110223 v-->
+		<td nowrap>
+		<!--{* 未签核过或未提交 (暂存的)加班可以被删除*}-->
+		<!--{if $overtime_workflow_list[i].FLOW_STATUS <'02' && $whoami !='admin' }-->
+			<!--{if $overtime_workflow_list[i].FLOW_STATUS == "00"}-->
+			<a href="?scriptname=<!--{$smarty.get.scriptname}-->&action=submit&overtime_flowseqno=<!--{$overtime_workflow_list[i].OVERTIME_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/Y.png" alt="Submit"/>
+			</a>
+			<!--{/if}-->
+			<a onclick="return confirm('<!--{$CONFIRM_DELETE_MSG}-->');"
+			   href="?scriptname=<!--{$smarty.get.scriptname}-->&action=delete&overtime_flowseqno=<!--{$overtime_workflow_list[i].OVERTIME_FLOW_SEQNO}-->">
+                <img src="<!--{$IMG_DIR}-->/cancel.png" alt="Delete"/>
+            </a>
+		<!--{/if}-->
+		<!--{* 未提交不可查看流程图 add by dennis 2006-04-21 17:07:59 *}-->
+		<!--{if $overtime_workflow_list[i].FLOW_STATUS <> "00"}-->
+			<!-- type="popup" user defined attributes for js -->
+			<a type="popup" href="?scriptname=view_flowchart&action=view_flowchart&apply_type=overtime&flow_seqno=<!--{$overtime_workflow_list[i].OVERTIME_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/pe.png" alt="View Workflow flowchart"/>
+			</a>
+		<!--{/if}-->
+		<!--{* 只有管理员才能作废流程 *}-->
+			<!--{if $overtime_workflow_list[i].FLOW_STATUS >'00'  &&
+					$overtime_workflow_list[i].FLOW_STATUS <'05'  &&
+					$overtime_workflow_list[i].FLOW_STATUS <>'03' &&
+					$overtime_workflow_list[i].FLOW_STATUS <>'04' &&
+					$whoami =='admin' }-->
+			<a onclick="return CancelWorkflow(this);"  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=cancelflow&apply_type=<!--{$overtime_workflow_list[i].APPLY_TYPE}-->&overtime_flowseqno=<!--{$overtime_workflow_list[i].OVERTIME_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Cancel Flow" title="Cancel Workflow"/>
+		 	</a>
+			<!--{/if}-->
+		</td>
+		<!--變更操作欄位 by nicolas 20110223 ^-->
+		<td><!--{$overtime_workflow_list[i].STATUS_NAME}--></td><!--變更操作欄位 by nicolas 20110224-->
+		<td nowrap><!--{$overtime_workflow_list[i].DEPT_NAME}--></td>
+		<td nowrap><!--{$overtime_workflow_list[i].EMP_ID}--></td>
+		<td nowrap><!--{$overtime_workflow_list[i].EMP_NAME}--></td>
+		<td nowrap><!--{$overtime_workflow_list[i].OVERTIME_DATE}--></td>
+		<td nowrap><!--{$overtime_workflow_list[i].BEGIN_TIME}--></td>
+		<td nowrap><!--{$overtime_workflow_list[i].END_TIME}--></td>
+		<td><!--{$overtime_workflow_list[i].HOURS|string_format:"%.2f"}--></td>
+		<td><!--{$overtime_workflow_list[i].REASON|nl2br}--></td>
+		<td><!--{$overtime_workflow_list[i].OVERTIME_TYPE_NAME}--></td>
+		<td><!--{$overtime_workflow_list[i].OVERTIME_FEE_NAME}--></td>
+		<!--<td><!--{$overtime_workflow_list[i].STATUS_NAME}--></td>-->
+		<td><!--{$overtime_workflow_list[i].REJECT_COMMENT}--></td>
+
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="15">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{if $doaction == 'batchdel' and count($overtime_workflow_list)>0}-->
+	<div align="center"><input type="submit" name="submit" value="提交" class="button-submit"/></div>
+<!--{/if}-->
+</form>

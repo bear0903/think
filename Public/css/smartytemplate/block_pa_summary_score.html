@@ -1,0 +1,67 @@
+       <!-- 等第	已評人數	規定人數	差異人數	比例(%)	規定(%)	差异(%) 
+          [LEVEL_SEQNO] => 2
+            [LEVEL_ID] => A
+            [RULE_PERCENT] => 10
+            [RULE_HEADCOUNT] => .1
+            [HEADCOUNT] => 1
+            [HAD_SCORE_HEADCOUNT] => 0
+            [DIFF_HEADCOUNT] => -0.1
+            [HAD_SCORE_PERCENT] => 0
+            [DIFF_PERCENT] => -10
+       -->
+        <tr>
+            <td colspan="7" class="column-label"><!--{$smarty.get.group_desc}-->/<!--{$smarty.get.std_master_desc}-->/<!--{$score_type}--></td>
+        </tr>
+        <tr>
+            <th><!--{$RANK_LABEL}--></th>
+            <th><!--{$HAD_PA_HEADCOUNT_LABEL|default:'已評人數'}--></th>
+            <th><!--{$RULE_HEADCOUNT_LABEL|default:'規定人數'}--></th>
+            <th><!--{$DIFF_HEADCOUNT_LABEL|default:'差異人數'}--></th>
+            <th><!--{$PA_PERCENTAGE_LABEL|default:'已評比例'}-->(%)</th>
+            <th><!--{$SET_PERCENTAGE_LABEL}-->(%)</th>
+            <th><!--{$DIFF_LABEL}-->(%)</th>
+        </tr>
+        <!--{section name="i" loop=$records}-->
+        <tr>
+        	<td><!--{$records[i].LEVEL_ID}--></td>
+            <td><!--{$records[i].HAD_SCORE_HEADCOUNT}--></td>
+            <td>
+            	<!--{*if $records[i].RULE_HEADCOUNT>0 *}-->
+            	<!--{*<a href="?scriptname=pa_emp_list&pa_period_seqno=<!--{$smarty.get.pa_period_seqno}-->&group_seqno=<!--{$smarty.get.group_seqno}-->&pa_level_seqno=<!--{$records[i].LEVEL_SEQNO}-->&std_master_seqno=<!--{$records[i].STD_MASTER_SEQNO}-->">
+            	<!--{$records[i].RULE_HEADCOUNT|string_format:"%.2f"}-->
+            	</a>
+            	*}-->
+            	<!--{*else*}-->
+            	<!--{$records[i].RULE_HEADCOUNT|string_format:"%.2f"}-->
+            	<!--{*/if*}-->
+            </td>
+            <td><!--{$records[i].DIFF_HEADCOUNT|string_format:"%.2f"}--></td>
+            <td><!--{$records[i].HAD_SCORE_PERCENT|string_format:"%.2f"}--></td>
+            <td><!--{$records[i].RULE_PERCENT|string_format:"%.2f"}--></td>
+            <td <!--{if $records[i].DIFF_PERCENT>0 }-->class="error"<!--{/if}-->><!--{$records[i].DIFF_PERCENT|string_format:"%.2f"}--></td>
+        </tr>
+        <!--{sectionelse}-->
+        <tr>
+            <td colspan="7">
+            	<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND}-->
+           	</td>
+        </tr>
+        <!--{/section}-->
+        <!--{* 
+        <tr>
+            <td class="column-label"><!--{$SUMMARY_LABEL}--></td>
+            <td>
+            	<!--{if $headcount_total >0}-->
+            	<a href="?scriptname=pa_emp_list&pa_period_seqno=<!--{$smarty.get.pa_period_seqno}-->&group_seqno=<!--{$smarty.get.group_seqno}-->&whoami=<!--{$whoami}-->"><!--{$headcount_total}--></a>
+            	<!--{else}-->
+            	<!--{$headcount_total}-->
+            	<!--{/if}-->
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        *}-->
+        

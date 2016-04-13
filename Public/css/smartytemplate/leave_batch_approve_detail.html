@@ -1,0 +1,40 @@
+
+</head>
+<body class="page-container">
+<!--{ include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+<table class="bordertable">
+	<tr>
+		<th>序</th>
+		<th nowrap>核准</th>
+		<th nowrap>提示信息</th>
+		<th nowrap>部门名称</th>
+		<th nowrap>员工工号</th>
+		<th nowrap>员工姓名</th>
+		<th nowrap>假别</th>
+		<th nowrap>开始时间</th>
+		<th nowrap>结束时间</th>
+		<th nowrap>流程状态</th>
+		<th nowrap>驳回原因</th>
+		
+	</tr><!--{section name="i" loop=$batch_run_detail}-->
+	<tr>
+		<td><!--{$smarty.section.i.rownum}--></td>
+		<td ><!--{$batch_run_detail[i].IS_APPROVED}--></td>
+		<td ><!--{$batch_run_detail[i].PO_ERRMSG}--></td>
+		<td ><!--{$batch_run_detail[i].DEPT_NAME}--></td>
+		<td ><!--{$batch_run_detail[i].EMP_ID}--></td>
+		<td ><!--{$batch_run_detail[i].EMP_NAME}--></td>
+		<td ><!--{$batch_run_detail[i].LEAVE_NAME}--></td>
+		<td nowrap><!--{$batch_run_detail[i].BEGIN_TIME}--></td>
+		<td nowrap><!--{$batch_run_detail[i].END_TIME}--></td>
+		<td ><!--{$batch_run_detail[i].STATUS_NAME}--></td>
+		<td ><!--{$batch_run_detail[i].REJECT_REASON}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="11">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

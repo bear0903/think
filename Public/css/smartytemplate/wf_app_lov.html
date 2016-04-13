@@ -1,0 +1,49 @@
+<script language="javascript">
+window.name = "lov_win"
+</script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title= $BLOCK_TITLE|default:$smarty.get.block_title showLine=1}-->
+<form name="form1" method="post" action="?scriptname=<!--{$smarty.get.scriptname}-->" target="lov_win">
+<table class="bordertable">
+	<tr>
+		<td class="column-label">菜单代码</td>
+		<td>
+			<input type="text" name="menu_code" class="input-text" value="<!--{$smarty.post.menu_code}-->">
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label">菜单名称</td>
+		<td>
+			<input type="text" name="menu_desc" class="input-text" value="<!--{$smarty.post.menu_desc}-->">
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td align="center">
+			<input type="submit" name="submit" value="查询" class="button-submit"/>
+		</td>
+	</tr>
+</table>
+</form>
+<br/>
+<table>
+	<tr>
+		<th>菜单代码</th>
+		<th>菜单名称</th>
+	</tr>
+	<!--{section name="i" loop=$wf_app_list}-->
+	<tr>
+		<td><!--{$wf_app_list[i].MENU_CODE}--></td>
+		<td><!--{$wf_app_list[i].MENU_DESC}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="2">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>
+
+<!--{include file="block_box_footer.html"}-->

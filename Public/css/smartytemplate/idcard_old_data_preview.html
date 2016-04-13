@@ -1,0 +1,59 @@
+<script src="<!--{$JS_DIR}-->/jquery.jPrintArea.js"></script>
+</head>
+<body class="page-container">
+<div align="center"><input type="button" value="列印" id="btn_print"/></div>
+<div id="print_area">
+	<!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE|default:'二次錄用人員基本資料'}-->
+	<table class="bordertable" border="1" width="98%" cellpading="0" cellspacing="0">
+		<tr><th colspan="2">基本資料</th></tr>
+		<tr><td width="120">身份證號</td><td><!--{$smarty.get.idcardno}--></td></tr>
+		<tr><td>姓名</td><td><!--{$EMP_NAME}--></td></tr>
+		<tr><td>原工號</td><td><!--{$EMP_ID}--></td></tr>
+		<tr><td>原部門</td><td><!--{$DEPT_NAME}--></td></tr>
+		<tr><td>原部門主管</td><td><!--{$MGR_NAME}--></td></tr>
+		<tr><td>原部門上階主管</td><td><!--{$P_MGR_NAME}--></td></tr>
+		<tr><td>原到職日期</td><td><!--{$JOIN_DATE}--></td></tr>
+		<tr><td>原離職日期</td><td><!--{$LEAVE_DATE}--></td></tr>
+		<tr><td>原離職原因</td><td><!--{$LEAVE_REASON}--></td></tr>
+		<tr><td>原內部年資</td><td><!--{$W_YEARS}--></td></tr>
+	</table>
+	<hr size="1"/>
+	<table class="bordertable" border="1" width="98%" cellpading="0" cellspacing="0">
+		<tr><th colspan="4">獎懲紀錄</th></tr>
+		<tr>
+			<th>日期</th>
+			<th>獎懲類型</th>
+			<th>文號</th>
+			<th>備註</th>
+		</tr>
+		 <!--{section name="i" loop=$mr_list}-->
+		<tr>
+			<td><!--{$mr_list[i].MERIT_DATE}--></td>
+			<td><!--{$mr_list[i].MERIT_DESC}--></td>
+			<td><!--{$mr_list[i].ISSUE_NO}--></td>
+			<td><!--{$mr_list[i].REMARKS|default:'&nbsp;'}--></td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="4" class="ui-state-highlight"><!--{$NO_DATA_FOUND_MSG|default:'無獎懲記錄'}--></td>
+		</tr>
+		<!--{/section}-->
+	</table>
+	<hr size="1"/>
+	<div>
+		<p><strong>面試備註</strong></p>
+		<textarea style="width:99%; height:60px;"></textarea>
+	</div>
+	<!--{include file="block_box_footer.html"}-->
+</div>
+<div align="center"><input type="button" value="列印" id="btn_print"/></div>
+<script type="text/javascript">
+$().ready(function(){
+	$("div input[type=button]").click(function(){ 
+		$("div#print_area").printArea();	
+	});
+	$(document).attr("title", '二次錄用人員資料');
+});
+
+
+</script>

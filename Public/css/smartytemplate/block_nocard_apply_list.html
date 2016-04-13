@@ -1,0 +1,63 @@
+
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$ACTION_LABEL}--></th><!--變更操作欄位 by nicolas 20110223-->
+		<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--></th><!--變更操作欄位 by nicolas 20110224-->
+		<th nowrap><!--{$DEPT_ID_LABEL}--></th>
+		<th nowrap><!--{$DEPARTMENT_LABEL}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+		<th nowrap><!--{$NOCARD_DESC_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$nocard_workflow_list}-->
+	<tr>
+		<td nowrap><!--{$smarty.section.i.rownum}--></td>
+		<!--變更操作欄位 by nicolas 20110223 v-->
+		<td nowrap>
+		<!--{* 未签核过或未提交 (暂存的)人事异动申请可以被删除*}-->
+		<!--{if $nocard_workflow_list[i].FLOW_STATUS <'02' && $whoami !='admin' }-->
+			<!--{if $nocard_workflow_list[i].FLOW_STATUS == "00"}-->
+			<a href="?scriptname=<!--{$smarty.get.scriptname}-->&action=submit&nocard_flowseqno=<!--{$nocard_workflow_list[i].NOCARD_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/y.png" alt="Submit"/>
+			</a>
+			<!--{/if}-->
+			<a onclick="return confirm('<!--{$CONFIRM_DELETE_MSG}-->');"
+			   href="?scriptname=<!--{$smarty.get.scriptname}-->&action=delete&nocard_flowseqno=<!--{$nocard_workflow_list[i].NOCARD_FLOW_SEQNO}-->">
+                <img src="<!--{$IMG_DIR}-->/cancel.png" alt="Delete"/>
+            </a>
+		<!--{/if}-->
+		<!--{* 未提交不可查看流程图 add by dennis 2006-04-21 17:07:59 *}-->
+		<!--{if $nocard_workflow_list[i].FLOW_STATUS <> "00"}-->
+			<!-- type="popup" user defined attributes for js -->
+			<a type="popup" href="?scriptname=view_flowchart&action=view_flowchart&apply_type=nocard&flow_seqno=<!--{$nocard_workflow_list[i].NOCARD_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/pe.png" alt="View Workflow flowchart"/>
+			</a>
+		<!--{/if}-->
+		<!--{* 只有管理员才能作废流程 *}-->
+			<!--{if $nocard_workflow_list[i].FLOW_STATUS >'00'  &&
+					$nocard_workflow_list[i].FLOW_STATUS <'05'  &&
+					$nocard_workflow_list[i].FLOW_STATUS <>'03' &&
+					$nocard_workflow_list[i].FLOW_STATUS <>'04' &&
+					$whoami =='admin' }-->
+			<a onclick="return CancelWorkflow(this);"  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=cancelflow&apply_type=<!--{$nocard_workflow_list[i].APPLY_TYPE}-->&nocard_flowseqno=<!--{$nocard_workflow_list[i].NOCARD_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Cancel Flow" title="Cancel Workflow"/>
+		 	</a>
+			<!--{/if}-->
+		</td>
+		<!--變更操作欄位 by nicolas 20110223 ^-->
+		<td><!--{$nocard_workflow_list[i].STATUS_NAME}--></td><!--變更操作欄位 by nicolas 20110224-->
+		<td nowrap><!--{$nocard_workflow_list[i].DEPT_ID}--></td>
+		<td nowrap><!--{$nocard_workflow_list[i].DEPT_NAME}--></td>
+		<td nowrap><!--{$nocard_workflow_list[i].EMP_ID}--></td>
+		<td nowrap><!--{$nocard_workflow_list[i].EMP_NAME}--></td>
+		<td><!--{$nocard_workflow_list[i].NOCARD_DESC}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="8">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

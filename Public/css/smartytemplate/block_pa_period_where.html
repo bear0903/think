@@ -1,0 +1,17 @@
+
+	<form name="form1" method="post">
+	    <table class="bordertable">
+	        <tr>
+	            <td class="column-label" width="100"><!--{$PA_PERIOD_LABEL}--></td>
+	            <td>
+	                <select name="pa_period_seqno" 
+	                        id  ="pa_period_seqno"
+	                        style= "margin:0px;">
+	                    <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+	                    <!--{html_options options=$pa_period_list selected=$pa_seqno|default:$smarty.post.pa_period_seqno}-->
+	                </select>
+	                <input type="submit" name="submitquery" class="button-submit" value="<!--{$SUBMIT_QRY_BTN_LABEL}-->"/>
+	            </td>
+	        </tr>
+	    </table>
+    </form>

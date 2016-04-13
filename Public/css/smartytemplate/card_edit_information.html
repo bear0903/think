@@ -1,0 +1,198 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<script type='text/javascript' src='<!--{$JS_DIR}-->/idcard_check.js'></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE|default:'編輯身份證資料'}-->
+<form name="form1" method='post'>
+	<input type="hidden" value="<!--{$ID}-->" name="tmpid"/>
+	<input type="hidden" value="saveTmpData" name="doaction"/>
+	<input type="hidden" name="constellation" id="constellation" value="<!--{$CONSTELLATION}-->"/>
+	<table class="bordertable">
+		<tr>
+	        <td class="column-label">身份證號</td>
+	        <td>
+	            <input type="text" name="cardno" id="cardno" class="input-text" maxlength="18" style="width:300px;" value="<!--{$ID_CARD}-->"/>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label" width="15%">姓名</td>
+	        <td>
+	            <input type="text" name="name" id ="name" class="input-text" maxlength="20" value="<!--{$NAME}-->"/>
+	        </td>        
+	    </tr>
+	    <tr>
+	        <td class="column-label">民族</td>
+	        <td>
+	            <input type="text" name="nation" id="nation" class="input-text" value="<!--{$NATION}-->"/>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label">住址</td>
+	        <td>
+	            <input type="text" name="address" id="address" class="input-text" value="<!--{$ADDRESS}-->" style="width:300px;"/>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label">性别</td>
+	        <td>
+	            <input type="text" name="sex" id="sex" maxlength="1" class="input-text" value="<!--{$SEX}-->"/>
+	        </td>        
+	    </tr>
+	    
+	    <tr>
+	        <td class="column-label">籍貫</td>
+	        <td>
+	            <input type="text" name="origin" id="origin" class="input-text" value="<!--{$ORIGIN}-->"/>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label">生日</td>
+	        <td>
+	            <input type="text" name="born" id="born"  value="<!--{$BIRTH}-->" class="input-text" maxlength="8"/>
+	            <span id="date_tip" style="display:none;">輸入的日期格式:YYYYMMDD 如: 19880808</span>
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label">到職日期</td>
+	        <td>
+	            <input type="text" name="indate" id="indate"
+	            value="<!--{$INDATE|default:$smarty.now|date_format:'%Y%m%d'}-->"
+	            class="input-date"
+	            maxlength="8"/>
+	        </td>
+	    </tr>	    
+	</table>
+</form>
+<div style="text-align:center;">
+    <button id="btn_submit_form">提交到暫存檔</button>
+</div>
+<!--{include file="block_box_footer.html"}-->
+
+<script>
+$().ready(function () {
+	
+	function setStarSign(d)
+	{
+		var starsign = getStarSign(d);
+		$('#constellation').val(starsign['k']);
+	}
+	// 根据计税区域判断是否是台湾公司
+	var is_tw_company = '<!--{$is_tw_com}-->';
+	
+	if (is_tw_company != 'Y')
+	{
+		$('#born,#origin,#sex').attr('readonly',true);
+	}
+	
+	$('.input-date').datepicker({
+		dateFormat : 'yymmdd',
+		changeMonth : true,
+		changeYear : true
+	});
+	
+	/**
+     * Get 星座
+     */
+     $('#born').change(function(){
+         setStarSign($(this).val());
+     });
+	
+	/*
+	 * Press Enter to next input
+	 */
+	$(":input[type='text']").keypress(function (event) {
+		if (event.which == 13) {
+			$this = $(this);
+			if ($this.parent().parent().next().find('[type="text"]').length > 0) {
+				$this.parent().parent().next().find('[type="text"]')[0].focus();
+			} else {
+				$(":input[type='text']").first().focus();
+			}
+		}
+	});
+	
+	/**
+	 * 从身份证号里取得生日,籍贯,性別
+	 */
+	$('#cardno').change(function () {
+		var cardno = $(this).val();
+		var msg = checkCnIdCard(cardno);
+		if (cardno != '' && is_tw_company != 'Y') {
+			if (msg != 'Y') {
+				$(this).focus();
+				alert(msg);
+				$("#constellation,#born,#origin,#sex").val('');
+				return false;
+			}
+			$('#origin').val(getArea(cardno));
+			$('#born').val(cardno.substr(6, 8));
+			setStarSign($('#born').val());
+			$('#sex').val(getGenderFromCnIdCard(cardno));
+		} else {
+			msg = checkTwIdCard(cardno);
+			if (msg != 'Y') {
+				$(this).focus();
+				alert(msg)
+				return false;
+			}
+			$('#sex').val(getGenderFromTwIdCard(cardno));
+		}
+	});
+	
+	/**
+	 * Submit key in data
+	 */
+	$('#btn_submit_form').click(function () {
+		var allow_null_cols = new Array();
+		if (is_tw_company == 'Y') {
+			allow_null_cols[0] = 'nation';
+		}
+		var can_submit = false;
+		var $cardno = $('#cardno');
+		if ($cardno.val() == '') {
+			alert('身份證號碼必須輸入.');
+			can_submit = false;
+			return false;
+		}
+		var msg = is_tw_company == 'Y' ?
+			checkTwIdCard($cardno.val()) :
+			checkCnIdCard($cardno.val());
+		
+		if (msg != 'Y') {
+			alert(msg);
+			can_submit = false;
+			$cardno.css('background-color', '#ffffcc');
+			$cardno.focus();
+			return false;
+		}
+		
+		$('form input[type=text]').each(function () {
+			var $this = $(this);
+			if ($this.val() == '' && $.inArray($this.attr('id'), allow_null_cols) == -1) {
+				alert($this.parent().prev().text() + '必須輸入');
+				$this.css('background-color', '#ffffcc');
+				$this.focus();
+				can_submit = false;
+				return false;
+			} else {
+				can_submit = true;
+				$this.css('background-color', '#fff');
+			}
+		});
+		/**
+		 * Check 生日错误
+		 */
+		if ($('#constellation').val() == '00') {
+			alert('生日輸入錯誤');
+			$('#born').css('background-color', '#ffffcc');
+			$('#born').focus();
+			can_submit = false;
+			return false;
+		}
+		if (can_submit) {
+			$('form').submit();
+		}
+	});
+});
+</script>

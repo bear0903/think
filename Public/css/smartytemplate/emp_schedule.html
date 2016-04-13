@@ -1,0 +1,58 @@
+
+</head>
+<body class="page-container">
+	<!--{if empty($smarty.get.empseqno)}-->
+		<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+	<!--{/if}-->
+	<!--{include file="block_box_header.html"}-->
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><!--{$calendar}--></td>
+			<td>
+				<div>
+					<br/>
+					<label style="background:#93FF93; border-style:solid;border-width:1px; width:20px; height:10px; line-height:25px; margin:10px;padding:2px;">&nbsp;&nbsp;&nbsp;&nbsp;</label><!--{$WEEKEND_DAY_LABEL}--><br/>
+					<label style="background:#ffffff; border-style:solid;border-width:1px; width:20px; height:10px; line-height:25px; margin:10px;padding:2px;">&nbsp;&nbsp;&nbsp;&nbsp;</label><!--{$WORKDAY_LABEL}--><br/>
+					<label style="background:#FFD6EB; border-style:solid;border-width:1px; width:20px; height:10px; line-height:25px; margin:10px;padding:2px;">&nbsp;&nbsp;&nbsp;&nbsp;</label><!--{$CURRENT_DAY_LABEL}--><br/>
+					<label style="background:#C6C3C6; border-style:solid;border-width:1px; width:20px; height:10px; line-height:25px; margin:10px;padding:2px;">&nbsp;&nbsp;&nbsp;&nbsp;</label><!--{$ARRANGE_LABEL}--><br/>
+					<label style="background:#C641C6; border-style:solid;border-width:1px; width:20px; height:10px; line-height:25px; margin:10px;padding:2px;">&nbsp;&nbsp;&nbsp;&nbsp;</label><!--{$NATION_DAY_LABEL}-->
+				</div>
+			</td>		
+		</tr>
+	</table>
+	<!--{include file="block_box_footer.html"}-->
+	<!--{if count($cal_list)>0 }-->	
+	<!--{include file="block_box_header.html"}-->
+	<table class="bordertable">
+		<thead>
+			<tr>
+				<th><!--{$SEQ_LABEL}--></th>
+				<th><!--{$MY_DAY_LABEL}--></th>
+				<th><!--{$HOLIDAY_LABEL}--></th>
+				<th><!--{$WORKGROUP_NAME_LABEL}--></th>
+				<th><!--{$SHIFT_IN_TIME_LABEL}--></th>
+				<th><!--{$IN_TIME_LABEL}--></th>
+				<th><!--{$OUT_TIME_LABEL}--></th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--{section name="emp_cal" loop=$cal_list}-->
+			<tr>
+				<td><!--{$smarty.section.emp_cal.rownum}--></td>
+				<td nowrap><!--{$cal_list[emp_cal].MY_DAY}--></td>
+				<td><!--{$cal_list[emp_cal].HOLIDAY}--></td>
+				<td><!--{$cal_list[emp_cal].WORKGROUP_NAME}--></td>
+				<td nowrap><!--{$cal_list[emp_cal].SHIFT_IN_TIME}--></td>
+				<td><!--{$cal_list[emp_cal].IN_TIME}--></td>
+				<td><!--{$cal_list[emp_cal].OUT_TIME}--></td>
+			</tr>
+			<!--{/section}-->
+		</tbody>
+	</table>
+	<!--{include file="block_box_footer.html"}-->
+	<!--{/if}-->
+	<!--{if empty($smarty.get.empseqno)}-->
+	<!--{include file="block_box_footer.html"}-->
+	<!--{/if}-->
+	
+	

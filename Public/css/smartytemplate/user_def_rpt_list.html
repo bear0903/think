@@ -1,0 +1,97 @@
+
+<script type="text/javascript" src="<!--{$JS_DIR}-->/jqueryui/jquery.validate.min.js"></script>
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine="1"}-->
+    <form name="form1" method="post">
+        <table class="bordertable">
+            <tr>
+                <td width="120"><label>所属模组</label></td>
+                <td>
+                    <select name="module_id" id="module_id">
+                        <option value="">请选择</option>
+                        <!--{section name="i" loop=$mod_list}-->
+                        <option value="<!--{$mod_list[i].MODULE_ID}-->"><!--{$mod_list[i].MODULE_DESC}--></option>
+                        <!--{/section}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>报表名称</label></td>
+                <td><input type="text" name="rpt_name" size="26" value="<!--{$smarty.post.rpt_name}-->"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="reset"  id="reset_btn" value="清除"/>
+                    <input type="submit" id="submit_btn" value="查询"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+        <br clear="all"/>
+        <div class="ui-widget-content" style="padding:10px;">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>报表名称</th>
+                        <th>所属模组</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--{section name="i" loop=$rpt_list}-->
+                    <tr>
+                        <td><a href="?scriptname=<!--{$rpt_list[i].RPT_ID}-->&doctitle=<!--{$rpt_list[i].RPT_DESC|urlencode}-->" target="_blank"><!--{$rpt_list[i].RPT_DESC}--></a></td>
+                        <td><!--{$rpt_list[i].MODULE_DESC}--></td>
+                        <td>
+                            <a href="?scriptname=<!--{$rpt_list[i].RPT_ID}-->&doctitle=<!--{$rpt_list[i].RPT_DESC|urlencode}-->" target="_blank">
+                                <img alt="查看报表" src="<!--{$IMG_DIR}-->/pe.png">查看</a> |
+                            <a href="?scriptname=user_def_rpt_edit&action=delete&rptid=<!--{$rpt_list[i].RPT_ID}-->&moduleid=<!--{$rpt_list[i].MODULE_ID}-->" class="delink">
+                                <img alt="删除报表" src="<!--{$IMG_DIR}-->/del.png">删除</a> |
+                            <a href="?scriptname=user_def_rpt_wiz&action=update&rptid=<!--{$rpt_list[i].RPT_ID}-->&moduleid=<!--{$rpt_list[i].MODULE_ID}-->">
+                                <img alt="修改报表" src="<!--{$IMG_DIR}-->/edit.png">修改</a>
+                        </td>
+                    </tr>
+                    <!--{sectionelse}-->
+                    <tr>
+                        <td colspan="3">
+                            <!--{include file="block_info.html" msg_txt=" 未设定任何报表"}-->
+                        </td>
+                    </tr>
+                    <!--{/section}-->
+                </tbody>
+            </table>
+        </div>
+    <!--{include file="block_box_footer.html"}-->
+
+    <script type="text/javascript">
+        $().ready(function(){
+            $('#submit_btn').button({
+                icons: {
+                    primary:"ui-icon-search"
+                },
+                text: true
+            });
+
+            $('#reset_btn').button({
+                icons: {
+                    primary:"ui-icon-search"
+                },
+                text: true
+            }).bind('click',function(){
+                clear_form('form1');
+            });
+
+
+            $('.delink').bind('click',function(){
+                if(confirm('确定要删除此报表?'))
+                {
+                    return true;
+                }
+                return false;
+            });
+
+            $('#module_id').val('<!--{$smarty.post.module_id|default:$samrty.get.moduleid}-->');
+        });
+    </script>

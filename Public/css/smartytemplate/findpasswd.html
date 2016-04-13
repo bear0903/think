@@ -1,0 +1,125 @@
+
+<script type="text/JavaScript">
+    <!--
+    function Check( reg, oInput )
+    {
+        if (oInput.value == "")
+        {
+            //alert("郵箱地址請輸入。");
+            alert('<!--{$PLS_INPUT_MAIL_MSG}-->');
+            oInput.focus();
+            return false;
+        }
+        if( reg.test( oInput.value ) )
+        {
+            return true;
+        }
+        oInput.select();
+        //alert("郵箱地址不正確.");
+        alert('<!--{$MAIL_INVALID_MSG}-->');
+        return false;
+    }
+    
+    function checkUserName()
+    {
+    	// change to use jquery by dennis 2012-03-05
+    	var $username = $('#user_name');
+        if ($username.val() == "")
+        {
+            //alert("請輸入帐户名.");
+            alert('<!--{$CHECK_LOGON_MSG02}-->');
+            $username.focus();
+            return false;
+        }
+        return true;
+    }
+    
+    function CheckEmail( oMailInput )
+    {
+        if (!checkUserName())
+        {
+            return false;
+        }
+        var reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        return Check( reg, oMailInput );
+    }
+    
+    function GetUrlVariable(url)
+    {
+        // Create variable is_input to see if there is a ? in the url
+        var is_input = url.indexOf("?");
+        // Check the position of the ? in the url
+        if (is_input != -1)
+        {
+            // Create variable from ? in the url to the end of the string
+            addr_str = url.substring(is_input+1,url.length);
+            return unescape(addr_str.substr(addr_str.lastIndexOf("=")+1));
+        }
+    }
+    //-->
+</script>
+<style type="text/css">
+	.input-text{
+		width:240px;
+		height:22px;
+		font-size:16px;
+	}
+</style>
+</head>
+<body>
+	<div style="width:50%; margin-top:10%; margin-left:auto;margin-right:auto;font-size:16px;">
+    <!--{include file="block_box_header.html" title="$LOST_PASSWORD_LABEL" showLine="1"}-->
+    <form id="form1" name="form1"
+          onsubmit="return CheckEmail(document.getElementById('email'));"
+          action="./lostpassword.php"
+          autocomplete='off'
+          method="post">
+        <input type="hidden" name="langcode" value="<!--{$smarty.get.lang}-->"/>
+        <table class="bordertable">
+            <tr>
+                <td colspan="2">
+                    <img src="<!--{$IMG_DIR}-->/title.png" width="16" height="16"/>
+                    <!--{$PLS_INPUT_TEXT_MSG}-->
+                </td>
+            </tr>
+            <tr>
+                <td class="column-label"><!--{$COMPANY_NAME_LABEL}--></td>
+                <td>
+                    <select name="companyno" id="companyno">
+                        <!-- begin company list -->
+                        <!--{html_options options=$company_list selected=$s_company_id}-->
+                        <!-- end company list -->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="column-label"><!--{$USER_ID_LABEL}--></td>
+                <td><input id="user_name" name="user_name" class="input-text"/></td>
+            </tr>
+            <tr>
+                <td class="column-label"><!--{$EMAIL_LABEL}--></td>
+                <td>
+                    <input name="email" type="text" id="email" class="input-text" />
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"></td>
+                <td valign="top">
+                    <input type="submit"
+                           value="<!--{$RESET_PASSWD_BTN_LABEL}-->"
+                           name="ok"
+                           id="submit"
+                           class="button-submit" />
+                    <input type="button"
+                           value="<!--{$BACK_BTN_LABEL}-->"
+                           name="cancel"
+                           id="cancel"
+                           onclick="document.location='index.php'"
+                           class="button-submit" 
+                           style="width:120px;"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--{include file="block_box_footer.html"}-->
+</div>

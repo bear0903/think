@@ -1,0 +1,59 @@
+	!!!! this file is not used now by dennis 2012-08-13	
+	<!-- begin step4 -->
+	<div id="step4" class="hide">
+		<div id="step4_tab">
+			<ul>
+				<li><a href="#step4-tab-1">基本设定</a></li>
+			</ul>
+			<div id="step4-tab-1">
+				<div>请设定单笔显示的栏位分组,此步设置是可选的, 如果栏位资料无需分组,请略过此步</div>
+				<br clear="all"/>
+				<div>
+					<a id="open_add_groupcols" href="#" class="dialog_link">
+						<span class="ui-icon ui-icon-plusthick"></span>
+						添加分组
+					</a>
+					<a id="reset_col_grp" href="#" class="dialog_link">
+						<span class="ui-icon ui-icon-refresh"></span>
+						重新设定
+					</a>
+				</div>
+				<div class="ui-widget-content" id="col_grp" style="height:250px;overflow-y:auto;overflow-x:hidden;padding:10px;">
+					<div id="col_grp_acc" style="width:300px;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end step4 -->
+	
+	<!-- Dialog add columns to group -->
+	<div id="dialog_add_colsgroup" title="添加分组" class="hide">
+		<div>请输入分组名称并拖拽相关栏位到此分组</div>
+		<br clear="all"/>
+		<div>
+			<label>分组名称</label>
+			<input type="text" class="short-text" 
+				   id="colgroup_name" value="&nbsp;"
+				   onblur="$('#colgroup_title').text($(this).val())"/>
+		</div>
+		<br clear="all"/>
+		<table width="100%">
+			<tr>
+				<td width="50%">
+					<div class="ui-widget-header">已选栏位</div>
+					<div class="ui-widget-content cols-area">
+						<ul id="ui_col_list" class="connectedSortable">
+						</ul>
+					</div>
+				</td>
+				<td  width="50%">
+					<div class="ui-widget-header" id="colgroup_title">分组名称</div>
+					<div class="ui-widget-content cols-area">
+						<ul id="ui_group_col_list" style="width:200px;margin:0px;padding:0px;" class="connectedSortable">
+						</ul>
+					</div>
+		 		</td>
+			</tr>
+		</table>
+	</div>

@@ -1,0 +1,66 @@
+
+<script language="JavaScript" type="text/javascript">
+<!--
+	function CheckMustBeEntry(form)
+	{
+	    var _elCnt = form.elements.length;
+	    var _dateFormat = "yyyy-MM-dd";
+	    var _timeFormat = "HH:mm";
+	    for (var i=0; i< _elCnt ; i++ )
+	    {
+	        var _id  = form.elements[i].id;
+	        var _msg = "";
+	        var _warn = false;
+	        if (form.elements[i].value == "")
+	        {
+	            switch (_id)
+	            {
+	                case "resign_date":
+	                    _msg = "請輸入離職日期.";
+	                    _warn = true;
+	                break;
+	                
+	                case "resign_reason":
+	                    _msg  = "請選取離職原因.";
+	                    _warn = true;
+	                break;
+	                case "out_type":
+	                    _msg  = "請選擇離職或是留停.";
+	                    _warn = true;
+	                break;
+	                default: break;
+	            }
+	        }else{
+	            switch (_id)
+	            {
+	                case "resign_date":
+	                    if (!Date.isValid(form.elements[i].value,_dateFormat))
+	                    {
+	                        _warn = true;
+	                        _msg  = "日期格式不對, 正確的日期格式為: YYY-MM-DD.";
+	                    }
+	                    break;
+	                default: break;
+	            }// end swtich
+	        }// end if
+	        
+	        if (_warn)
+	        {
+	            alert(_msg);
+	            return false;
+	        }// end if
+	    }// end if
+	    return true;
+	}// end CheckMustBeEntry()
+
+//-->
+</script>
+<script type="text/javascript" src="<!--{$JS_DIR}-->/functions.js"></script>
+<script type="text/javascript" src="<!--{$JS_DIR}-->/date.js"></script>
+</head>
+<body class="page-container">
+<form name="form1" id="editForm" method="post" onsubmit="return CheckMustBeEntry(this);">
+	<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+		<!--{include file="block_resign_apply.html"}-->
+	<!--{include file="block_box_footer.html"}-->
+</form>	

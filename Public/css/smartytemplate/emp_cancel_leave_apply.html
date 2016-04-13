@@ -1,0 +1,90 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type="text/javascript"></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+<form name="form1" id="form1" method="post">
+	<table class="bordertable">
+		<tr>
+			<td><!--{$BEGIN_TIME_LABEL}--></td>
+			<td>
+				<input type="text"
+					   name="begin_date"
+					   id="begin_date"
+					   value="<!--{$smarty.post.begin_date}-->"
+					   title="Date Format:YYYY-MM-DD"
+					   class="input-date"/>
+				-
+				<input type="text"
+					   name="end_date"
+					   id="end_date"
+					   value="<!--{$smarty.post.end_date}-->"
+					   title="Date Format: YYYY-MM-DD"
+					   class="input-date"/>
+			</td>
+		</tr>
+        <tr>
+			<td><!--{$ABSENCE_NAME_LABEL}--> </td>
+			<td>
+				<select name="absence_id1"
+						id  ="absence_id1"
+						style="width:190px;">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$leave_name_list selected=$s_leave_id}-->
+				</select>-
+				<select name="absence_id2"
+						id  ="absence_id2"
+						style="width:190px;">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$leave_name_list selected=$s_leave_id}-->
+				</select>
+			</td>
+		</tr>
+        <tr>
+			<td></td>
+			<td>
+				<input name="submit"
+					   type="submit"
+					   id="submit"
+					   value="<!--{$SUBMIT_QRY_BTN_LABEL}-->"
+					   class="button-submit" />
+				<input type="button"
+					   name="reset"
+					   id="reset"
+					   value="<!--{$RESET_BTN_LABEL}-->"
+					   class="button-submit"
+					   onClick="clear_form('form1');"/>
+
+			</td>
+		</tr>
+	</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+<!--{if isset($smarty.post.submit) || isset($smarty.get.flowstatus)}-->
+
+<!--{include file="block_box_header.html"}-->
+<!--{include file="block_cancel_leave_list.html"}-->
+<!--{$pagingbar}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+
+<script type="text/javascript">
+//add by dennis 2006-04-29 15:39:43
+function CancelWorkflow(obj)
+{
+    var _cancel_comment = '';
+    _cancel_comment = prompt('<!--{$CONFIRM_CANCEL_MSG}-->','');
+    if (_cancel_comment!=null && _cancel_comment!='' )
+    {
+        obj.href += "&cancel_comment="+_cancel_comment;
+        return true;
+    }else{
+        return false;
+    }
+}
+$().ready(function(){
+	$('#begin_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+	$('#end_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+	attachClickEvent();
+});
+	
+</script>

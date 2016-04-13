@@ -1,0 +1,248 @@
+
+</head>
+ <script>
+	$(function() {
+		$( "#tabs").tabs({
+			collapsible: true
+		}).tabs({selected: <!--{if ($smarty.get.year == ($year-1))}-->1<!--{else}-->0<!--{/if}-->});
+	});
+</script>
+<body class="page-container">
+<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+<!--{$smarty.get.appdesc}-->
+</h4>
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-<!--{$year}-->"><!--{$year}--></a></li>
+		<!--{if count($pyear_sal_list)>0}-->
+		<li><a href="#tabs-<!--{$year-1}-->"><!--{$year-1}--></a></li>
+		<!--{/if}-->
+	</ul>
+	<div id="tabs-<!--{$year}-->">
+		<table class="bordertable">
+			<tr>
+			<!--{section name="i" loop=$year_sal_list}-->
+				<th width="12%" <!--{if $year_sal_list[i].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->>
+				<!--{$year_sal_list[i].YEAR_MON|substr:5:2}--></th>
+				<td width="13%" <!--{if $year_sal_list[i].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->>
+					<a href="../ess/redirect.php?scriptname=salary_slip_new&empseqno=<!--{$smarty.get.empseqno}-->&salary_result_id=<!--{$year_sal_list[i].SAL_RESULT_ID}-->&master_id=<!--{$year_sal_list[i].MASTER_ID}-->&detail_id=<!--{$year_sal_list[i].DETAIL_ID}-->&year=<!--{$year_sal_list[i].YEAR_MON|substr:0:4}-->&appdesc=<!--{$smarty.get.appdesc}-->"><!--{$year_sal_list[i].AMOUNT|number_format:'2%'}--></a>
+				</td>
+			<!--{if in_array($smarty.section.i.rownum,array(4,8))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+	</div>
+	<!--{if count($pyear_sal_list)>0}-->
+	<div id="tabs-<!--{$year-1}-->">
+		<table class="bordertable">
+			<tr>
+			<!--{section name="r" loop=$pyear_sal_list}-->
+				<th width="12%" <!--{if $pyear_sal_list[r].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->>
+				<!--{$pyear_sal_list[r].YEAR_MON|substr:5:2}--></th>
+				<td width="13%" <!--{if $pyear_sal_list[r].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->>
+					<a href="?scriptname=salary_slip_new&empseqno=<!--{$smarty.get.empseqno}-->&salary_result_id=<!--{$pyear_sal_list[r].SAL_RESULT_ID}-->&master_id=<!--{$pyear_sal_list[r].MASTER_ID}-->&detail_id=<!--{$pyear_sal_list[r].DETAIL_ID}-->&year=<!--{$pyear_sal_list[r].YEAR_MON|substr:0:4}-->&appdesc=<!--{$smarty.get.appdesc}-->"><!--{$pyear_sal_list[r].AMOUNT|number_format:'2%'}--></a>
+				</td>
+			<!--{if in_array($smarty.section.r.rownum,array(4,8))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+	</div>
+	<!--{/if}-->
+</div>
+<div style="font-size:18px;text-align:center;"><strong><!--{$MON}-->月薪资单</strong></div>
+<!--{include file="block_box_header.html"}-->
+<table class="bordertable" style="background:#f5f6f6;">
+	<tr>
+		<th width="12%">应发薪资</th><td width="13%"><!--{$yingfa_amount|number_format:'2%'}--></td>
+		<th width="12%">个税</th><td width="13%"><!--{$PSN_TAX|number_format:'2%'}--></td>
+		<!--{if $SPEC_BONUS_TAX!=0}-->
+		<th width="12%">年终奖税</th><td width="13%"><!--{$SPEC_BONUS_TAX|number_format:'2%'}--></td>
+		<!--{/if}-->
+		<th width="12%">实发薪资</th><td width="13%"><!--{$FACT_AMOUNT|number_format:'2%'}--></td>
+	</tr>
+</table>
+<div style="padding:10px; margin-bottom:10px;" class="ui-widget-content ui-corner-all">
+	<div class="ui-panel">
+		<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+			固定薪资
+		</h4>
+		<table class="bordertable">
+			<tr>
+			<!--{section name="j" loop=$fix_sal_list}-->
+				<th width="12%"><!--{$fix_sal_list[j].ITEM_DESC}--></th>
+				<td width="13%">
+					<!--{$fix_sal_list[j].AMOUNT|number_format:'2%'}-->
+				</td>
+			<!--{if in_array($smarty.section.j.rownum,array(3,6,9,12,15,18))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+		<div style="text-align:right;margin-top:-10px;font-size:16px;"><strong>小计: </strong><!--{$fix_subtotal|number_format:'2%'}--></div>
+	</div>
+	<hr size="1"/>
+	<!--{if count($tmp_sal_list)>0}-->
+	<div class="ui-panel">
+		<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+			临时薪资
+		</h4>
+		<table class="bordertable">
+			<tr>
+			<!--{section name="r" loop=$tmp_sal_list}-->
+				<th width="12%"><!--{$tmp_sal_list[r].SAL_ITEM_DESC}--><!--{if $tmp_sal_list[r].IS_TAX_ITEM == 'Y'}--><font color="red">(应税)</font><!--{/if}--></th>
+				<td width="13%">
+					<!--{$tmp_sal_list[r].AMOUNT|number_format:'2%'}-->
+				</td>
+				<!--{if in_array($smarty.section.r.rownum,array(3,6,9,12,15,18))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+		<div style="text-align:right;margin-top:-10px;font-size:16px;">
+			<!--{if $tmp_tax_subtotal !=0 }--><strong>应税小计: </strong><!--{$tmp_tax_subtotal|number_format:'2%'}--><!--{/if}--><!--{if $tmp_notax_subtotal !=0 }--><br/><strong>不应税小计: </strong><!--{$tmp_notax_subtotal|number_format:'2%'}--><!--{/if}-->
+		</div>
+	</div>
+	<hr size="1"/>
+	<!--{/if}-->
+	
+	<!--{if count($ot_sal_list)>0}-->
+	<div class="ui-panel">
+		<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+			加班费
+		</h4>
+		<table class="bordertable">
+			<tr>
+				<th>加班类型</th>
+				<th>时数</th>
+				<th>加班费</th>
+			</tr>
+			<tr>
+			<!--{section name="k" loop=$ot_sal_list}-->
+				<th width="20%"><!--{$ot_sal_list[k].OT_TYPE_DESC}--></th>
+				<td width="40"><!--{$ot_sal_list[k].HOURS|number_format:'2%'}--></td>
+				<td width="40%">
+					<!--{$ot_sal_list[k].AMOUNT|number_format:'2%'}-->
+				</td>
+				<!--{if in_array($smarty.section.k.rownum,array(1,2,3))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+		<div style="text-align:right;margin-top:-10px;font-size:16px;"><strong>小计: </strong><!--{$ot_subtotal|number_format:'2%'}--></div>
+	</div>
+	<hr size="1"/>
+	<!--{/if}-->
+	<!--{if count($abs_sal_list)>0}-->
+	<div class="ui-panel">
+		<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+			请假扣款
+		</h4>
+		<table class="bordertable">
+			<tr>
+			<!--{section name="m" loop=$abs_sal_list}-->
+				<th width="12%"><!--{$abs_sal_list[m].ABSENCE_NAME}--></th>
+				<td width="13%">
+					<!--{$abs_sal_list[m].AMOUNT|number_format:'2%'}-->
+				</td>
+				<!--{if in_array($smarty.section.m.rownum,array(3,6,9,12,15,18))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+		<div style="text-align:right;margin-top:-10px;font-size:16px;"><strong>小计: </strong><!--{$abs_subtotal|number_format:'2%'}--></div>
+	</div>
+	<hr size="1"/>
+	<!--{/if}-->
+	<!--{if count($bonus_sal_list)>0 && $bonus_subtotal != 0}-->
+	<div class="ui-panel">
+		<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+			奖金(同工资一同发放)
+		</h4>
+		<table class="bordertable">
+			<tr>
+			<!--{section name="n" loop=$bonus_sal_list}-->
+				<th width="12%"><!--{$bonus_sal_list[n].BONUS_DESC}--></th>
+				<td width="13%">
+					<!--{$bonus_sal_list[n].AMOUNT|number_format:'2%'}-->
+				</td>
+			<!--{/section}-->
+			</tr>
+		</table>
+		<div style="text-align:right;margin-top:-10px;font-size:16px;"><strong>小计: </strong><!--{$bonus_subtotal|number_format:'2%'}--></div>
+	</div>
+	<hr size="1"/>
+	<!--{/if}-->
+	<!--{if count($ss_sal_list)>0}-->
+	<div class="ui-panel">
+		<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+			社保/公积金
+		</h4>
+		<table class="bordertable">
+			<tr>
+				<th width="20%">名称</th>
+				<th width="40%">个人缴交</th>
+				<th width="40%">公司缴交</th>
+			
+			<!--{section name="p" loop=$ss_sal_list}-->
+			<tr>
+				<td><!--{$ss_sal_list[p].SS_ITEM_DESC}--></td>
+				<td>
+					<!--{$ss_sal_list[p].EMP_PAY|number_format:'2%'}-->
+				</td>
+				<td>
+					<!--{$ss_sal_list[p].COMPANY_PAY|number_format:'2%'}-->
+				</td>
+			</tr>
+			<!--{/section}-->
+		<!--{if count($bonus_sal_list)>0}-->
+			<!--{section name="t" loop=$bonus_sal_list}-->
+			<tr>
+				<td>年终奖社保</td>
+				<td>
+					<!--{$bonus_sal_list[t].EMP_BONUS_INSURE_AMOUNT|number_format:'2%'}-->
+				</td>
+				<td>
+					<!--{$bonus_sal_list[t].COMP_BONUS_INSURE_AMOUNT|number_format:'2%'}-->
+				</td>
+				<!--{/section}-->
+			</tr>
+		<!--{/if}-->
+		</table>
+		<div style="text-align:right;margin-top:-10px;font-size:16px;">
+			<strong>个人社保(公积金)小计: </strong><!--{$psnpay_subtotal|number_format:'2%'}-->
+		</div>
+	</div>
+	<hr size="1"/>
+	<!--{/if}-->
+</div>
+<!-- 
+实发薪资=应发薪资+个人社保（公积金）小计+年终奖金社保小计+个人所得税+年终奖金税+临时加减项（不应税）小计
+应发薪资=固定薪资+临时加减项（应税）小计+加班费小计+请假扣款小计+年终奖金小计
+ -->
+<div style="margin-top:25px;margin-left:20px;"><strong>
+	实发薪资(<!--{$FACT_AMOUNT|number_format:'2%'}-->) = 
+	应发薪资(<!--{$yingfa_amount|number_format:'2%'}-->)
+	<!--{if $psnpay_subtotal!=0}-->
+	+个人社保(公积金)小计(<!--{$psnpay_subtotal|number_format:'2%'}-->)
+	<!--{/if}-->
+	<!--{if $SPEC_BONUS_TAX!=0}-->
+	+年终奖金税(<!--{$SPEC_BONUS_TAX|number_format:'2%'}-->)
+	<!--{/if}-->
+	<!--{if $PSN_TAX!=0}-->
+	+个税(<!--{$PSN_TAX|number_format:'2%'}-->)
+	<!--{/if}-->
+	<!--{if $tmp_notax_subtotal!=0}-->
+	＋临时薪资(不应税)小计(<!--{$tmp_notax_subtotal|number_format:'2%'}-->)
+	<!--{/if}-->
+	<hr>
+	应发薪资(<!--{$yingfa_amount|number_format:'2%'}-->) = 固定薪资小计(<!--{$fix_subtotal|number_format:'2%'}-->)
+	<!--{if $tmp_tax_subtotal!=0}-->
+	＋临时薪资(应税)小计(<!--{$tmp_tax_subtotal|number_format:'2%'}-->)
+	<!--{/if}-->
+	<!--{if $ot_subtotal!=0}-->
+	＋加班费小计(<!--{$ot_subtotal|number_format:'2%'}-->)
+	<!--{/if}-->
+	<!--{if $abs_subtotal!=0}-->
+	+请假扣款小计(<!--{$abs_subtotal|number_format:'2%'}-->)
+	<!--{/if}-->
+	<!--{if $bonus_subtotal!=0}-->
+	＋年终奖金小计(<!--{$bonus_subtotal|number_format:'2%'}-->)
+	<!--{/if}-->
+</strong></div>
+<!--{include file="block_box_footer.html"}-->

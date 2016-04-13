@@ -1,0 +1,143 @@
+<style type="text/css">
+	.s { width:120px; }
+</style>
+<form name="form1" method="post">
+<table class="bordertable">
+	<tr>
+		<td class="column-label"><!--{$APP_NO_LABEL|default:'程式'}--> * </td>
+		<td>
+			<!--{if $smarty.get.doaction == 'edit'}-->
+				<!--{$MENU_CODE}-->
+				<input type="hidden" name="menu_code" value="<!--{$smarty.get.menu_code}-->" />
+				<input type="hidden" name="workflow_type_seqno" value="<!--{$smarty.get.flowtype_seqno}-->" />
+			<!--{else}-->
+				<select name="menu_code" id="menu_code" class="s">
+				<option value=""> -- <!--{$PLS_SELECT_LABEL}--> --</option>
+				<!--{html_options options=$wf_app_list selected=$s_menu_code|default:$smarty.get.menu_code}-->
+				</select>
+				<a href="?scriptname=umd_menu_create"><!--{$ADD_MENU_LABEL|default:'新增菜单'}--></a>
+			<!--{/if}-->
+		</td>
+		<td class="column-label"><!--{$APP_DESC_LABEL|default:'程式名称'}--></td>
+		<td id="menu_desc"><!--{$MENU_DESC}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$APPROVE_NO_LABEL|default:'签核代码'}--> * </td>
+		<td>
+			<!--{if $smarty.get.doaction == 'edit'}-->
+			<input type="hidden" name="workflow_type_code" value="<!--{$FLOW_TYPE_CODE}-->"/>
+			<!--{$FLOW_TYPE_CODE}-->
+			<!--{else}-->
+			<input type="text" 
+			       name="workflow_type_code" id="workflow_type_code"
+				   class="input-text s" value="<!--{$FLOW_TYPE_CODE}-->" />
+			<!--{/if}-->
+		</td>
+		<td class="column-label" valign="top"><!--{$APPROVE_TYPE_LANG_LABEL|default:'签核类型多语'}--></td>
+		<td>
+			<table>
+				<!--{section name="i" loop=$lang_list}-->
+				<tr>
+					<td width="32%"><!--{$lang_list[i].LANGUAGE_NAME}--> * </td>
+					<td>
+						<input type ="text" 
+						       name ="multi_lang[<!--{$lang_list[i].LANGUAGE_CODE}-->]"
+						       id   = "multi_lang_<!--{$lang_list[i].LANGUAGE_CODE}-->" 
+						       value= "<!--{$lang_list[i].LANG_TEXT}-->" 
+						       class="input-text s"/>
+					</td>
+				</tr>
+				<!--{/section}-->
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$LAYOUT_COL_LABEL|default:'布局栏数'}--></td>
+		<td>
+			<select name="layout_cols" id="layout_cols" class="s">
+				<option value="1"><!--{$ONE_COL_LABEL|default:'单栏式'}--></option>
+				<!-- <option value="2"><!--{$TWO_COL_LABEL|default:'两栏式'}--></option>  -->
+			</select>
+		</td>
+		<td class="column-label"><!--{$ALLOW_TMP_SAVE_LABEL|default:'允许暂存'}--></td>
+		<td>
+			<select name="tmp_save_allowed" id="tmp_save_allowed" class="s">
+				<option value="0"><!--{$NO_LABEL|default:'否'}--></option>
+				<option value="1"><!--{$YES_LABEL|default:'是'}--></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label" valign="top"><!--{$APPLY_RULE_LABEL|default:'规则说明'}--></td>
+		<td colspan="4">
+			<textarea cols="62" name="apply_rules_desc" id="apply_rules_desc"><!--{$APPLY_RULES_DESC}--></textarea>
+		</td>
+	</tr>
+</table>
+<br clear="all"/>
+<div align="center">
+	<!--{if $smarty.get.doaction == 'edit'}-->
+		<input type="submit" name="delete" value="<!--{$DEL_BTN_LABEL|default:'刪除'}-->" id="deleterow" class="button-submit"/>
+		<input type="hidden" name="doaction" id="doaction" value="update"/>
+	<!--{elseif $smarty.get.doaction == 'add'}-->
+		<input type="hidden" name="doaction" value="insert"/>
+	<!--{/if}-->
+	<input type="submit" name="sumbit" value="<!--{$SUBMIT_BTN_LABEL|default:'提交'}-->" class="button-submit"/>
+	<input type="button" name="cancel" value="<!--{$CANCEL_BTN_LABEL|default:'取消'}-->" onclick="$(document).attr('location','?scriptname=wf_user_define');" class="button-submit"/>
+</div>
+</form>
+<script src="<!--{$JS_DIR}-->/jquery.validate.min.js"></script>
+<script src="<!--{$JS_DIR}-->/functions.js"></script>
+<script language="javascript">
+
+$(document).ready(function(){
+	var sBasePath  = '../controls/fckeditor/';
+	var oFCKeditor = new FCKeditor('apply_rules_desc');
+	
+	oFCKeditor.BasePath	= sBasePath;
+	oFCKeditor.ToolbarSet = 'ares';
+	//oFCKeditor.Height = 100;
+	//oFCKeditor.Config[ 'ToolbarLocation' ] = 'Out:xToolbar';
+	//oFCKeditor.Value = '';
+	oFCKeditor.ReplaceTextarea();
+	
+	$('#layout_cols').val('<!--{$LAYOUT_COLS}-->');
+	$('#tmp_save_allowed').val('<!--{$TMP_SAVE_ALLOWED}-->');
+	
+	$('#deleterow').click(function(){
+		if(confirm('<!--{$DEL_CONFIRM_MSG|default:'注意：此功能只建议在设计表单时使用，它将删除全部申请单资料，确定要删除'}-->?'))
+		{
+			$('#doaction').val('delete');
+			return true;
+		}
+		return false;
+	});
+	
+	$("form").validate({
+		rules: {
+			<!--{section name="i" loop=$lang_list}-->
+			multi_lang_<!--{$lang_list[i].LANGUAGE_CODE}-->:{required:true},
+			<!--{/section}-->
+			menu_code:{required:true},
+			workflow_type_code:{required:true},
+			workflow_type_desc:{required:true}
+		}
+	});
+	
+	$('#menu_code').change(function(){
+		var app_desc = '';
+		if ($(this).val() != '')
+		{
+			var text = $('#menu_code option:selected').text();
+			app_desc = text.substring(text.indexOf('-')+1);
+		}
+		$('#menu_desc').text(app_desc);
+	});
+});
+$.extend(
+	$.validator.messages, {
+		required: "<!--{$REQUIRED_FILED_MSG|default:'必须输入栏位'}-->",
+		number:   "<!--{$MUST_BE_NUMBER_MSG|default:'必须是数字'}-->",
+		digits:   "<!--{$MUST_BE_INT_MSG|default:'必须是整数'}-->"
+});
+</script>

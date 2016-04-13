@@ -1,0 +1,29 @@
+
+	<table class="bordertable">
+		<tr>
+			<th width="120"><!--{$DEPT_ID_LABEL}--></th>
+			<th><!--{$DEPT_NAME_LABEL}--></th>
+			<th width="40"><!--{$FLOW_STATUS_LABEL}--></th>
+			<th width="40"><!--{$HEADCOUNT_LABEL|default:'人数'}--></th>
+			<th width="40"><!--{$VIEW_LABEL|default:'查看'}--></th>
+		</tr>
+		<!--{section name="i" loop=$list}-->
+		<tr>
+			<td nowrap><!--{$list[i].DEPT_ID}--></td>
+			<td nowrap><!--{$list[i].DEPT_NAME}--></td>
+			<td nowrap><!--{$list[i].FLOW_STATUS_DESC}--></td>
+			<td><!--{$list[i].TROWS}--></td>
+			<td>
+				<a href="?scriptname=assistant_<!--{$applytype}-->_apply_search&dept_seqno=<!--{$list[i].DEPT_SEQ_NO}-->&flowstatus=<!--{$list[i].FLOW_STATUS}-->&whoami=<!--{$whoami}-->">
+					<!--{$VIEW_LABEL|default:'查看'}-->
+				</a>
+			</td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="5">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+		</tr>
+		<!--{/section}-->
+	</table>

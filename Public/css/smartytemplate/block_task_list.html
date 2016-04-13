@@ -1,0 +1,48 @@
+<table class="bordertable">
+    <!--{if $leave_apply_count>0 }--> 
+    <tr>
+        <td class="column-label" width="100"><!--{$WAIT_APPROVE_LEAVE_APPLY_LABEL|default:'请假待签'}--></td>
+        <td><a href="../mgr/redirect.php?scriptname=MDNH104&appdesc=<!--{$WAIT_APPROVE_LEAVE_APPLY_LABEL|urlencode}-->"><!--{$leave_apply_count}--></a></td>
+    </tr>
+    <!--{/if}--> 
+    <!--{if $cancel_leave_apply_count>0 }--> 
+    <tr>
+        <td class="column-label" width="100"><!--{$WAIT_APPROVE_CANCEL_LEAVE_APPLY_LABEL}--></td>
+        <td><a href="../mgr/redirect.php?scriptname=MDNH109&appdesc=<!--{$WAIT_APPROVE_CANCEL_LEAVE_APPLY_LABEL|urlencode}-->"><!--{$cancel_leave_apply_count}--></a></td>
+    </tr>
+    <!--{/if}--> 
+    <!--{if $overtime_apply_count>0 }--> 
+    <tr>
+        <td class="column-label"><!--{$WAIT_APPROVE_OVERTIME_APPLY_LABEL}--></td>
+        <td><a href="../mgr/redirect.php?scriptname=MDNH105&appdesc=<!--{$WAIT_APPROVE_OVERTIME_APPLY_LABEL|urlencode}-->"><!--{$overtime_apply_count}--></a></td>
+    </tr>
+    <!--{/if}-->
+    <!--{if $trans_apply_count>0 }--> 
+    <tr>
+        <td class="column-label" width="100"><!--{$WAIT_APPROVE_TRANS_APPLY_LABEL}--></td>
+        <td><a href="../mgr/redirect.php?scriptname=MDNH106&appdesc=<!--{$WAIT_APPROVE_TRANS_APPLY_LABEL|urlencode}-->"><!--{$trans_apply_count}--></a></td>
+    </tr>
+    <!--{/if}-->
+    <!--{if $nocard_apply_count>0 }--> 
+    <tr>
+        <td class="column-label" width="100"><!--{$WAIT_APPROVE_NOCARD_APPLY_LABEL}--></td>
+        <td><a href="../mgr/redirect.php?scriptname=MDNH107&appdesc=<!--{$WAIT_APPROVE_NOCARD_APPLY_LABEL|urlencode}-->"><!--{$nocard_apply_count}--></a></td>
+    </tr>
+    <!--{/if}-->
+    <!--{if $resign_apply_count>0 }--> 
+    <tr>
+        <td class="column-label" width="100"><!--{$WAIT_APPROVE_RESIGN_APPLY_LABEL}--></td>
+        <td><a href="../mgr/redirect.php?scriptname=MDNH108&appdesc=<!--{$WAIT_APPROVE_RESIGN_APPLY_LABEL|urlencode}-->"><!--{$resign_apply_count}--></a></td>
+    </tr>
+    <!--{/if}-->
+    <!--{section name="i" loop=$user_define_wf_list}-->
+    <tr>
+        <td class="column-label" width="100"><!--{$user_define_wf_list[i].FLOW_TYPE_DESC|urlencode}--></td>
+        <td>
+            <a href="?scriptname=user_define_wf_approve&doaction=search&flow_type=<!--{$user_define_wf_list[i].FLOW_TYPE_CODE}-->&menu_code=<!--{$user_define_wf_list[i].MENU_CODE}-->">
+                <!--{$user_define_wf_list[i].CNT}-->
+            </a>
+        </td>
+    <tr>
+    <!--{/section}-->
+</table>

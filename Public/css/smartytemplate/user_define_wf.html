@@ -1,0 +1,64 @@
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+<div>
+	<!--{ if $smarty.get.request_type == 'form' || $smarty.get.menu_offset > 0}-->
+		<strong><!--{$APPLY_FORM_LABEL}--></strong>
+	<!--{else}-->
+		<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=showform&request_type=form"><!--{$APPLY_FORM_LABEL|default:'申请单'}--></a>
+	<!--{/if}--> |
+	<!--{ if $smarty.get.status == '02' }-->
+		<strong><!--{$IN_PROCESS_LABEL|default:'流程中'}--></strong>
+	<!--{else}-->
+		<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=applylist&status=02"><!--{$IN_PROCESS_LABEL|default:'流程中'}--></a>
+	<!--{/if}--> |
+	<!--{ if $smarty.get.status == '03' }-->
+		<strong><!--{$APPROVED_LABEL|default:'已核准'}--></strong>
+	<!--{else}-->
+	<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=applylist&status=03"><!--{$APPROVED_LABEL|default:'已核准'}--></a>
+	<!--{/if}--> |
+	<!--{ if $smarty.get.status == '04' }-->
+		<strong><!--{$REJECT_LABEL|default:'驳回'}--></strong>
+	<!--{else}-->
+	<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=applylist&status=04"><!--{$REJECT_LABEL|default:'驳回'}--></a>
+	<!--{/if}--> |
+	<!--{ if $smarty.get.status == '00' }-->
+		<strong><!--{$TEMP_SAVE_LABEL|default:'暂存中'}--></strong>
+	<!--{else}-->
+	<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=applylist&status=00"><!--{$TEMP_SAVE_LABEL|default:'暂存中'}--></a>
+	<!--{/if}-->|
+	<!--{ if $smarty.get.status == '05' }-->
+		<strong><!--{$EXCEPTION_LABEL|default:'异常'}--></strong>
+	<!--{else}-->
+	<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=applylist&status=05"><!--{$EXCEPTION_LABEL|default:'异常'}--></a>
+	<!--{/if}-->|
+	<!--{ if $smarty.get.approved_his =='1' }-->
+		<strong><!--{$APPROVE_HIS_LABEL|default:'签核历史'}--></strong>
+	<!--{else}-->
+	<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=applylist&approved_his=1"><!--{$APPROVE_HIS_LABEL|default:'签核历史'}--></a>
+	<!--{/if}-->
+</div>
+<!--{if $smarty.get.doaction == 'applylist'}-->
+<br clear="all"/>
+<!--{include file="block_user_define_wf_qry.html" whoami="myself"}-->
+<!--{/if}-->
+<br clear="all"/>
+<!--{if $smarty.get.status || $smarty.get.approved_his == '1'}-->
+<!--{include file="block_box_header.html"}-->
+<!--{include file="block_user_define_wf_apply_list.html" whoami="myself"}-->
+<br clear="all"/>
+<!--{$pagingbar}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_footer.html"}-->
+<!--{else}-->
+	<!--{$template}-->
+	<!--{include file="block_box_footer.html"}-->
+	<!--{ if $apply_rule_desc != '' }-->
+	<!--{include file="block_box_header.html" title=$APPLY_RULE_LABEL|default:'规则说明' showLine = '1'}-->
+	<!--{$apply_rule_desc}-->
+	<!--{include file="block_box_footer.html"}-->
+	<!--{/if}-->
+<!--{/if}-->
+

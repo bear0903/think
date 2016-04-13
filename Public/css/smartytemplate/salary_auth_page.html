@@ -1,0 +1,53 @@
+
+</head>
+<body  class="page-container">
+    <!--{include file="block_box_header.html" title=$smarty.get.appdesc|default:$BLOCK_TITLE|default:$smarty.post.appdesc showLine = '1'}-->
+    <form name="form1"
+          method="post"
+          autocomplete="off"
+          action="../ess/redirect.php?scriptname=<!--{$smarty.get.scriptname|default:$smarty.post.fromscript}-->&appdesc=<!--{$smarty.get.appdesc}-->">
+        <input type="hidden" name="fromscript" value="<!--{$smarty.get.fromscript|default:$smarty.post.fromscript}-->"/>
+        <input type="hidden" name="appdesc" value="<!--{$smarty.get.appdesc|default:$smarty.post.appdesc|default:$BLOCK_TITLE}-->"/>
+        <!--{include file="block_info.html" msg_txt=$AUTH_PWD_TIP_TEXT|default:'请输入登录时的密码和随机验证码'}-->
+        <table class="bordertable">
+            <tr>
+                <td class="column-label"><!--{$PASSWORD_LABEL}-->(*)</td>
+                <td>
+                    <input type="password" name="password" class="input-text"/>
+                    <!--{if $password_msg}-->
+                    <span class="error">
+                        <img src="<!--{$IMG_DIR}-->/error.png" alt=""/>
+                        <!--{$password_msg}-->
+                    </span>
+                    <!--{/if}-->
+                </td>
+            </tr>
+            <tr>
+                <td class="column-label" style="vertical-align:top;"><!--{$AUTH_CODE_LABEL}-->(*)</td>
+                <td>
+                    <input type="text" name="authcode" id="authcode" class="input-text"/>
+                    <!--{if $authcode_msg}-->
+                    <span class="error">
+                        <img src="<!--{$IMG_DIR}-->/error.png" alt=""/>
+                        <!--{$authcode_msg}-->
+                    </span>
+                    <!--{/if}-->
+                    <br/>
+                    <img align="left"
+                         style="border:0;width:188px;margin-top:15px;"
+                         src="../libs/securimage/securimage_show.php"
+                         onclick="this.src = '../libs/securimage/securimage_show.php?sid=' + Math.random(); return false"
+                         alt="Authentication Code,click to refresh" />
+                    <br clear="all"/>
+                    <!--{$NOTICE_MSG}-->
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" name="submit" value="<!--{$SUBMIT_BTN_LABEL}-->" class="button-submit"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--{include file="block_box_footer.html"}-->

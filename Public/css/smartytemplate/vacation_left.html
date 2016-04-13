@@ -1,0 +1,85 @@
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine="1" title=$BLOCK_TITLE}-->
+<form name="form1" id="form1" method="post">
+	<table class="bordertable">
+		<tr>
+			<td class="column-label" width="120"><!--{$BASE_DATE_LABEL}--></td>
+			<td>
+				<input type="text"
+						   name="base_date"
+						   id="base_date"
+						   value="<!--{$smarty.post.base_date|default:$smarty.now|date_format:"%Y-%m-%d"}-->"
+						   title="Date Format:YYYY-MM-DD"
+						   class="input-date"
+						   readonly
+						   style="width:100px;"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label" width="120"><!--{$LEAVE_NAME_LABEL}--></td>
+			<td>
+				<select name="leave_name_id" id="period_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$leave_list selected=$smarty.post.leave_name_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" name="submit" class="button-submit" value="<!--{$SUBMIT_QRY_BTN_LABEL}-->"/>
+				<input type="button"  name="button"  class="button-submit" value="<!--{$RESET_BTN_LABEL}-->" onclick="clear_form('form1');"/>
+			</td>
+		</tr>
+	</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+<!-- 
+<!--{include file="block_box_header.html" showLine="1" title=$YEAR_VACATION_LABEL}-->
+<!--{include file="block_year_vacation.html"}-->
+<!--{include file="block_box_footer.html"}-->
+ -->
+<!--{include file="block_box_header.html" showLine="1" title="補休"}-->
+<!--{include file="block_compensatory_leave.html"}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html" showLine="1" title=$LEAVE_NAME_LIST_LABEL}-->
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$LEAVE_ID_LABEL|default:"假別代碼"}--></th>
+		<th nowrap><!--{$LEAVE_NAME_LABEL|default:"假別名稱"}--></th>
+		<th nowrap><!--{$IS_CALDAY_LABEL|default:"日曆天"}--></th>
+		<th nowrap><!--{$LEGAL_DAYS_LABEL}--></th>
+		<th nowrap><!--{$USED_DAYS_LABEL}--></th>
+		<th nowrap><!--{$LEFT_DAY_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$leave_name_list}-->
+	<tr>
+		<td><!--{$leave_name_list[i].ABSENCE_ID}--></td>
+		<td><!--{$leave_name_list[i].ABSENCE_NAME}--></td>
+		<td><input type="checkbox" disabled <!--{if $leave_name_list[i].IS_CALENDAR == 'Y'}-->checked<!--{/if}-->/></td>
+		<td><!--{$leave_name_list[i].CAN_REST|string_format:"%.2f"}-->     (<!--{$leave_name_list[i].UNIT}-->)</td>
+		<td><!--{$leave_name_list[i].ALREADY_REST|string_format:"%.2f"}--> (<!--{$leave_name_list[i].UNIT}-->)</td>
+		<td>
+			<!--{if $leave_name_list[i].CAN_REST == 0 || $leave_name_list[i].LEFT<0}-->0.00 (<!--{$leave_name_list[i].UNIT}-->)
+			<!--{else}-->
+			<!--{$leave_name_list[i].LEFT|string_format:"%.2f"}--> (<!--{$leave_name_list[i].UNIT}-->)
+			<!--{/if}-->
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+    <tr>
+        <td colspan="7">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+    </tr>
+    <!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->
+<script type="text/javascript">
+$().ready(function(){
+	$('#base_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+});
+</script>

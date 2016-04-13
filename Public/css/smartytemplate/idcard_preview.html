@@ -1,0 +1,129 @@
+<script src="<!--{$JS_DIR}-->/jquery-barcode-2.0.2.min.js" type = "text/javascript"></script>
+<link type="text/css" rel="stylesheet" href="<!--{$CSS_DIR}-->/printidcard.css" media="print"/>
+<!-- must be add this, else the barcode is error with IE9 -->
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+<style type="text/css">
+	body{
+		margin:0;
+		padding:0;
+	}
+	.idcard-size {
+		margin: 0;
+		padding: 0;
+		width: 204.09px; /* 54mm */
+		height: 321.26px; /* 85mm */
+		text-align: center;
+		font-weight: 900;
+		font-size: 18px;
+		/*border: 1px solid #ccc;*/
+		font-family: 標楷體;
+		float:left; /*for display*/
+	}
+	
+	.idcard-size .logo-area {
+		margin: auto;
+	}
+	
+	.idcard-size .logo-area img {
+		width: 113.39px; /* 30mm */
+		height: 30.24px; /* 8mm */
+	}
+	
+	.idcard-size .company-name {
+		text-indent: 12px;
+		letter-spacing: 14px;
+		margin: auto;
+	}
+	
+	.idcard-size .emp-photo {
+		margin: auto;
+	}
+	
+	.idcard-size .emp-photo img {
+		width: 98.27px; /*26mm*/
+		height: 147.40px; /*39mm*/
+	}
+	
+	.idcard-size .emp-id {
+		height: 20px;
+		margin: auto;
+	}
+	
+	.idcard-size .emp-name {
+		height: 20px;
+		margin: auto;
+	}
+	
+	.idcard-size .dept-name {
+		height: 20px;
+		margin: auto;
+	}
+	
+	.idcard-size .seperator {
+		height: 8px;
+		margin: auto;
+	}
+	
+	.idcard-size .barcode {
+		height: 20px;
+		width: 160px;
+		margin: auto;
+		overflow-y: hidden;
+	}
+	
+	.idcard-size:last-child {
+		page-break-after: auto;
+	}
+</style>
+<script>
+	/**
+	* Don't put the script to the print area
+	*/
+	function genBarcode(barcode_id,barcode_val,show_val){
+		var btype = 'code39';
+		var config = {
+			output:'css',
+			bgColor: '#FFFFFF',
+			color: '#000000',
+			barWidth: 1,
+			barHeight: 20,
+			moduleSize:5,
+			posX: 0,
+			posY: 0,
+			showHRI:show_val,
+			addQuietZone:1
+		};
+		$("#"+barcode_id).html("").show().barcode(barcode_val, btype, config);
+	}
+	
+	$().ready(function(){
+		$(document).attr('title','識別證預覽列印');		
+		<!--{section name=i loop=$emp_list}-->
+		genBarcode('barcode_<!--{$emp_list[i].RN}-->','<!--{$emp_list[i].EMP_ID}-->',false);
+		<!--{/section}-->
+		$('#idcard_preview').addClass('noprint');
+	});
+</script>
+</head>
+<body>
+<!--{section name=i loop=$emp_list}-->
+	<!--{if ($smarty.section.i.index>0)}-->
+	<div style="page-break-before:always;height:0px;"></div>
+	<!--{/if}-->
+	<div class="idcard-size" style="margin:0;padding:0;">
+		<div class="seperator"></div>
+	    <div class="logo-area">
+	       <img src="<!--{$LOGO_URL|default:'#aa'}-->"></div>
+	    <div class="company-name"><!--{$COMPANY_NAME|default:$emp_list[i].COMPANY_NAME}--></div>
+		<div class="seperator"></div>
+	    <div class="emp-photo">
+			<!-- 必须在 Apache 设定一个虚拟目录 叫 /emphoto/, HCP/pic/XXX (XXX 为公司 segment_no_sz) -->
+	       <img src="/emphoto/<!--{$emp_list[i].COMPANY_NO_SZ}-->/<!--{$emp_list[i].EMP_ID}-->.jpg"/>
+	    </div>
+	    <div class="emp-id"><!--{$emp_list[i].EMP_ID}--></div>
+	    <div class="emp-name"><!--{$emp_list[i].EMP_NAME}--></div>
+	    <div class="dept-name"><!--{$emp_list[i].IDCARD_DEPT_NAME}--></div>
+	    <div class="seperator"></div>
+	    <div class="barcode" id="barcode_<!--{$emp_list[i].RN}-->"></div>
+	</div>
+<!--{/section}-->

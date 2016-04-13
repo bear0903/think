@@ -1,0 +1,39 @@
+
+	<input type="hidden" name="action" id="action" value="batch_apply"/>
+    <div align="right" id="toolbar" style="margin-bottom:10px;">
+        <span><!--{$CHOSE_EMP_LABEL}--></span>
+        <span><!--{$DELET_SELECTED_LABEL}--></span>
+        <span><!--{$IMPORT_LABEL}--></span>
+        <span id="doPost"><!--{$SUBMIT_BTN_LABEL}--></span>
+    </div>
+    <!--{include file="block_emp_list.html"}-->
+
+<script type="text/javascript">
+	$(function() {
+		$( "#toolbar span:first" ).button({
+            icons: {
+                primary: "ui-icon-newwin"
+            }
+        }).click(function(){
+           openw('?scriptname=emp_lov','emplov',700,400);
+        }).next().button({
+            icons: {
+                primary: "ui-icon-trash"
+            }
+        }).click(function(){
+            return deleteSelectedRows('emplist');
+        }).next().button({
+            icons: {
+                primary: "ui-icon-gear"
+            }
+        }).click(function(){
+            openw('?scriptname=user_excel_upload&used_program=emp_import','emplov',470,400);
+        }).next().button({
+        	icons: {
+                primary: "ui-icon-disk"
+            }
+        }).click(function(){
+        	$('form').submit();// add by dennis 2013/09/16
+        });
+	});
+</script>

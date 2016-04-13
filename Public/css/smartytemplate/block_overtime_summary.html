@@ -1,0 +1,27 @@
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<thead>
+		<tr>
+			<th><!--{$SEQ_LABEL}--></th>
+			<th><!--{$DATE_LABEL}--></th>
+			<th><!--{$OVERTIME_FEE_TYPE_LABEL}--></th>
+			<th><!--{$HOURS_LABEL}--></th>
+		</tr>
+	</thead>
+	<tbody>
+		<!--{section name="i" loop=$overtime_summary}-->
+		<tr>
+			<td><!--{$smarty.section.i.rownum}--></td>
+			<td><!--{$overtime_summary[i].YM}--></td>
+			<td><!--{$overtime_summary[i].OT_FEE_TYPE}--></td>
+			<td class="lable-rigth"><!--{$overtime_summary[i].HOURS|string_format:'%.2f'}--></td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="4">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+		</tr>
+		<!--{/section}-->
+	</tbody>
+</table>

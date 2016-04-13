@@ -1,0 +1,183 @@
+
+
+<style type="text/css">
+	select {width:100px;}
+	.short-text{width:80px;}
+</style>
+</head>
+<body class="page-container">
+	<form enctype="multipart/form-data" method="post" name="form1" id="form1">
+		<input type="hidden" name="doaction" value="query"/>
+	<!--{include file="block_box_header.html" title="$BLOCK_TITLE" showLine = '1'}-->
+	<table class="bordertable">
+		<tr>
+			<th><!--{$DATE_LABEL|default:'查房日期'}--></th>
+			<td><input type="text" name="check_date" id="check_date" class="input-date" value="<!--{$smarty.post.check_date|default:$smarty.now|date_format:"%Y-%m-%d"}-->"/></td>
+			<th><!--{$NTH_LABEL|default:'次数'}--></th>
+			<td><input type="text" name="check_times" value="<!--{$smarty.post.check_times|default:1}-->"/></td>
+			<th><!--{$AREA_LABEL|default:'区域'}--></th>
+			<td>
+				<select name="area_code" id="area_code">
+					<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+					 <!--{html_options options=$area_list selected=$smarty.post.area_code}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th><!--{$AREA_LABEL|default:'栋别'}--></th>
+			<td>
+				<select name="building_grp_no" id="building_grp_no">
+					<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+					<!--{html_options options=$building_grp_list selected=$smarty.post.building_grp_no}-->
+				</select>
+			</td>
+			<th><!--{$AREA_LABEL|default:'楼号'}--></th>
+			<td>
+				<select name="building_no" id="building_no">
+					<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>
+					<!--{html_options options=$building_list selected=$smarty.post.building_no}-->
+				</select>
+			</td>
+			<th><!--{$AREA_LABEL|default:'房间号'}--></th>
+			<td>
+				<input type="text" name="room_no" id="room_no" value="<!--{$smarty.post.room_no}-->"/>
+			</td>
+			<td rowspan="2"><input type="button" id="btn_qry" class="button-submit" value="<!--{$QRY_LABEL|default:'查询'}-->"/></td>
+		</tr>
+	</table>
+	<!--{include file="block_box_footer.html"}-->
+	</form>
+	<!--{if $smarty.post.area_code }-->
+	<!--{include file="block_box_header.html"}-->
+	<form name="form2" method="post">
+		<input type="hidden" name="doaction" value="save"/>
+		<table class="bordertable">
+			<tr>
+				<th><!--{$DEPT_LABEL|default:'部门'}--></th>
+				<th><!--{$SHIFT_LABEL|default:'班别'}--></th>
+				<th><!--{$ROOM_NO_LABEL|default:'房间号'}--></th>
+				<th><!--{$CHK_ITEM_LABEL|default:'评比项目'}--></th>
+				<th><!--{$ITEM_SCORE_LABEL|default:'项目分数'}--></th>
+				<th><!--{$ASSESS_SCORE_LABEL|default:'项目得分'}--></th>
+				<th><!--{$REMARK_LABEL|default:'备注'}--></th>
+			</tr>
+			<!--{section name="i" loop=$check_item_list}-->
+			<tr>
+				<td><!--{$check_item_list[i].ROOM_BY_DEPT}--></td>
+				<td><!--{$check_item_list[i].ROOM_BY_SHIFT_DESC}--></td>
+				<td><!--{$check_item_list[i].ROOM_NO}--></td>
+				<td><!--{$check_item_list[i].CHECK_ITEM_DESC}--></td>
+				<td><!--{$check_item_list[i].ITEM_SCORE}--></td>
+				<td>
+					<input type="hidden" name="detail_seqno[]" value="<!--{$check_item_list[i].DETAIL_SEQNO}-->"/>
+					<input type="hidden" name="master_seqno[]" value="<!--{$check_item_list[i].MASTER_SEQNO}-->"/>					
+					<input type="hidden" value="<!--{$check_item_list[i].ITEM_SCORE}-->"/>
+					<input type="text" class="short-text" name="assess_score[]" value="<!--{$check_item_list[i].ASSESS_SCORE}-->"/>
+				</td>
+				<td><input type="text" name="comments[]" value="<!--{$check_item_list[i].COMMENTS}-->" maxlength="250" style="width:300px;"/></td>
+			</tr>
+			<!--{sectionelse}-->
+			<tr>
+				<td colspan="7"><!--{$NO_DATA_FOUND_MSG|default:'无符合条件的资料。'}--></td>
+			</tr>
+			<!--{/section}-->
+			
+		</table>
+		<!--{if count($check_item_list)>0 }-->
+		<div style="text-align:center;"><input type="submit" class="button-submit" value="<!--{$SAVE_LABEL|default:'保存查房结果'}-->"/></div>
+	<!--{/if}-->
+	</form>
+	<!--{include file="block_box_footer.html"}-->
+	<!--{/if}-->
+	<script type="text/javascript">
+		/**
+	     * 把 ajax 返回的 json data 装载到 Select List 中
+	     * @param string list
+	     * @param array data
+	     * @param string month
+	     * @author Dennis
+	     */
+	    function addOptionToList(list,data)
+	    {
+	        // Clear list before add options
+	        $('#'+list).html('');
+	        // append options via jquery 
+			var html = '<option value="">-<!--{$PLS_SELECT_LABEL|default:'请选择'}-->-</option>';
+			for (var j=0; j<data.length; j++)
+	        {
+	            //s = (data[j][0] == month ? 'selected' : '');
+	           html += '<option value='+data[j][0]+'>'+data[j][1]+'</option>';
+	        }// end for loop
+			$('#'+list).append(html);
+	    }// end addOptionToList()
+
+		$().ready(function(){
+
+			$('.short-text').blur(function(){
+				if(parseInt($(this).val()) > parseInt($(this).prev().val())){
+					alert('<!--{$SCORE_ERR_MSG|default:'实际分数不可以大于项目分。'}-->');
+					$(this).focus();
+				}
+			});
+			$('#check_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});	
+			// clear child value on change
+			$('#area_code').change(function(){
+				// clear child
+				$('#building_grp_no').val('');
+				// clear grandson
+				$('#building_no').val('');
+				// ajax get child data and fill to child select
+				if ($(this).val() != ''){
+					$.ajax({
+					    url: '?scriptname=<!--{$smarty.get.scriptname}-->',
+					    data:'doaction=ajaxcall&func=getBuildingGrpByArea&areacode='+$(this).val(), 
+					    type: 'POST',
+					    dataType: 'json',
+					    timeout: 1000,
+					    error: function(){
+					        alert('Error Get Building Group Data');
+					    },
+					    success: function(json){
+					        addOptionToList('building_grp_no',json);
+					    }
+					});
+				}
+			});
+
+			// clear child value on change
+			$('#building_grp_no').change(function(){
+				$('#building_no').val('');
+				if ($(this).val() != ''){
+					$.ajax({
+					    url: '?scriptname=<!--{$smarty.get.scriptname}-->',
+					    data:'doaction=ajaxcall&func=getBuildingByGrp&areacode='+$('#area_code').val()+'&building_grp_no='+$(this).val(), 
+					    type: 'POST',
+					    dataType: 'json',
+					    timeout: 1000,
+					    error: function(){
+					        alert('Error Get Building Data');
+					    },
+					    success: function(json){
+					        addOptionToList('building_no',json);
+					    }
+					});
+				}
+			});
+
+			// check condition before query 
+			$('#btn_qry').click(function(){
+				var r = true;
+				$("#form1").find(":input,select").each(function(){
+					if($(this).val() === ""){
+						$(this).focus();
+						var label_txt = $(this).parent().prev().html();
+					    alert(label_txt+"<!--{$CANNOT_NULL_MSG|default:'不能为空'}-->");
+					    r = false;
+					    return false;
+					 }
+				});
+				if (r) $('#form1').submit();
+			});
+			
+		});
+	</script>

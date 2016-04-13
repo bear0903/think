@@ -1,0 +1,268 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'欄位定義' showLine=1}-->
+
+<!--{if $show=='List'}-->
+<table class="bordertable" STYLE="table-layout:fixed">
+	<thead>
+	<tr>
+		<th nowrap width='8%'><!--{$PROGRAM_NO_LABEL|default:'显示'}--> </th>
+		<th nowrap width='8%'><!--{$GROUP_ID_LABEL|default:'表别名'}--> </th>
+		<th nowrap width='22%'><!--{$GROUP_ID_LABEL|default:'栏位名'}--> </th>
+		<th nowrap width='20%'><!--{$MUTI_LANG_PK_LABEL|default:'栏位描述'}--> </th>
+		<th nowrap width='8%'><!--{$GROUP_DESC_LABEL|default:'分组ID'}--> </th>
+		<th nowrap width='8%'><!--{$SORT_SEQ_LABEL|default:'排序'}--> </th>
+		<th nowrap width='16%'><!--{$SORT_SEQ_LABEL|default:'显示值'}--> </th>
+		<th nowrap width='10%'><!--{$OPERATE|default:'操作'}--> </th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+
+	    <td><input readonly id="DISPLAY" NAME="DISPLAY" TYPE="checkbox" 
+			value="1" <!--{if $list[i].DISPLAY=='1'}-->checked<!--{/if}--> onclick="return false;"></td>
+	    <td><!--{$list[i].TABLE_NAME}--></td>
+		<td><!--{$list[i].COLUMN_NAME}--></td>
+		<td><!--{$list[i].COLUMN_DESC}--></td>
+		<td><!--{$list[i].GROUP_ID}--></td>
+		<td><!--{$list[i].COLUMN_SEQ}--></td>
+		<td><!--{$list[i].COLUMN_ACTUAL_VALUE}--></td>
+		<td nowrap>
+			<a target="_self" href="javascript:doEdit('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].TABLE_NAME}-->','<!--{$list[i].COLUMN_NAME}-->');">
+		    	<!--{$SaveSearchButton.UPDATE}-->
+		    </a>
+		</td>
+		
+	</tr>
+	 <!--{/section}-->
+	 
+    <tr><td colspan=9><!--{$pageDownUp}--></td></tr>
+	 </tbody>
+</table>
+<form id="editForm" name="editForm" METHOD="POST" ACTION="#">
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO">
+<input type="hidden" name="TABLE_NAME" id="TABLE_NAME">
+<input type="hidden" name="COLUMN_NAME" id="COLUMN_NAME">
+</form>
+<!--{/if}-->
+
+<!--{if $show=='New' or $show=='Edit'}-->
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+	<tr >
+		<td><!--{$PROGRAM_NO_LABEL|default:'是否显示'}--> </td>
+		<td><input id="DISPLAY" NAME="DISPLAY" TYPE="checkbox" 
+			value="1" <!--{if $row.DISPLAY=='1'}-->checked<!--{/if}-->>
+		</td>
+	</tr>
+	<tr >
+		<td><!--{$GROUP_ID_LABEL|default:'表别名'}--> </td>
+		<td><input readonly id="TABLE_NAME" NAME="TABLE_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.TABLE_NAME}-->" >
+		</td>
+	</tr>
+	</tr>
+
+	<tr>
+		<td><!--{$GROUP_ID_LABEL|default:'栏位名'}--> </td>
+		<td><input readonly id="COLUMN_NAME" NAME="COLUMN_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_NAME}-->" >
+		</td>
+	</tr>
+
+	<!--{section name="i" loop=$lang}-->
+	<input  TYPE="hidden" name="LANG_CODE[]" VALUE="<!--{$lang[i].ID}-->">
+	<tr>
+		<td nowrap><!--{$COLUMN_DESC_LABEL|default:'栏位描述'}-->(<!--{$lang[i].TEXT}-->) </td>
+		<td > <input id=="COLUMN_DESC_<!--{$lang[i].ID}-->" class="input-text" TYPE="text" name="COLUMN_DESC_<!--{$lang[i].ID}-->" value="<!--{$lang[i].VALUE}-->"> </td>
+	</tr>
+	<!--{/section}-->
+	<tr >
+		<td nowrap><!--{$SORT_SEQ_LABEL|default:'数据类型'}--> </td>
+		<td><input id="DATA_TYPE" NAME="DATA_TYPE" class="input-text" TYPE="text" 
+			value="<!--{$row.DATA_TYPE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'分组ID'}--> </td>
+		<td >
+		   <input id="GROUP_ID" NAME="GROUP_ID" class="input-text" TYPE="text" 
+			value="<!--{$row.GROUP_ID}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COLUMN_SEQ_LABEL|default:'显示顺序'}--> </td>
+		<td >
+		   <input id="COLUMN_SEQ" NAME="COLUMN_SEQ" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_SEQ}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'宽度'}--> </td>
+		<td >
+		   <input id="WIDTH" NAME="WIDTH" class="input-text" TYPE="text" 
+			value="<!--{$row.WIDTH}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'高度'}--> </td>
+		<td >
+		   <input id="HEIGHT" NAME="HEIGHT" class="input-text" TYPE="text" 
+			value="<!--{$row.HEIGHT}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'对齐方式'}--> </td>
+		<td >
+		   <input id="ALIGN" NAME="ALIGN" class="input-text" TYPE="text" 
+			value="<!--{$row.ALIGN}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'风格类'}--> </td>
+		<td >
+		   <input id="CLASS_NAME" NAME="CLASS_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.CLASS_NAME}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$FORMAT_STR_LABEL|default:'格式掩码'}--> </td>
+		<td >
+		   <input id="FORMAT_STR" NAME="FORMAT_STR" class="input-text" TYPE="text" 
+			value="<!--{$row.FORMAT_STR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COLUMN_TYPE_LABEL|default:'栏位类型'}--> </td>
+		<td >
+		   <input id="COLUMN_TYPE" NAME="COLUMN_TYPE" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_TYPE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'背景色'}--> </td>
+		<td >
+		   <input id="BGCOLOR" NAME="BGCOLOR" class="input-text" TYPE="text" 
+			value="<!--{$row.BGCOLOR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$FONT_COLOR|default:'字体颜色'}--> </td>
+		<td >
+		   <input id="FONT_COLOR" NAME="FONT_COLOR" class="input-text" TYPE="text" 
+			value="<!--{$row.FONT_COLOR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$FONT_NAME_LABEL|default:'字体名'}--> </td>
+		<td >
+		   <input id="FONT_NAME" NAME="FONT_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.FONT_NAME}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$CHECKED_VALUE_LABEL|default:'checkbox选中值'}--> </td>
+		<td >
+		   <input id="CHECKED_VALUE" NAME="CHECKED_VALUE" class="input-text" TYPE="text" 
+			value="<!--{$row.CHECKED_VALUE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$ALLOW_QUERYING_LABEL|default:'允许做查询条件'}--> </td>
+		<td >
+		   <input id="ALLOW_QUERYING" NAME="ALLOW_QUERYING" class="input-text" TYPE="text" 
+			value="<!--{$row.ALLOW_QUERYING}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$IS_RANG_CONDITION_LABEL|default:'是否区间条件'}--> </td>
+		<td >
+		   <input id="IS_RANG_CONDITION" NAME="IS_RANG_CONDITION" class="input-text" TYPE="text" 
+			value="<!--{$row.IS_RANG_CONDITION}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$ALLOW_SORTING_LABEL|default:'是否允许排序'}--> </td>
+		<td >
+		   <input id="ALLOW_SORTING" NAME="ALLOW_SORTING" class="input-text" TYPE="text" 
+			value="<!--{$row.ALLOW_SORTING}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$QUERY_COLUMN_TYPE_LABEL|default:'查询条件类型'}--> </td>
+		<td >
+		   <input id="QUERY_COLUMN_TYPE" NAME="QUERY_COLUMN_TYPE" class="input-text" TYPE="text" 
+			value="<!--{$row.QUERY_COLUMN_TYPE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$DATA_SOURCE_TYPE_LABEL|default:'资料来源类型'}--> </td>
+		<td >
+		   <input id="DATA_SOURCE_TYPE" NAME="DATA_SOURCE_TYPE" class="input-text" TYPE="text" 
+			value="<!--{$row.DATA_SOURCE_TYPE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$DATA_SOURCE_LABEL|default:'数据源'}--> </td>
+		<td >
+		   <input id="DATA_SOURCE" NAME="DATA_SOURCE" class="input-text" TYPE="text" 
+			value="<!--{$row.DATA_SOURCE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COLUMN_ACTUAL_VALUE_LABEL|default:'显示值'}--> </td>
+		<td >
+		   <input id="COLUMN_ACTUAL_VALUE" NAME="COLUMN_ACTUAL_VALUE" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_ACTUAL_VALUE}-->" >
+		</td>
+	</tr>
+
+	<tr>
+		<td ></td>
+		<td >
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SaveSearchButton.SAVE}--> " id="doSave">
+			<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SaveSearchButton.CANCEL}--> " id="doCancel">
+		</td>
+	</tr>
+</tbody>
+</table>
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$row.PROGRAM_NO}-->">
+<input type="hidden" name="MUTI_LANG_PK" value="<!--{$row.MUTI_LANG_PK}-->">
+</form>
+<!--{/if}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+
+function doEdit(PROGRAM_NO,TABLE_NAME,COLUMN_NAME){
+	//alert(program_no);alert(group_id);
+	$("#do").val('EditColumn');
+	$("#PROGRAM_NO").val(PROGRAM_NO);
+	$("#TABLE_NAME").val(TABLE_NAME);
+	$("#COLUMN_NAME").val(COLUMN_NAME);
+	document.editForm.submit();
+}
+
+$("#doSave").click(function(){
+	$("#do").val('SaveColumn');
+	document.postForm.submit();
+});
+$("#doCancel").click(function(){
+	$("#do").val('ListColumn');
+	document.postForm.submit();
+});
+
+$(document).ready(function(){
+	document.title='自定義程序';
+});
+</script>
+ 
+
+

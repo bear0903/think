@@ -1,0 +1,50 @@
+
+
+<table class="bordertable">
+	<tr>
+		<td colspan="7" class="column-label">
+			<!--{$MY_PA_FORM_LABEL|default:"我的考核單"}-->
+		</td>
+	</tr>
+    <tr>
+    	<th><!--{$YEAR_LABEL}--></th>
+        <th><!--{$PA_PERIOD_LABEL}--></th>
+        <th><!--{$SELF_PERIOD_DATE_LABEL}--></th>
+        <th><!--{$FIRST_PERIOD_DATE_LABEL}--></th>
+        <th><!--{$SECOND_PERIOD_DATE_LABEL}--></th>
+        <th><!--{$THIRD_PERIOD_DATE_LABEL}--></th>
+        <th><!--{$SELF_PA_LABEL|default:"填寫"}--></th>
+    </tr>
+    <!--{section name="i" loop=$pa_period_list}-->
+    <tr>
+        <td><!--{$pa_period_list[i].PA_YEAR}--></td>
+        <td><!--{$pa_period_list[i].PA_PERIOD_DESC}--></td>
+        <td><!--{$pa_period_list[i].EMP_BEGIN_DATE}-->~
+        <!--{$pa_period_list[i].EMP_END_DATE}--></td>
+        <td><!--{$pa_period_list[i].MGR1_BEGIN_DATE}-->~
+        <!--{$pa_period_list[i].MGR1_END_DATE}--></td>
+        <td><!--{$pa_period_list[i].MGR2_BEGIN_DATE}-->~
+        <!--{$pa_period_list[i].MGR2_END_DATE}--></td>
+        <td><!--{$pa_period_list[i].MGR3_BEGIN_DATE}-->~
+        <!--{$pa_period_list[i].MGR3_END_DATE}--></td>
+        <td>
+       		<!--{if $pa_period_list[i].FORM_STATUS < 2 }-->
+        	<a class="a-edit-btn" href="?scriptname=pa_form&pa_form_seqno=<!--{$pa_period_list[i].PA_FORM_SEQNO}-->&pa_period_seqno=<!--{$pa_period_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_period_list[i].PA_PERIOD_DESC|urlencode}-->&whoami=emp">
+        	<!--{$SELF_PA_LABEL}-->&nbsp;</a>
+        	<!--{elseif $pa_period_list[i].FORM_STATUS == 4 }-->
+        	<a class="a-edit-btn" href="?scriptname=pa_form&pa_form_seqno=<!--{$pa_period_list[i].PA_FORM_SEQNO}-->&pa_period_seqno=<!--{$pa_period_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_period_list[i].PA_PERIOD_DESC|urlencode}-->&whoami=emp">
+        		<!--{$INTERVIEW_CONFIRM_LABEL}--></a>
+        	<!--{else}-->
+        	<a class="a-zoom-btn" href="?scriptname=pa_form&pa_form_seqno=<!--{$pa_period_list[i].PA_FORM_SEQNO}-->&pa_period_seqno=<!--{$pa_period_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_period_list[i].PA_PERIOD_DESC|urlencode}-->&whoami=emp">
+        		<!--{$VIEW_LABEL}--></a>
+        	<!--{/if}-->
+        </td>
+    </tr>
+    <!--{sectionelse}-->
+    <tr>
+        <td colspan="7">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+        </td>
+    </tr>
+    <!--{/section}-->
+</table>

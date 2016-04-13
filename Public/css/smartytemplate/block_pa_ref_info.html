@@ -1,0 +1,116 @@
+
+<div id="tabpage">
+    <ul>
+    	<li>
+            <a href="#tab0">
+            <span><!--{$PRE_EMP_GOAL_LABEL|default:'上期考核目標'}--></span></a>
+        </li>
+        <li>
+            <a href="#tab1">
+            <span><!--{$REWARD_REC_LABEL}--></span></a>
+        </li>
+        <li>
+            <a href="#tab2">
+            <span><!--{$ABS_REC_LABEL}--></span></a>
+        </li>
+        <li>
+            <a href="#tab3">
+            <span><!--{$PA_REC_LABEL}--></span></a>
+        </li>
+    </ul>
+    <hr size="1" />
+    <div id="tab0">
+    	<!--{if $PRE_EMP_GOAL }-->
+        <!--{$PRE_EMP_GOAL}-->
+        <!--{else}-->
+        <!--{include file="block_info.html" msg_txt=$NO_PRE_DATA_MSG|default:'無上期考核資料'}-->
+        <!--{/if}-->
+    </div>
+    <div id="tab1">
+        <table class="bordertable" style="margin:0;padding:0;">
+            <tr>
+				<th width="14%"><!--{$LEAVE_NAME_LABEL|default:'奖惩'}--></th>
+				<th width="14%"><!--{$ABS_LABEL|default:'大功'}--></th>
+				<th width="14%"><!--{$THINGS_LABEL|default:'小功'}--></th>
+				<th width="14%"><!--{$SICK_LABEL|default:'大过'}--></th>
+				<th width="14%"><!--{$LATE_LABEL|default:'小过'}--></th>
+				<th width="14%"><!--{$SUM_LABEL|default:'合计'}--></th>
+            </tr>
+            <tr>
+				<td><!--{$QUARTER_LABEL|default:'季累计扣分'}--></td>
+				<td><!--{$JC_DAGONG}--></td>
+				<td><!--{$JC_XIAOGONG}--></td>
+				<td><!--{$JC_DAGUO}--></td>
+				<td><!--{$JC_XIAOGUO}--></td>
+				<td><!--{$JC_SUM_SCORE}--></td>
+            </tr>
+        </table>
+    </div>
+    <div id="tab2">
+        <table class="bordertable" style="margin:0;padding:0;">
+            <tr>
+				<th width="14%"><!--{$LEAVE_NAME_LABEL|default:'假别名称'}--></th>
+				<th width="14%"><!--{$ABS_LABEL|default:'旷职'}--></th>
+				<th width="14%"><!--{$THINGS_LABEL|default:'事/无薪假'}--></th>
+				<th width="14%"><!--{$SICK_LABEL|default:'病假'}--></th>
+				<th width="14%"><!--{$LATE_LABEL|default:'迟到'}--></th>
+				<th width="14%"><!--{$EARLY_LABEL|default:'早退'}--></th>
+				<th width="14%"><!--{$SUM_LABEL|default:'合计'}--></th>
+            </tr>
+            <tr>
+				<td><!--{$QUARTER_LABEL|default:'季累计扣分'}--></td>
+				<td><!--{$ABS_SCORE}--></td>
+				<td><!--{$THINGS_SCORE}--></td>
+				<td><!--{$SICK_SCORE}--></td>
+				<td><!--{$LATE_SCORE}--></td>
+				<td><!--{$EARLY_SCORE}--></td>
+				<td><!--{$AB_SUM_SCORE}--></td>
+            </tr>
+        </table>
+    </div>
+    <!-- <div id="tab1">  -- Modified by hunk at 20151210 for bothhand cust  jc_dagong, jc_xiaogong, jc_daguo, jc_xiaoguo
+        <table class="bordertable" style="margin:0;padding:0;">
+            <tr>
+                <th width="50%"><!--{$REWARD_TYPE_LABEL}--></th>
+                <th width="50%"><!--{$TIMES_LABEL}--></th>
+            </tr>
+            <!--{section name="i" loop=$rp_list}-->
+            <tr>
+                <td><!--{$rp_list[i].REWARDS_NAME}--></td>
+                <td><!--{$rp_list[i].CNT}--></td>
+            </tr>
+            <!--{sectionelse}-->
+		    <tr>
+		        <td colspan="2">
+					<!--{include file="block_info.html" msg_txt=$NO_AWARD_REC_TXT}-->
+		        </td>
+		    </tr>
+		    <!--{/section}-->
+        </table>
+    </div>
+	<div id="tab2">
+        <table class="bordertable" style="margin:0;padding:0;">
+            <tr>
+				<th width="33.3%"><!--{$LEAVE_NAME_LABEL}--></th>
+                <th width="33.3%"><!--{$HOURS_LABEL}--></th>
+                <th width="33.3%"><!--{$WORKDAYS_LABEL}--></th>
+            </tr>
+			<!--{section name="i" loop=$abs_list}-->
+            <tr>
+				<td><!--{$abs_list[i].ABSENCE_NAME}--></td>
+                <td><!--{$abs_list[i].HOURS|string_format:"%.2f"}--></td>
+                <td><!--{$abs_list[i].DAYS|string_format:"%.2f"}--></td>
+            </tr>
+            <!--{sectionelse}-->
+            <tr>
+                <td colspan="3">
+                	<!--{include file="block_info.html" msg_txt=$NO_LEAVE_REC_TXT}-->
+                </td>
+            </tr>
+            <!--{/section}-->
+        </table>
+    </div> -->
+    <div id="tab3">
+        <!--{include file='block_pa_score_his.html'}-->
+    </div>
+</div>

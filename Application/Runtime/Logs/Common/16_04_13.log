@@ -1,0 +1,24 @@
+[ 2016-04-13T13:43:44+08:00 ] 127.0.0.1 /think/index.php/Public/img/dao6.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000024s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000759s ]
+ERR: 无法加载模块:Public
+
+[ 2016-04-13T13:43:44+08:00 ] 127.0.0.1 /think/index.php/%3C!----%3E/flash_detect_min.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000027s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000753s ]
+ERR: 无法加载模块:
+
+[ 2016-04-13T13:43:44+08:00 ] 127.0.0.1 /think/index.php/Public/img/png3.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000024s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000773s ]
+ERR: 无法加载模块:Public
+
+[ 2016-04-13T13:43:44+08:00 ] 127.0.0.1 /think/index.php/Public/img/png4.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000024s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000800s ]
+ERR: 无法加载模块:Public
+

@@ -1,0 +1,69 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'自定程式向导' showLine=1}-->
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<tr><td colspan=13 class="error"><b><!--{$STEP06_LABEL|default:'第六步：设定完成'}--></b></td></tr>
+</table>
+<br>
+
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+	<tr >
+		<td><!--{$PROGRAM_NO_LABEL|default:'程序名'}--> </td>
+		<td><input readonly id="PROGRAM_NO" NAME="PROGRAM_NO" class="input-text" TYPE="text" 
+			value="<!--{$row.PROGRAM_NO}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td><!--{$RESULT_SQL_LABEL|default:'生成的SQL'}--> </td>
+		<td><textarea readonly style="width:450px;height:260px;" id="RESULT_SQL" NAME="RESULT_SQL" class="input-text"
+			><!--{$row.RESULT_SQL}--></textarea>
+		</td>
+	</tr>
+</tbody>
+</table>
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$UP_STEP_BTN_LABEL|default:'上一步'}--> " id="up_step">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$PREVIEW_BTN_LABEL|default:'预览'}--> " id="doPreView">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$EXPORT_BTN_LABEL|default:'导出'}--> " id="doExport">
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$row.PROGRAM_NO}-->">
+<input type="hidden" name="MUTI_LANG_PK" value="<!--{$row.MUTI_LANG_PK}-->">
+</form>
+
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+
+$("#doClose").click(function(){
+	window.close();
+});
+$("#doPreView").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname="+program_no+"&rand="+Math.random();
+	openw(url,204,750,450);//,220,200
+});
+$("#doExport").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_program_export"+"&program_no="+program_no+"&rand="+Math.random();
+	openw(url,204,750,450);//,220,200
+});
+
+
+///  [上一步]，[下一步]按钮
+$("#up_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide5&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+$("#next_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide7&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+</script>
+ 

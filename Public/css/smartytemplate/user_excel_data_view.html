@@ -1,0 +1,77 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+<!--{if $show=='List'}-->
+<table class="bordertable"  STYLE="table-layout:fixed">
+	<thead>
+	<tr>
+		<th width='10%'>No.</th>
+		<th width='10%'>COL1</th>
+		<th width='10%'>COL2</th>
+		<th width='10%'>COL3</th>
+		<th width='10%'>COL4</th>
+		<th width='10%'>COL5</th>
+		<th width='10%'>COL6</th>
+		<th width='10%'>COL7</th>
+		<th width='10%'>COL8</th>
+		<th width='10%'>COL9</th>
+		<th width='10%'>COL10</th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+
+	    <td><!--{$list[i].LINE_NO}--></td>
+	    <td><!--{$list[i].COL1}--></td>
+	    <td><!--{$list[i].COL2}--></td>
+	    <td><!--{$list[i].COL3}--></td>
+	    <td><!--{$list[i].COL4}--></td>
+	    <td><!--{$list[i].COL5}--></td>
+		<td><!--{$list[i].COL6}--></td>
+		<td><!--{$list[i].COL7}--></td>
+		<td><!--{$list[i].COL8}--></td>
+		<td><!--{$list[i].COL9}--></td>
+		<td><!--{$list[i].COL10}--></td>
+	</tr>
+	<!--{/section}-->	 
+    <tr><td colspan=12><!--{$pageDownUp}--></td></tr>
+	 </tbody>
+</table>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+$("#doReset").click(function(){	
+	   clearForm('editForm');
+});
+$("#doCancel").click(function(){	
+	location.href="redirect.php?scriptname=ESNS301&do=List";
+});
+$("#doSave").click(function(){	
+	document.postForm.submit();
+});
+
+$("#function_id").change(function(){	
+	if('<!--{$action}-->'!='Update')  $("#menu_code").val(this.options[this.selectedIndex].value);
+});
+
+function doSave(){
+
+	//var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	var indata=$("#editForm").serialize(); 
+	$.post(
+		'?scriptname=train_enter_for&do=Save',
+		indata,//{ SUBJECT_CLASS_ID: subject_class_id },
+		function(data){
+		      alert(data);
+			  
+		} 
+	);
+}
+
+</script>
+ 
+
+

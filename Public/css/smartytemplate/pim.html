@@ -1,0 +1,23 @@
+
+</head>
+<body class="page-container">
+<!--{if count($overtime_summary)>0 }-->
+<!--{include file="block_box_header.html" title="$OVERTIME_SUMMARY_LABEL [$year]" showLine=1}-->		
+	<!--{include file="block_overtime_summary.html"}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+<!--{if count($leave_summary)>0 }-->
+<!--{include file="block_box_header.html" title="$LEAVE_SUMMARY_LABEL [$year]" showLine=1}-->		
+    <!--{include file="block_leave_summary.html"}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+<!--{if count($compensatory_leave)>0 }-->
+<!--{include file="block_box_header.html" title="$COMPENSATORY_LEAVE_LABEL [$year]" showLine=1}-->		
+   	<!--{include file="block_compensatory_leave.html"}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+<!--{* 
+<!--{include file="block_box_header.html" title="$YEAR_VACATION_LABEL [$year]" showLine=1}-->		
+	<!--{include file="block_year_vacation.html"}-->
+<!--{include file="block_box_footer.html"}--> 
+*}-->

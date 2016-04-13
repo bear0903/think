@@ -1,0 +1,80 @@
+
+<table class="bordertable">
+	<thead>
+		<tr>
+			<th colspan="2"><!--{$EMP_LABEL|default:'员工'}--></th>
+			<th colspan="2"><!--{$DEPT_LABEL|default:'部门'}--></th>
+			<!--{section name="i" loop=$title_list}-->
+			<th><!--{$title_list[i][1]}--></th>
+			<!--{/section}-->
+			<th><!--{$STATUS_LABEL|default:'状态'}--></th>
+			<!--{if $smarty.get.status == '00'}-->
+			<th><!--{$ACTION_LABEL|default:'操作'}--></th>
+			<!--{else}-->
+			<th><!--{$FLOWCHART_LABEL|default:'流程图'}--></th>
+			<!--{/if}-->
+		</tr>
+	</thead>
+	<tbody>
+		<!--{section name="e" loop=$apply_list}-->
+		<tr>
+            <td><!--{$apply_list[e].EMP_ID}--></td>
+            <td><!--{$apply_list[e].EMP_NAME}--></td>
+            <td><!--{$apply_list[e].DEPT_ID}--></td>
+			<td><!--{$apply_list[e].DEPT_NAME}--></td>
+			<!--{section name="j" loop=$title_list}-->
+			<td>
+				<!--{$apply_list[e][j]}-->
+			</td>
+			<!--{/section}-->
+			<td><!--{$apply_list[e].STATUS_NAME}--></td>
+			<td>
+			<!--{if $smarty.get.approved_his != '1' }-->
+				<!--{* 未提交后,下一step 没有签核的仍可以删除 *}-->
+				<!--{if $apply_list[e].FLOW_STATUS <'02' && $whoami !='admin' }-->
+					<!--{if $apply_list[e].FLOW_STATUS == "00"}-->
+					<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=dosubmit&apply_flowseqno=<!--{$apply_list[e].APPLY_FLOW_SEQNO}-->&apply_type=<!--{$apply_list[e].APPLY_TYPE}-->&menu_code=<!--{$smarty.post.menu_code|default:$smarty.get.scriptname}-->">
+						<img src="<!--{$IMG_DIR}-->/Y.png" width="20" height="20" border="0" align="absmiddle" alt="Submit" title="Submit Apply"/>
+					</a>
+					<!--{/if}-->
+					<a href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=delete&apply_flowseqno=<!--{$apply_list[e].APPLY_FLOW_SEQNO}-->"
+					   onclick="return confirm('<!--{$CONFIRM_DELETE_MSG|default:'确定要删除？'}-->');">
+			            <img src="<!--{$IMG_DIR}-->/del.png" border="0" align="absmiddle" alt="Delete" title="Delete Apply">
+			        </a>
+		         <!--{/if}-->
+
+	         	<!--{* 未提交不可查看流程图 add by dennis 2006-04-21 17:07:59 *}-->
+			  	<!--{if $apply_list[e].FLOW_STATUS <> "00"}-->
+					<!-- type="popup" user defined attributes for js -->
+					<a type="popup" href="../ess/redirect.php?scriptname=view_flowchart&doaction=viewflowchart&apply_type=<!--{$apply_list[e].APPLY_TYPE}-->&flow_seqno=<!--{$apply_list[e].APPLY_FLOW_SEQNO}-->&companyid=<!--{$apply_list[e].SEG_SEGMENT_NO}-->&userseqno=<!--{$userseqno}-->&menu_code=<!--{$smarty.post.menu_code|default:$smarty.get.scriptname}-->">
+						<img src="<!--{$IMG_DIR}-->/pe.png" alt="View"/>
+					</a>
+				<!--{/if}-->
+				<!--{* 只有管理员才能作废流程 01_提交 02_流程中 *}-->
+				<!--{if ($apply_list[e].FLOW_STATUS == '01' || $apply_list[e].FLOW_STATUS == '02') &&
+						$whoami =='admin' }-->
+				<a onclick="return CancelWorkflow(this);"  href="?scriptname=<!--{$smarty.get.scriptname}-->&doaction=cancelflow&apply_type=<!--{$apply_list[e].APPLY_TYPE}-->&apply_flowseqno=<!--{$apply_list[e].APPLY_FLOW_SEQNO}-->&menu_code=<!--{$smarty.post.menu_code|default:$smarty.get.scriptname}-->">
+					<img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Cancel Flow" title="Cancel Workflow"/>
+			 	</a>
+				<!--{/if}-->
+			<!--{else}-->
+				<a type="popup" href="../ess/redirect.php?scriptname=view_flowchart&doaction=viewflowchart&apply_type=<!--{$apply_list[e].APPLY_TYPE}-->&flow_seqno=<!--{$apply_list[e].APPLY_FLOW_SEQNO}-->&companyid=<!--{$apply_list[e].SEG_SEGMENT_NO}-->&userseqno=<!--{$userseqno}-->&menu_code=<!--{$smarty.post.menu_code|default:$smarty.get.scriptname}-->">
+					<img src="<!--{$IMG_DIR}-->/pe.png" alt="View"/>
+				</a>
+			<!--{/if}-->
+			</td>
+		</tr>
+		<!--{sectionelse}-->
+        <tr>
+            <td colspan="<!--{$cols_cnt+1}-->">
+            	<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+            </td>
+        </tr>
+        <!--{/section}-->
+	</tbody>
+</table>
+
+<script type="text/javascript" language="Javascript">
+	// for a link popup type
+	attachClickEvent();
+</script>

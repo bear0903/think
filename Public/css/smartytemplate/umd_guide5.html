@@ -1,0 +1,340 @@
+<link rel="stylesheet" href="<!--{$CSS_DIR}-->/jquery/jquery.ui.tabs.css" type="text/css" media="print, projection, screen"/>
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'自定程式向导' showLine=1}-->
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<tr><td colspan=13 class="error"><b><!--{$STEP05_LABEL|default:'第五步：设定栏位'}--></b> &nbsp;   [ <!--{$PROGRAM_NO_LABEL|default:'程序编号'}-->: <!--{$PROGRAM_NO}--> ]</td></tr>
+</table>
+<br>
+
+<!--{if $show=='List'}-->
+<table class="bordertable" STYLE="table-layout:fixed">
+	<thead>
+	<tr>
+		<th nowrap width='6%'><!--{$DISPLAY_LABEL|default:'显示'}--> </th>
+		<th nowrap width='8%'><!--{$TABLE_ALLIES_NAME_LABEL|default:'表別名'}--> </th>
+		<th nowrap width='29%'><!--{$COLUMN_NAME_LABEL|default:'栏位名'}--> </th>
+		<th nowrap width='16%'><!--{$COLUMN_DESC_LABEL|default:'多語值'}--></th>
+		<th nowrap width='11%'><!--{$DATA_TYPE_LABEL|default:'数据类型'}--></th>
+		<th nowrap width='8%'><!--{$GROUP_ID_LABEL|default:'分组ID'}--> </th>
+		
+		<th nowrap width='6%'><!--{$COLUMN_SEQ_LABEL|default:'排序'}--> </th>
+		<!--<th nowrap width='18%'><!--{$COLUMN_ACTUAL_VALUE_LABEL|default:'显示值'}--></th>-->
+		<th nowrap width='16%'><!--{$OPERATE_LABEL|default:'操作'}--> </th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+
+	    <td><input readonly id="DISPLAY" NAME="DISPLAY" TYPE="checkbox" 
+			value="1" <!--{if $list[i].DISPLAY=='1'}-->checked<!--{/if}--> onclick="return false;"></td>
+	    <td><!--{$list[i].TABLE_NAME}--></td>
+		<td><!--{$list[i].COLUMN_NAME}--></td>
+		<td><!--{$list[i].COLUMN_DESC}--></td>
+		<td><!--{$list[i].DATA_TYPE}--></td>
+		<td><!--{$list[i].GROUP_ID}--></td>
+		
+		<td><!--{$list[i].COLUMN_SEQ}--></td>
+		<!--<td style="word-break : break-all; overflow:hidden; "><!--{$list[i].COLUMN_ACTUAL_VALUE}--></td>-->
+		<td nowrap>
+			[<a target="_self" href="javascript:doSubmit('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].TABLE_NAME}-->','<!--{$list[i].COLUMN_NAME}-->');">
+		    	<!--{$EDIT_BTN_LABEL|default:'修改'}--> 
+		    </a>]&nbsp;
+		    
+		    [<a target="_self" href="doDelete" onclick="return doSubmit('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].TABLE_NAME}-->','<!--{$list[i].COLUMN_NAME}-->','DeleteColumn');">
+		    	<!--{$DELETE_BTN_LABEL|default:'删除'}-->
+		    </a>]
+		</td>
+		
+	</tr>
+	<!--{sectionelse}-->
+    <tr> 
+        <td colspan="8">
+        	<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG|default:'没有设定任何栏位!'}-->
+        </td>
+    </tr>
+    <!--{/section}-->
+  </tbody>
+</table>
+<br>
+<form id="editForm" name="editForm" METHOD="POST" ACTION="#">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$UP_STEP_BTN_LABEL|default:'上一步'}--> " id="up_step">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$NEXT_STEP_LABEL|default:'下一步'}--> " id="next_step">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$EXTEND_COLUMN_BTN_LABEL|default:'展开栏位'}--> " id="extend_column">
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$PROGRAM_NO}-->">
+<input type="hidden" name="TABLE_NAME" id="TABLE_NAME">
+<input type="hidden" name="COLUMN_NAME" id="COLUMN_NAME">
+</form>
+<!--{/if}-->
+
+
+
+<!--{if $show=='New' or $show=='Edit'}-->
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<div class="span-13">
+	<script type="text/javascript">
+           $(function() {
+               $('#tab-light').tabs();  
+           });
+       </script>
+      
+	<div  id="tab-light">
+	<ul>
+	<li id="" ><a href="#tab_base_setup"><span ><!--{$BASE_SETUP_LABEL|default:'常规'}--></span></a></li>
+	<li id=""><a href="#tab_extend_setup"><span><!--{$EXTEND_SETUP_LABEL|default:'高级'}--></span></a></li>
+	</ul>
+	</div>  	
+</div>
+<hr class="hr-border">
+
+<div id="tab_base_setup"   style="background: url(../img/iframe_bg.jpg) no-repeat  right -2px;">
+<table >
+<tbody>
+	<tr >
+		<td><!--{$DISPLAY_LABEL|default:'显示'}-->* </td>
+		<td><input id="DISPLAY" NAME="DISPLAY" TYPE="checkbox" 
+			value="1" <!--{if $row.DISPLAY=='1'}-->checked<!--{/if}-->>
+		</td>
+	</tr>
+	<tr >
+		<td><!--{$TABLE_ALLIES_NAME_LABEL|default:'表别名'}--> </td>
+		<td><input readonly id="TABLE_NAME" NAME="TABLE_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.TABLE_NAME}-->" >
+		</td>
+	</tr>
+	</tr>
+
+	<tr>
+		<td><!--{$COLUMN_NAME_LABEL|default:'栏位名'}--> </td>
+		<td><input readonly id="COLUMN_NAME" NAME="COLUMN_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_NAME}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COLUMN_SEQ_LABEL|default:'排序'}--> </td>
+		<td >
+		   <input id="COLUMN_SEQ" NAME="COLUMN_SEQ" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_SEQ}-->" >
+		</td>
+	</tr>
+	<!--{section name="i" loop=$lang}-->
+	<input  TYPE="hidden" name="LANG_CODE[]" VALUE="<!--{$lang[i].ID}-->">
+	<tr>
+		<td nowrap><!--{$COLUMN_DESC_LABEL|default:'多語值'}-->(<!--{$lang[i].TEXT}-->) </td>
+		<td > <input id=="COLUMN_DESC_<!--{$lang[i].ID}-->" class="input-text" TYPE="text" name="COLUMN_DESC_<!--{$lang[i].ID}-->" value="<!--{$lang[i].VALUE}-->"> </td>
+	</tr>
+	<!--{/section}-->
+	
+</tbody>
+</table>
+</div>
+<div id="tab_extend_setup"   style="background: url(../img/iframe_bg.jpg) no-repeat  right -2px;">
+<table >
+<tbody>
+
+	<tr >
+		<td nowrap><!--{$GROUP_ID_LABEL|default:'分组ID'}--> </td>
+		<td><input id="GROUP_ID" NAME="GROUP_ID" class="input-text" TYPE="text" 
+			value="<!--{$row.GROUP_ID}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$DATA_TYPE_LABEL|default:'数据类型'}--> </td>
+		<td><input id="DATA_TYPE" NAME="DATA_TYPE" class="input-text" TYPE="text" 
+			value="<!--{$row.DATA_TYPE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$ALLOW_SORTING_LABEL|default:'是否允许排序'}--> </td>
+		<td >
+			<input id="ALLOW_SORTING" NAME="ALLOW_SORTING" TYPE="checkbox" 
+			value="1" <!--{if $row.ALLOW_SORTING=='1'}-->checked<!--{/if}-->>
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$WIDTH_LABEL|default:'宽度'}--> </td>
+		<td >
+		   <input id="WIDTH" NAME="WIDTH" class="input-text" TYPE="text" 
+			value="<!--{$row.WIDTH}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$HEIGHT_LABEL|default:'高度'}--> </td>
+		<td >
+		   <input id="HEIGHT" NAME="HEIGHT" class="input-text" TYPE="text" 
+			value="<!--{$row.HEIGHT}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$ALIGN_LABEL|default:'对齐方式'}--> </td>
+		<td >
+		   <input id="ALIGN" NAME="ALIGN" class="input-text" TYPE="text" 
+			value="<!--{$row.ALIGN}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$CLASS_NAME|default:'风格类名'}--> </td>
+		<td >
+		   <input id="CLASS_NAME" NAME="CLASS_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.CLASS_NAME}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$FORMAT_STR_LABEL|default:'格式掩码'}--> </td>
+		<td >
+		   <input id="FORMAT_STR" NAME="FORMAT_STR" class="input-text" TYPE="text" 
+			value="<!--{$row.FORMAT_STR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COLUMN_TYPE_LABEL|default:'栏位类型'}--> </td>
+		<td >
+		   <input id="COLUMN_TYPE" NAME="COLUMN_TYPE" class="input-text" TYPE="text" 
+			value="<!--{$row.COLUMN_TYPE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$BGCOLOR_LABEL|default:'背景色'}--> </td>
+		<td >
+		   <input id="BGCOLOR" NAME="BGCOLOR" class="input-text" TYPE="text" 
+			value="<!--{$row.BGCOLOR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$FONT_COLOR|default:'字体颜色'}--> </td>
+		<td >
+		   <input id="FONT_COLOR" NAME="FONT_COLOR" class="input-text" TYPE="text" 
+			value="<!--{$row.FONT_COLOR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$FONT_NAME_LABEL|default:'字体名'}--> </td>
+		<td >
+		   <input id="FONT_NAME" NAME="FONT_NAME" class="input-text" TYPE="text" 
+			value="<!--{$row.FONT_NAME}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$CHECKED_VALUE_LABEL|default:'复选框选中值'}--> </td>
+		<td >
+		   <input id="CHECKED_VALUE" NAME="CHECKED_VALUE" class="input-text" TYPE="text" 
+			value="<!--{$row.CHECKED_VALUE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$ALLOW_QUERYING_LABEL|default:'允许做查询条件'}--> </td>
+		<td >
+			<input id="ALLOW_QUERYING" NAME="ALLOW_QUERYING" TYPE="checkbox" 
+			value="1" <!--{if $row.ALLOW_QUERYING=='1'}-->checked<!--{/if}-->>
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$IS_RANG_CONDITION_LABEL|default:'是否区间条件'}--> </td>
+		<td >
+			<input id="IS_RANG_CONDITION" NAME="IS_RANG_CONDITION" TYPE="checkbox" 
+			value="1" <!--{if $row.IS_RANG_CONDITION=='1'}-->checked<!--{/if}-->>
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$QUERY_COLUMN_TYPE_LABEL|default:'查询条件类型'}--> </td>
+		<td >
+		    <select  id="QUERY_COLUMN_TYPE" NAME="QUERY_COLUMN_TYPE" class="select-input" >
+				<!--{$column_query_type_option}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$DATA_SOURCE_TYPE_LABEL|default:'资料来源类型'}--> </td>
+		<td >
+			<select  id="DATA_SOURCE_TYPE" NAME="DATA_SOURCE_TYPE" class="select-input" >
+			<!--{$column_query_datasource_option}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$DATA_SOURCE_LABEL|default:'数据源'}--> </td>
+		<td >
+		   <input id="DATA_SOURCE" NAME="DATA_SOURCE" class="input-text" TYPE="text" 
+			value="<!--{$row.DATA_SOURCE}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td ><!--{$COLUMN_ACTUAL_VALUE_LABEL|default:'显示值'}--> </td>
+		<td >
+		   <textarea id="COLUMN_ACTUAL_VALUE" NAME="COLUMN_ACTUAL_VALUE" class="input-text" TYPE="text" 
+			><!--{$row.COLUMN_ACTUAL_VALUE}--></textarea>
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SAVE_BTN_LABEL|default:'保存'}--> " id="doSave">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$CANCEL_BTN_LABEL|default:'取消'}--> " id="doCancel">
+
+
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$row.PROGRAM_NO}-->">
+<input type="hidden" name="MUTI_LANG_PK" value="<!--{$row.MUTI_LANG_PK}-->">
+</form>
+<!--{/if}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+// 修改/刪除
+function doSubmit(PROGRAM_NO,TABLE_NAME,COLUMN_NAME,action){
+	//alert(PROGRAM_NO);alert(TABLE_NAME);alert(COLUMN_NAME);
+	if(action==undefined) action='EditColumn';
+	if(action=='DeleteColumn'){
+		var confirm=window.confirm("<!--{$DELETE_CONFIRM_LABEL|default:'确认删除?'}-->"); 
+		if(!confirm){
+			return false;
+		}
+	}
+	$("#do").val(action);
+	$("#PROGRAM_NO").val(PROGRAM_NO);
+	$("#TABLE_NAME").val(TABLE_NAME);
+	$("#COLUMN_NAME").val(COLUMN_NAME);
+	var url="?scriptname=umd_guide5&rand="+Math.random();
+	document.editForm.action=url;
+	document.editForm.submit();
+	return false;
+}
+
+
+$("#doSave").click(function(){
+	$("#do").val('SaveColumn');
+	document.postForm.submit();
+});
+$("#doCancel").click(function(){
+	$("#do").val('ListColumn');
+	document.postForm.submit();
+});
+
+// 展开栏位
+$("#extend_column").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide5&PROGRAM_NO="+program_no+"&do=ExtendColumn&rand="+Math.random();
+	location.href=url;
+});
+
+///  [上一步]，[下一步]按钮
+$("#up_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide4&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+$("#next_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide6&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+</script>
+ 
+
+

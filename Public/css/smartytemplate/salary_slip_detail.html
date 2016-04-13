@@ -1,0 +1,411 @@
+<script type="text/javascript">
+	$().ready(function() {
+       	$('#tab-container').tabs();
+   });
+</script>
+<style>
+/*add by dennis for display number 2013-03-12*/
+.td-number{
+	text-align:right;
+}
+</style>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:$SALARY_SLIP_LABEL showLine = '1'}-->	
+	<table class="bordertable">
+		<tr>
+			<td class="column-label" width="120"><!--{$SALARY_PERIOD_LABEL}--></td>
+			<td><!--{$PERIOD_MASTER_NO}--></td>
+			<td class="column-label" width="120"><!--{$SALARY_PERIOD_DETAIL_LABEL}--></td>
+			<td><!--{$PERIOD_DETAIL_ID1}--></td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$EMP_ID_LABEL}--></td>
+			<td><!--{$PSN_NO}--></td>
+			<td class="column-label"><!--{$EMP_NAME_LABEL}--></td>
+			<td><!--{$PSN_NAME}--></td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$POSITION_LEVEL_LABEL}--></td>
+			<td><!--{$PSN_GRADE}--></td>
+			<td class="column-label"><!--{$IN_DATE_LABEL}--></td>
+			<td><!--{$INDATE}--></td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$DEPT_ID_LABEL}--></td>
+			<td><!--{$PSN_DEPT_NO}--></td>
+			<td class="column-label"><!--{$DEPT_NAME_LABEL}--></td>
+			<td><!--{$PSN_DEPT_NAME}--></td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$FACT_SALARY_LABEL}--></td>
+			<td><!--{$EMP_TOTAL_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+			<td class="column-label"><!--{$SALARY_TAX_LABEL}--></td>
+			<td><!--{$SALARY_TAX|string_format:"%.2f"|number_format:2}--></td>
+		</tr>
+	</table>
+<!--{include file="block_box_footer.html"}-->
+<!--{include file="block_box_header.html"}-->
+	<div id="tab-container">
+		<ul>
+			<!--{if count($fixed_salary_list)>0 }-->
+			<li><a href="#tab-1"><span><!--{$FIX_SALARY_LABEL}--><!--固定薪資--></span></a></li>
+			<!--{/if}-->
+			<!--{if count($salary_temporary_list)>0 }-->
+			<li><a href="#tab-2"><span><!--{$TEMPORARY_SALARY_LABEL}--><!--臨時薪資--></span></a></li>
+			<!--{/if}-->
+			<!--{if count($salary_overtime_list)>0 }-->
+			<li><a href="#tab-3"><span><!--{$OVERTIME_SALARY_LABEL}--><!--加班費--></span></a></li>
+			<!--{/if}-->
+			<!--{if count($salary_absence_list)>0 }-->
+			<li><a href="#tab-4"><span><!--{$LEAVE_SALARY_LABEL}--><!--請假扣款--></span></a></li>
+			<!--{/if}-->
+			<!--{if count($salary_insure_list)>0 }-->
+			<li><a href="#tab-5"><span><!--{$INSURANCE_SALARY_LABEL}--><!--社保--></span></a></li>
+			<!--{/if}-->
+			<!--{if count($salary_bonus_list)>0 }-->
+			<li><a href="#tab-6"><span><!--{$BONUS_SALARY_LABEL}--></span><!--獎金--></a></li>
+			<!--{/if}-->
+			<!--{if count($insure_tw_list)>0 }-->
+			<li><a href="#tab-7"><span><!--{$INSURANCE_TW_SALARY_LABEL}--><!--勞健團保--></span></a></li>
+			<!--{/if}-->
+			<!--{if count($company_tibo_list)>0 }-->
+			<li><a href="#tab-8"><span><!--{$COMPANY_TIBO_LABEL}--></span><!--公司提拔--></a></li>
+			<!--{/if}-->
+			<!--{if count($spec_bonus_list)>0 }-->
+			<li><a href="#tab-9"><span><!--{$SPEC_BONUS_LABEL}--></span><!--特殊獎金--></a></li>
+			<!--{/if}-->
+		</ul>
+		<!--{if count($fixed_salary_list)>0 }-->
+		<div id="tab-1">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$SALARY_NAME_LABEL}--></th>
+					<th><!--{$SALARY_AMOUNT_LABEL}--></th>
+					<th><!--{$SALARY_START_DAY_LABEL}--></th>
+					<th><!--{$SALARY_END_DAY_LABEL}--></th>
+					<th><!--{$REMARK_LABEL}--></th>
+				</tr>
+				<!--{section name="fixed_salary" loop=$fixed_salary_list}-->
+				<tr>
+					<td><!--{$smarty.section.fixed_salary.rownum}--></td>
+					<td><!--{$fixed_salary_list[fixed_salary].SAL_ITEM_NAME}--></td>
+					<td><div class="td-number"><!--{$fixed_salary_list[fixed_salary].AMOUNT|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><!--{$fixed_salary_list[fixed_salary].BEGIN_DATE}--></td>
+					<td><!--{$fixed_salary_list[fixed_salary].END_DATE}--></td>
+					<td><!--{$fixed_salary_list[fixed_salary].REMARK}--></td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2" style="text-align:right;">
+						<!--{$TEMP_TOTAL|default:'Total'}-->
+					</th>
+					<td class="td-number">
+						<div class="td-number">
+						<strong><!--{$fixed_sal_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td colspan="3">
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($salary_temporary_list)>0 }-->
+		<div id="tab-2">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$SALARY_NAME_LABEL}--></th>
+					<th><!--{$SALARY_AMOUNT_LABEL}--></th>
+					<th><!--{$REMARK_LABEL}--></th>
+				</tr>
+				<!--{section name="salary_temporary" loop=$salary_temporary_list}-->
+				<tr>
+					<td><!--{$smarty.section.salary_temporary.rownum}--></td>
+					<td><!--{$salary_temporary_list[salary_temporary].SAL_ITEM_NAME}--></td>
+					<td><div class="td-number"><!--{$salary_temporary_list[salary_temporary].PLUS_OR_MINUS}--><!--{$salary_temporary_list[salary_temporary].AMOUNT|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><!--{$salary_temporary_list[salary_temporary].REASON}--></td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td><div class="td-number"><strong><!--{$salary_temp_total|string_format:"%.2f"|number_format:2}--></strong></div></td>
+					<td><!--{$salary_temporary_list[salary_temporary].REASON}--></td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($salary_overtime_list)>0 }-->
+		<div id="tab-3">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$SALARY_OVERTIME_TYPE_LABEL}--></th>
+					<th><!--{$OVERTIME_HOURS_LABEL}--></th>
+					<th><!--{$SALARY_AMOUNT_LABEL}--></th>
+				</tr>
+				<!--{section name="salary_overtime" loop=$salary_overtime_list}-->
+				<tr>
+					<td><!--{$smarty.section.salary_overtime.rownum}--></td>
+					<td><!--{$salary_overtime_list[salary_overtime].OVERTIME_TYPE}--></td>
+					<td><div class="td-number"><!--{$salary_overtime_list[salary_overtime].HOURS|string_format:"%.2f"}--></div></td>
+					<td><div class="td-number"><!--{$salary_overtime_list[salary_overtime].AMOUNT|string_format:"%.2f"|number_format:2}--></div></td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="3">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td><div class="td-number">
+						<strong><!--{$ot_fee_total|string_format:"%.2f"|number_format:2}--></strong></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($salary_absence_list)>0 }-->
+		<div id="tab-4">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$ABSENCE_NAME_LABEL}--></th>
+					<th><!--{$ABSENCE_UNIT_LABEL}--></th>
+					<th><!--{$ABSENCE_DATE_LABEL|default:'日期'}--></th>
+					<th><!--{$ABSENCE_HOURS_LABEL}--></th>
+					<th><!--{$ABSENCE_DAYS_LABEL}--></th>
+					<th><!--{$ABSENCE_AMOUNT_LABEL}--></th>
+				</tr>
+				<!--{section name="salary_absence" loop=$salary_absence_list}-->
+				<tr>
+					<td><!--{$smarty.section.salary_absence.rownum}--></td>
+					<td><!--{$salary_absence_list[salary_absence].ABSENCE_NAME}--></td>
+					<td><!--{$salary_absence_list[salary_absence].ABSENCE_UNIT}--></td>
+					<td>
+						<!--{$salary_absence_list[salary_absence].CDAY}-->						
+					</td>
+					<td>						
+						<div class="td-number">
+						<!--{$salary_absence_list[salary_absence].HOURS|string_format:"%.2f"}-->
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+						<!--{$salary_absence_list[salary_absence].DAYS|string_format:"%.2f"}-->
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+						<!--{$salary_absence_list[salary_absence].AMOUNT|string_format:"%.2f"}-->
+						</div>
+					</td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="6">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td><div class="td-number">
+						<strong><!--{$abs_fee_total|string_format:"%.2f"|number_format:2}--></strong></div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($salary_insure_list)>0 }-->
+		<div id="tab-5">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$INSURE_NAME_LABEL}--></th>
+					<th><!--{$INSURE_EMP_PAY_LABEL}--></th>
+					<th><!--{$INSURE_COM_PAY_LABEL}--></th>
+					<th><!--{$INSURE_COM_NAME_LABEL}--></th>
+				</tr>
+				<!--{section name="salary_insure" loop=$salary_insure_list}-->
+				<tr>
+					<td><!--{$smarty.section.salary_insure.rownum}--></td>
+					<td><!--{$salary_insure_list[salary_insure].INSURE_NAME_CN}--></td>
+					<td>
+						<div class="td-number">
+						<!--{$salary_insure_list[salary_insure].EMP_PAY|string_format:"%.2f"|number_format:2}-->
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+						<!--{$salary_insure_list[salary_insure].COMPANY_PAY|string_format:"%.2f"|number_format:2}-->
+						</div>
+					</td>
+					<td><!--{$salary_insure_list[salary_insure].INSURE_UNIT_NAME}--></td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td>
+						<div class="td-number">
+							<strong><!--{$psn_pay_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+							<strong><!--{$com_pay_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($salary_bonus_list)>0 }-->
+		<div id="tab-6">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$BONUS_NAME_LABEL}--></th>
+					<th><!--{$BONUS_AMOUNT_LABEL}--></th>
+				</tr>
+				<!--{section name="salary_bonus" loop=$salary_bonus_list}-->
+				<tr>
+					<td><!--{$smarty.section.salary_bonus.rownum}--></td>
+					<td><!--{$salary_bonus_list[salary_bonus].NAME_CN}--></td>
+					<td>
+						<div class="td-number"><!--{$salary_bonus_list[salary_bonus].OLDER_AMOUNT|string_format:"%.2f"|number_format:2}--></div>
+					</td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td>
+						<div class="td-number">
+							<strong><!--{$sal_bonus_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($insure_tw_list)>0 }-->
+		<div id="tab-7">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$INSURE_TYPE_LABEL}--></th>
+					<th><!--{$INSURE_EMP_PAY_LABEL}--></th>
+					<th><!--{$INSURE_COM_PAY_LABEL}--></th>
+					<th><!--{$REMARK_LABEL}--></th>
+				</tr>
+				<!--{section name="insure_tw" loop=$insure_tw_list}-->
+				<tr>
+					<td><!--{$smarty.section.insure_tw.rownum}--></td>
+					<td><!--{$insure_tw_list[insure_tw].INSURE_TYPE}--></td>
+					<td><div class="td-number"><!--{$insure_tw_list[insure_tw].EMP_PAY|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><div  class="td-number"><!--{$insure_tw_list[insure_tw].COMPANY_PAY|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><!--{$insure_tw_list[insure_tw].REMARK}--></td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td>
+						<div class="td-number">
+							<strong><!--{$tw_psn_pay_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+							<strong><!--{$tw_com_pay_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($company_tibo_list)>0 }-->
+		<div id="tab-8">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$PAY_TYPE_LABEL}--></th>
+					<th><!--{$AMOUNT_LABEL}--></th>
+				</tr>
+				<!--{section name="company_tibo" loop=$company_tibo_list}-->
+				<tr>
+					<td><!--{$smarty.section.company_tibo.rownum}--></td>
+					<td><!--{$company_tibo_list[company_tibo].PAY_TYPE}--></td>
+					<td>
+						<div class="td-number">
+							<!--{$company_tibo_list[company_tibo].AMOUNT|string_format:"%.2f"|number_format:2}-->
+						</div>
+					</td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td>
+						<div class="td-number">
+							<strong><!--{$com_tibo_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+		<!--{if count($spec_bonus_list)>0 }-->
+		<div id="tab-9">
+			<table class="bordertable">
+				<tr>
+					<th><!--{$ROW_NO_LABEL}--></th>
+					<th><!--{$BONUS_NAME_LABEL}--></th>
+					<th><!--{$INIT_AMOUNT_LABEL}--></th>
+					<th><!--{$TAX_AMOUNT_LABEL}--></th>
+					<th><!--{$FACT_AMOUNT_LABEL}--></th>
+					<th><!--{$REMARK_LABEL}--></th>
+				</tr>
+				<!--{section name="spec_bonus" loop=$spec_bonus_list}-->
+				<tr>
+					<td><!--{$smarty.section.spec_bonus.rownum}--></td>
+					<td><!--{$spec_bonus_list[spec_bonus].BONUS_NAME}--></td>
+					<td><div class="td-number"><!--{$spec_bonus_list[spec_bonus].INIT_AMOUNT|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><div class="td-number"><!--{$spec_bonus_list[spec_bonus].TAX_AMOUNT|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><div class="td-number"><!--{$spec_bonus_list[spec_bonus].FACT_AMOUNT|string_format:"%.2f"|number_format:2}--></div></td>
+					<td><!--{$spec_bonus_list[spec_bonus].REMARK}--></td>
+				</tr>
+				<!--{/section}-->
+				<tr>
+					<th colspan="2">
+						<div class="td-number"><!--{$TEMP_TOTAL|default:'Total'}--></div>
+					</th>
+					<td>
+						<div class="td-number">
+							<strong><!--{$init_bonus_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+							<strong><!--{$tax_bonus_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td>
+						<div class="td-number">
+							<strong><!--{$fact_bonus_total|string_format:"%.2f"|number_format:2}--></strong>
+						</div>
+					</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<!--{/if}-->
+	</div>
+	<!--{include file="block_box_footer.html"}-->

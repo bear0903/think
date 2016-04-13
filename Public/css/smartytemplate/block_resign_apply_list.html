@@ -1,0 +1,67 @@
+
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$ACTION_LABEL}--></th>
+		<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--></th>
+		<th nowrap><!--{$DEPARTMENT_LABEL}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+		<th nowrap><!--{$RESIGN_DATE_LABEL}--></th>
+		<th nowrap><!--{$RESIGN_REASON_LABEL}--></th>
+		<th nowrap><!--{$OUT_TYPE_LABEL}--></th>
+		<th nowrap><!--{$EMP_REMARK_LABEL|default:'员工备注'}--></th>
+		<th nowrap><!--{$EXCEPTION_DESC_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$resign_workflow_list}-->
+	<tr>
+		<td nowrap><!--{$smarty.section.i.rownum}--></td>
+		<td nowrap>
+		<!--{* 未签核过或未提交 (暂存的)人事异动申请可以被删除*}-->
+		<!--{if $resign_workflow_list[i].FLOW_STATUS <'02' && $whoami !='admin' }-->
+			<!--{if $resign_workflow_list[i].FLOW_STATUS == "00"}-->
+			<a href="?scriptname=<!--{$smarty.get.scriptname}-->&action=submit&resign_flowseqno=<!--{$resign_workflow_list[i].RESIGN_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/y.png" alt="Submit"/>
+			</a>
+			<!--{/if}-->
+			<a onclick="return confirm('<!--{$CONFIRM_DELETE_MSG}-->');"
+			   href="?scriptname=<!--{$smarty.get.scriptname}-->&action=delete&resign_flowseqno=<!--{$resign_workflow_list[i].RESIGN_FLOW_SEQNO}-->">
+                <img src="<!--{$IMG_DIR}-->/cancel.png" alt="Delete"/>
+            </a>
+		<!--{/if}-->
+		<!--{* 未提交不可查看流程图 add by dennis 2006-04-21 17:07:59 *}-->
+		<!--{if $resign_workflow_list[i].FLOW_STATUS <> "00"}-->
+			<!-- type="popup" user defined attributes for js -->
+			<a type="popup" href="?scriptname=view_flowchart&action=view_flowchart&apply_type=resign&flow_seqno=<!--{$resign_workflow_list[i].RESIGN_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/pe.png" alt="View Workflow flowchart"/>
+			</a>
+		<!--{/if}-->
+		<!--{* 只有管理员才能作废流程 *}-->
+			<!--{if $resign_workflow_list[i].FLOW_STATUS >'00'  &&
+					$resign_workflow_list[i].FLOW_STATUS <'05'  &&
+					$resign_workflow_list[i].FLOW_STATUS <>'03' &&
+					$resign_workflow_list[i].FLOW_STATUS <>'04' &&
+					$whoami =='admin' }-->
+			<a onclick="return CancelWorkflow(this);"  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=cancelflow&apply_type=<!--{$resign_workflow_list[i].APPLY_TYPE}-->&resign_flowseqno=<!--{$resign_workflow_list[i].RESIGN_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Cancel Flow" title="Cancel Workflow"/>
+		 	</a>
+			<!--{/if}-->
+		</td>
+		<td><!--{$resign_workflow_list[i].STATUS_NAME}--></td>
+		<td nowrap><!--{$resign_workflow_list[i].DEPT_NAME}--></td>
+		<td nowrap><!--{$resign_workflow_list[i].EMP_ID}--></td>
+		<td nowrap><!--{$resign_workflow_list[i].EMP_NAME}--></td>
+		<td nowrap><!--{$resign_workflow_list[i].RESIGN_DATE}--></td>
+		<td><!--{$resign_workflow_list[i].RESIGN_REASON}--></td>
+		<td><!--{$resign_workflow_list[i].OUT_TYPE}--></td>
+		<td><!--{$resign_workflow_list[i].EMP_REMARK}--></td>
+		<td><!--{$resign_workflow_list[i].REJECT_COMMENT}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="14">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

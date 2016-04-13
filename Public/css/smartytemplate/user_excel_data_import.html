@@ -1,0 +1,130 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'Import Excel' showLine=1}-->
+<!--{if $show=='New'}-->
+<form id="editForm" name="postForm" METHOD="POST" ACTION="#">
+<table class="bordertable">
+	<tr>
+		<td class="column-label" width="30%"><!--{$TEMPLATE_DESC_LABEL}-->* </td>
+		<td width="70%">
+		   <input id="IMPORT_DESC" 
+		   NAME="IMPORT_DESC" 
+		   class="input-text" 
+		   TYPE="text" 
+		   value="<!--{$row.IMPORT_DESC}-->"/>
+		</td>
+	</tr>
+	<tr >
+		<td class="column-label" width="30%"><!--{$TEMPLATE_TYPE_LABEL}-->* </td>
+		<td width="70%">
+		   <select <!--{$disableUpdate}--> id="ACTION_TYPE" class="select-input" NAME="ACTION_TYPE">
+		     <!--{$actinTypeList}-->
+		   </select>
+		</td>
+	</tr>	
+	<tr>
+		<td class="column-label" width="30%"><!--{$ACTION_LABEL}-->* </td>
+		<td width="70%">
+		   <textarea id="IMPORT_SQL_FORMAT" name="IMPORT_SQL_FORMAT" style="width:450px;height:240px;" class="input-text"><!--{$row.IMPORT_SQL_FORMAT}--></textarea>
+		</td>
+	</tr>
+	<tr >
+		<td class="column-label" width="30%"><!--{$IS_ACTIVE_LABEL}-->* </td>
+		<td width="70%">
+		   <input id="IS_ACTIVE"
+		          NAME="IS_ACTIVE" 
+		          TYPE="checkbox" 
+		          value="Y"
+		   		  <!--{if $row.IS_ACTIVE=='Y'}-->checked<!--{/if}-->/>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SUBMIT_BTN_LABEL}--> " id="doSave">
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$CANCEL_BTN_LABEL}--> " id="doCancel">
+		</td>
+	</tr>
+	<!--{if $ErrorMsg }-->
+	<tr><td colspan="2"><!--{$ErrorMsg}--></td></tr>
+	<!--{/if}-->
+</table>
+<input type="hidden" name="do" value="<!--{$action|default:'Save'}-->">
+<input type="hidden" name="SETUP_ID" value="<!--{ $row.SETUP_ID}-->">
+</form>
+<form id="cancelForm" name="cancelForm" METHOD="POST" ACTION="?scriptname=umd_menu_list&do=MenuList&FUNCTION_ID=<!--{$row.FUNCTION_ID}-->">
+</form>
+<!--{/if}-->
+
+<!--{if $show=='List'}-->
+<table class="bordertable" STYLE="table-layout:fixed">
+	<thead>
+	<tr>
+		<th width='15%'><!--{$TEMPLATE_DESC_LABEL}--></th>
+		<th width='10%'><!--{$TEMPLATE_TYPE_LABEL}--></th>
+		<th width='25%'><!--{$ACTION_LABEL}--></th>
+		<th width='10%'><!--{$IS_ACTIVE_LABEL}--></th>
+		<th width='40%'></th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+	    <td><!--{$list[i].IMPORT_DESC}--></td>
+		<td><!--{$list[i].ACTION_TYPE}--></td>
+		<td><!--{$list[i].IMPORT_SQL_FORMAT}--></td>
+		<td><input type="checkbox" <!--{if $list[i].IS_ACTIVE=='Y'}-->checked<!--{/if}--> ></td>
+		<td>[ <a href="redirect.php?scriptname=ESNS301&do=New"><!--{$ADD_LABEL}--></a> ]
+			[ <a href="redirect.php?scriptname=ESNS301&do=Edit&id=<!--{$list[i].SETUP_ID}-->"><!--{$EDIT_LABEL}--></a> ]
+			[ <a href="javascript:doDelete('?scriptname=ESNS301&do=DELETE&id=<!--{$list[i].SETUP_ID}-->');"><!--{$BTN_DELETE_LABEL|default:'删除'}--></a> ]
+			[ <a href="redirect.php?scriptname=user_excel_upload&id=<!--{$list[i].SETUP_ID}-->"><!--{$IMPORT_LABEL|default:'导入'}--></a> ]
+			[ <a href="redirect.php?scriptname=user_excel_data_view&id=<!--{$list[i].SETUP_ID}-->"><!--{$VEW_LABEL|default:'数据'}--></a> ]
+		</td>
+	</tr>
+	 <!--{/section}-->
+	 
+    <tr><td colspan=12><!--{$pageDownUp}--></td></tr>
+	 </tbody>
+</table>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+$("#doReset").click(function(){	
+	   clearForm('editForm');
+});
+$("#doCancel").click(function(){	
+	location.href="redirect.php?scriptname=ESNS301&do=List";
+});
+$("#doSave").click(function(){	
+	document.postForm.submit();
+});
+
+$("#function_id").change(function(){	
+	if('<!--{$action}-->'!='Update')  $("#menu_code").val(this.options[this.selectedIndex].value);
+});
+
+function doSave(){
+
+	//var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	var indata=$("#editForm").serialize(); 
+	$.post(
+		'?scriptname=train_enter_for&do=Save',
+		indata,//{ SUBJECT_CLASS_ID: subject_class_id },
+		function(data){
+		      alert(data);
+		} 
+	);
+}
+
+function doDelete(url){
+	var confirm=window.confirm("<!--{$MSG_DELETE_CONFIRM|default:'确认删除?'}-->"); 
+	if(confirm)   location.href=url;
+}
+
+</script>
+ 
+
+

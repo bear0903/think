@@ -1,0 +1,62 @@
+
+</head>
+<script type="text/javascript" src="../controls/fckeditor/fckeditor.js"></script>
+<body class="page-container">
+    <!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+    <form id="editForm" name="postForm" METHOD="POST" ACTION="#">
+        <table>
+            <tr>
+                <td></td>
+                <td>
+                    <textarea rows="5" cols="50"
+                              id='id_rule_text'
+                              name='TEXT'
+                              required='Y'
+                              title="<!--{$RULE_IS_REQUIRED_MSG}-->"><!--{$row.TEXT}--></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <INPUT TYPE="submit" class="button-submit" VALUE=" <!--{$SUBMIT_BTN_LABEL}--> " id="doSave">
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="do" value="Save">
+    </form>
+    <!--{if $show_save_msg=='Y'}-->
+    <!--{include file="block_info.html" msg_txt=$DATA_SAVED_MSG}-->
+    <!--{/if}-->
+    <!--{include file="block_box_footer.html"}-->
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var sBasePath  = '../controls/fckeditor/';
+            var oFCKeditor = new FCKeditor('id_rule_text');
+
+            oFCKeditor.BasePath	= sBasePath;
+            oFCKeditor.ToolbarSet = 'ares';
+            //oFCKeditor.Height = 100;
+            //oFCKeditor.Config[ 'ToolbarLocation' ] = 'Out:xToolbar';
+            //oFCKeditor.Value = '';
+            oFCKeditor.ReplaceTextarea();
+        });
+
+        $("#doSave").click(function(){
+            var passed = true;
+            /*
+        $('#editForm').find('[@required*=Y]').each(function(){
+            //alert($(this).attr('required'));
+            if($(this).val().replace(/ /g,'')==''){
+                alert($(this).attr('title'));
+                $(this).focus();
+                passed = false;
+                return false;
+            }
+        });
+             */
+            return passed;
+        });
+    </script>
+
+

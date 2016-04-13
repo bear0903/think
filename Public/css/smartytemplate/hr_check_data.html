@@ -1,0 +1,173 @@
+</head>
+<body class="page-container">
+<!--{*
+<!--{include file="block_box_header.html" title="$BLOCK_TITLE" showLine=1}-->
+<form name="form1" method="post">
+<table class="bordertable">
+	<tr>
+		<td class="column-label" width="120"><!--{$EMP_ID_LABEL}--></td>
+		<td>
+			<input type="text" name="emp_id_s" class="input-text"/> -
+			<input type="text" name="emp_id_e" class="input-text"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label" width="120"><!--{$EMP_NAME_LABEL}--></td>
+		<td>
+			<input type="text" name="emp_name" class="input-text"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label" width="120"><!--{$PA_PERIOD_LABEL}--></td>
+		<td>
+			<select name="period_id" id="period_id">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$period_list selected=$smarty.post.period_id}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="submit" name="submit" class="button-submit" value="<!--{$buttonLabel.SUBMIT}-->"/>
+			<input type="submit" name="reset" class="button-submit"  value="<!--{$buttonLabel.CLEAR}-->"/>
+		</td>
+	</tr>
+</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+*}-->
+<form name="form2" method="post">
+<!--{include file="block_box_header.html" title="$BLOCK_TITLE" showLine=1}-->
+<table class="bordertable" id="emplist">
+	<tr>
+		<th></th>
+		<th>审核说明</th>
+		<th nowrap><!--{$DEPT_ID_LABEL|default:"部門代碼"}--></th>
+		<th nowrap><!--{$DEPT_NAME_LABEL|default:"部門名稱"}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL|default:"員工代碼"}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL|default:"姓名"}--></th>
+		<th nowrap><!--{$HOME_ADDRD_LABEL|default:"家庭地址"}--></th>
+		<th nowrap><!--{$HOME_TEL_LABEL|default:"家庭電話"}--></th>
+		<th nowrap><!--{$FILE_ADDR_LABEL|default:"戶籍地址"}--></th>
+		<th nowrap><!--{$FILE_CONTACT_LABEL|default:"戶籍地聯繫人"}--></th>
+		<th nowrap><!--{$FILE_POSTCODE_LABEL|default:"戶籍地郵編"}--></th>
+		<th nowrap><!--{$CURR_CONTACT_LABEL|default:"居住地聯繫人"}--></th>
+		<th nowrap><!--{$CURR_POSTCODE_LABEL|default:"居住地郵編"}--></th>
+		<th nowrap><!--{$EMERGENCY_CONTACT_LABEL|default:"緊急聯繫人"}--></th>
+		<th nowrap><!--{$EMERGENCY_TEL_LABEL|default:"緊急聯繫電話"}--></th>
+		<th nowrap><!--{$CELLPHONE_LABEL|default:"手機"}--></th>
+		<th nowrap><!--{$EXTESION_LABEL|default:"分機號"}--></th>
+	</tr>
+	<!--{section name="i" loop=$emp_list}-->
+	<tr>
+		<!-- <th><input type="checkbox" name="emp_seqno[]" value="<!--{$emp_list[i].EMP_SEQNO.val}-->"/></th> -->
+		<td nowrap>
+			<input type="hidden" name="emp_seqno[]" value="<!--{$emp_list[i].EMP_SEQNO.val}-->"/>
+
+            <input type="radio"
+            	   id="none_action<!--{$smarty.section.i.index}-->"
+            	   name="approve_action<!--{$emp_list[i].EMP_SEQNO.val}-->"
+            	   value="none" checked />
+            <label for="none_action<!--{$smarty.section.i.index}-->"><!--{$NONE_ACTION_LABEL|default:'無決定'}--></label><br/>
+            <input type="radio"
+                   id="approve_action<!--{$smarty.section.i.index}-->"
+            	   name="approve_action<!--{$emp_list[i].EMP_SEQNO.val}-->"
+            	   value="Y"
+            	    />
+        	<label for="approve_action<!--{$smarty.section.i.index}-->"><!--{$APPROVE_LABEL|default:'核准'}--></label><br/>
+            <input type="radio"
+                   id="reject_action<!--{$smarty.section.i.index}-->"
+            	   name="approve_action<!--{$emp_list[i].EMP_SEQNO.val}-->"
+            	   value="N"
+            	    />
+            <label for="reject_action<!--{$smarty.section.i.index}-->"><!--{$REJECT_LABEL|default:'駁回'}--></label>
+        </td>
+        <td><textarea name="approve_remark<!--{$emp_list[i].EMP_SEQNO.val}-->" cols="4"></textarea></td>
+		<td><!--{$emp_list[i].DEPT_ID.val}--></td>
+		<td><!--{$emp_list[i].DEPT_NAME.val}--></td>
+		<td><!--{$emp_list[i].EMP_ID.val}--></td>
+		<td><!--{$emp_list[i].EMP_NAME.val}--></td>
+		<td class="<!--{$emp_list[i].MAIL_ADDRESS.class}-->">
+			<input type="hidden" name="mailaddress[]" value="<!--{$emp_list[i].MAIL_ADDRESS.val}-->"/>
+			<!--{$emp_list[i].MAIL_ADDRESS.val}--></td>
+		<td class="<!--{$emp_list[i].HOME_TEL.class}-->">
+			<input type="hidden" name="address_tel[]" value="<!--{$emp_list[i].HOME_TEL.val}-->"/>
+			<!--{$emp_list[i].HOME_TEL.val}-->
+		</td>
+		<td class="<!--{$emp_list[i].PERMANENT_ADDRESS.class}-->">
+			<input type="hidden" name="address[]" value="<!--{$emp_list[i].PERMANENT_ADDRESS.val}-->"/>
+			<!--{$emp_list[i].PERMANENT_ADDRESS.val}-->
+		</td>
+		<td class="<!--{$emp_list[i].ADDRESS_CONTACTOR.class}-->">
+			<input type="hidden" name="address_man[]" value="<!--{$emp_list[i].ADDRESS_CONTACTOR.val}-->"/>
+			<!--{$emp_list[i].ADDRESS_CONTACTOR.val}--></td>
+		<td class="<!--{$emp_list[i].POSTCODE.class}-->">
+			<input type="hidden" name="addresszipcode[]" value="<!--{$emp_list[i].POSTCODE.val}-->"/>
+			<!--{$emp_list[i].POSTCODE.val}--></td>
+		<td class="<!--{$emp_list[i].MAIL_CONTACTOR.class}-->">
+			<input type="hidden" name="mailaddress_man[]" value="<!--{$emp_list[i].MAIL_CONTACTOR.val}-->"/>
+			<!--{$emp_list[i].MAIL_CONTACTOR.val}--></td>
+		<td class="<!--{$emp_list[i].MAIL_POSTCODE.class}-->">
+			<input type="hidden" name="mailaddresszipcode[]" value="<!--{$emp_list[i].MAIL_POSTCODE.val}-->"/>
+			<!--{$emp_list[i].MAIL_POSTCODE.val}--></td>
+		<td class="<!--{$emp_list[i].EMERGENCY_CONTRACTOR.class}-->">
+			<input type="hidden" name="emergencycontactor[]" value="<!--{$emp_list[i].EMERGENCY_CONTRACTOR.val}-->"/>
+			<!--{$emp_list[i].EMERGENCY_CONTRACTOR.val}--></td>
+		<td class="<!--{$emp_list[i].EMERGENCY_TEL.class}-->">
+			<input type="hidden" name="emergencycontactor_tel[]" value="<!--{$emp_list[i].EMERGENCY_TEL.val}-->"/>
+			<!--{$emp_list[i].EMERGENCY_TEL.val}--></td>
+		<td class="<!--{$emp_list[i].CELLPHONE_NO.class}-->"><input type="hidden" name="mobiletel[]" value="<!--{$emp_list[i].CELLPHONE_NO.val}-->"/>
+			<!--{$emp_list[i].CELLPHONE_NO.val}--></td>
+		<td class="<!--{$emp_list[i].EXTENSION.class}-->"><input type="hidden" name="tel_part[]" value="<!--{$emp_list[i].EXTENSION.val}-->"/>
+			<!--{$emp_list[i].EXTENSION.val}--></td>
+	</tr>
+	<!--{sectionelse}-->
+    <tr>
+        <td colspan="17">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+    </tr>
+    <!--{/section}-->
+</table>
+<input type='hidden' id=rowcount value="<!--{$smarty.section.i.rownum}-->"/>
+<!--{if count($emp_list)>0 }-->
+	<div align="center">
+		<br/>
+		<input type="submit" name="submitform" value="<!--{$SUBMIT_BTN_LABEL}-->" class="button-submit"/>
+		<input type="button" id="approveAll"   value="<!--{$APPROVE_ALL_BTN_LABEL}-->" class="button-submit"/>
+		<input type="button" id="rejectAll"    value="<!--{$REJECT_ALL_BTN_LABEL}-->" class="button-submit"/>
+		<input type="button" id="resetAll"     value="<!--{$RESET_BTN_LABEL}-->" class="button-submit"/>
+	</div>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+</form>
+<script type="text/javascript">
+$("#approveAll").click(function(){
+	setRadioChecked("approve_action");
+});
+$("#rejectAll").click(function(){
+	setRadioChecked("reject_action");
+});
+$("#resetAll").click(function(){
+	setRadioChecked("none_action");
+});
+
+function setRadioChecked(obj_name){
+	var n=$("#rowcount").val();
+	for(i=0;i<n;i++){
+		$("#"+obj_name+i).attr("checked","true");
+	}
+}
+function CheckAllRows(tabid, bCheck) {
+    var tab = document.getElementById(tabid);
+    var rows =  tab.rows.length;
+    for (var i = 0; i < rows; i++) {
+        //alert(tab.rows[i].cells[0].childNodes[0].type)
+        if (tab.rows[i].cells[0].childNodes[0].type == 'checkbox') {
+        	tab.rows[i].cells[0].childNodes[0].checked = bCheck;
+        }//end if
+    }// end for loop
+}// end CheckAll()
+
+</script>

@@ -1,0 +1,44 @@
+</head>
+<body>
+	<!--{include file="block_box_header.html" title="eHR for HCP&trade; Standard Edition <i>$ESS_APP_VERSION</i>" showLine=1}-->
+		<table border="0" cellpadding="5" cellspacing="1" class="bordertable">
+			<tr>
+				<td width="35%" class="column-label"><!--{$LISENCE_OWNER_LABEL}--> Licensed to</td>
+				<td><!--{$LISENCE_OWNER}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$DB_NAME_LABEL}-->Database Name</td>
+				<td><!--{$DB_NAME}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$DB_CHARSET_LABEL}-->Database Charectset</td>
+				<td><!--{$DB_CHARSET}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$DB_VERSION_LABEL}-->Database Version</td>
+				<td><!--{$DB_VERSION}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$SERVER_NAME_LABEL}-->Server Name</td>
+				<td><!--{$smarty.server.SERVER_NAME}--></td>
+			</tr>	
+			<tr>
+				<td class="column-label"><!--{$SERVER_IP_LABEL}-->Server IP</td>
+				<td><!--{$smarty.server.SERVER_ADDR}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$SERVER_OS_LABEL}-->Server OS Version</td>
+				<td><!--{$SERVER_OS}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$CLIENT_IP_LABEL}-->Client IP</td>
+				<td><!--{$smarty.server.REMOTE_ADDR}--></td>
+			</tr>
+			<tr>
+				<td class="column-label"><!--{$CURR_USER_LABEL}-->Login User</td>
+				<td><!--{$smarty.session.user.user_name|upper}-->[
+				<!--{$smarty.session.user.emp_name}--> ]</td>
+			</tr>
+		</table>
+		<div class="span-10" align="center">&copy; <!--{$smarty.now|date_format:"%Y"}-->ARES CHINA All Rights Reserved.</div>
+	<!--{include file="block_box_footer.html"}-->

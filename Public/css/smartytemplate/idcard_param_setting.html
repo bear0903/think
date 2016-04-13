@@ -1,0 +1,49 @@
+<style>
+ .w {width:180px;}
+</style>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+<form name="form1" method="post" enctype="multipart/form-data">
+<input type="hidden" name="emp_id_rule" value="Cust" id="emp_id_rule"/>
+<table class="bordertable">
+    <tr><td class="column-label">公司LOGO</td>
+        <td>
+            <input type="file" name="logofile" class="w"/>(?)識別證上的公司標誌,建議寬高:160*40 像素，格式: 'jpg','gif','png'
+            <br/>
+            <img id="logo_img" src="<!--{$LOGO_URL|default:'#aa'}-->" width="160" height="40" style="margin:5px 0px 5px 0px;"/></td></tr>
+    <tr><td class="column-label">公司簡稱</td>
+        <td><input type="text" name="company_name" value="<!--{$COMPANY_NAME}-->" class="w"/> (?)識別證上的公司名稱,建議 5 個字以內,預設為 HCP 公司建檔中的簡稱</td></tr>
+    <tr><td class="column-label">基準部門層級</td>
+        <td><select name="dept_level" id="dept_level"  class="w">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            (?)大於此層級的部門將顯示此部門反之顯示原部門</td></tr>
+			<!--
+    <tr><td class="column-label">工號取號規則</td>
+        <td>
+            <select name="emp_id_rule" id="emp_id_rule"  class="w">
+                <option value="HCP">HCP標準</option>
+                <option value="Cust">依客製</option>
+            </select>
+        </td></tr>-->
+    <tr><td colspan="2" style="text-align:center;"><input type="submit" value="送出"/></td></tr>
+</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+
+<script>
+$().ready(function(){
+	$('#dept_level').val('<!--{$DEPT_LEVEL|default:1}-->');
+	//$('#emp_id_rule').val('<!--{$EMPID_RULE|default:'HCP'}-->');
+});
+</script>

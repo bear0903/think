@@ -1,0 +1,70 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine="1" title='批次申请结果'}-->
+<!--{include file="block_info.html" msg_txt= "申請成功 $success_count 筆，失敗 $failure_count 筆"}-->
+<br/>
+<!--{if $apply_type == 'leave'}-->
+<table class="bordertable">
+	<tr>
+		<td class="column-label"><!--{$LEAVE_NAME_LABEL}--></td>
+		<td><!--{$leave_name}--></td>
+		
+		<td class="column-label"><!--{$BEGIN_TIME_LABEL}--></td>
+		<td><!--{$begin_date}--></td>
+	
+		<td class="column-label"><!--{$END_TIME_LABEL}--></td>
+		<td><!--{$end_date}--></td>
+	
+		<td class="column-label"><!--{$HOURS_LABEL}--></td>
+		<td><!--{$hours|string_format:'%.2f'}--></td>
+	
+		<td class="column-label"><!--{$DAYS_LABEL}--></td>
+		<td><!--{$days|string_format:'%.2f'}--></td>
+	
+		<td class="column-label"><!--{$LEAVE_REASON_LABEL}--></td>
+		<td><!--{$leave_reason}--></td>
+	</tr>
+</table>
+<!--{else}-->
+<table class="bordertable">
+	<tr>
+		<td class="column-label" width="120"><!--{$OVERTIME_DATE_LABEL}--></td>
+		<td><!--{$overtime_date}--></td>
+	
+		<td class="column-label"><!--{$BEGIN_TIME_LABEL}--></td>
+		<td><!--{$begin_time}--></td>
+	
+		<td class="column-label"><!--{$END_TIME_LABEL}--></td>
+		<td><!--{$end_time}--></td>
+	
+		<td class="column-label"><!--{$HOURS_LABEL}--></td>
+		<td><!--{$overtime_hours}--></td>
+	</tr>
+</table>
+<!--{/if}-->
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$DEPT_ID_LABEL}--></th>
+		<th nowrap><!--{$DEPT_NAME_LABEL}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+		<th nowrap><!--{$MSG_LABEL|default:'提示信息'}--></th>
+		<th nowrap><!--{$APPLY_RESULT_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$apply_result}-->
+	<tr>
+		<td><!--{$apply_result[i].dept_id}--></td>
+		<td><!--{$apply_result[i].dept_name}--></td>
+		<td><!--{$apply_result[i].emp_id}--></td>
+		<td><!--{$apply_result[i].emp_name}--></td>
+		<td><!--{$apply_result[i].msg}--></td>
+		<td><img src="<!--{$IMG_DIR}-->/<!--{$apply_result[i].is_success}-->.png"
+		alt=""/></td>
+	</tr>
+	<!--{/section}-->
+</table>
+<div align="center" style="padding:10px;">
+<input type="button" class="button-submit" value="返回" onclick="history.back(-1);"/>
+</div>
+<!--{include file="block_box_footer.html"}-->

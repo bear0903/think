@@ -1,0 +1,35 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+</head>
+<body class="page-container">
+    <!--{if $show=='List'}-->
+    <!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'登录日志' showLine=1}-->
+    <table class="bordertable">
+        <thead>
+            <tr>
+                <th><!--{$APP_USE_USER_NO}--> </th>
+                <th> <!--{$APP_USE_COMPANY_NO}-->  </th>
+                <th> <!--{$APP_USE_DATETIME_BEGIN}--> </th>
+                <th> <!--{$APP_USE_DATETIME_END}--> </th>
+                <th> <!--{$IP_ADDRESS}--> </th>
+                <th>  <!--{$SOURCE}-->  </th>
+                <th>  <!--{$MACHINE_NAME}-->  </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--{section name="i" loop=$list}-->
+            <tr>
+
+                <td><!--{$list[i].APP_USE_USER_NO}--></td>
+                <td><!--{$list[i].APP_USE_COMPANY_NO}--></td>
+                <td><!--{$list[i].APP_USE_DATETIME_BEGIN}--></td>
+                <td><!--{$list[i].APP_USE_DATETIME_END}--></td>
+                <td><!--{$list[i].IP_ADDRESS}--></td>
+                <td><!--{$list[i].SOURCE}--></td>
+                <td><!--{$list[i].MACHINE_NAME}--></td>
+            </tr>
+            <!--{/section}-->
+            <tr><td colspan="12"><!--{$pageDownUp}--></td></tr>
+        </tbody>
+    </table>
+    <!--{/if}-->
+    <!--{include file="block_box_footer.html"}-->

@@ -1,0 +1,169 @@
+	<table class="bordertable">
+		<tr>
+			<td width="100" class="column-label"><!--{$OVERTIME_DATE_LABEL}-->*</td>
+			<td>
+				<input type="text"
+					   name="overtime_date"
+					   id="overtime_date"
+					   title="Date Format: YYYY-MM-DD"
+					   value="<!--{$smarty.now|date_format:"%Y-%m-%d"}-->"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$BEGIN_TIME_LABEL}-->*</td>
+			<td>
+				<input type="text"
+					   name="begin_time"
+					   id="begin_time"
+					   class="input-text"
+					   title="Time format: HH24:MI"
+					   value="18:00"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$END_TIME_LABEL}-->*</td>
+			<td>
+				<input type="text"
+					   name="end_time"
+					   id="end_time"
+					   class="input-text"
+					   title="Time format: HH24:MI"
+					   value="21:00"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$HOURS_LABEL}-->*</td>
+			<td>
+				<input type="text"
+					   name="overtime_hours"
+					   id="overtime_hours"
+					   class="input-text"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$REASON_LABEL}--></td>
+			<td>
+				<select name="overtime_reason"
+						id="overtime_reason">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$overtime_reason_list selected=$s_reason_seqno}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$OT_FEE_TYPE_LABEL}-->*</td>
+			<td>
+				<select id="overtime_fee_type1" 
+						<!--{if !$isassistant}-->disabled="true"<!--{/if}-->>
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$overtime_fee_type selected=$smarty.post.overtime_fee_type}-->
+				</select>
+				<input type="hidden" name="overtime_fee_type" id="overtime_fee_type" value=""/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$OT_TYPE_LABEL}-->*</td>
+			<td>
+				<select name="overtime_type1" 
+						id="overtime_type1" 
+						<!--{if !$isassistant}-->disabled="true"<!--{/if}-->>
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$overtime_type selected=$smarty.post.overtime_type}-->
+				</select>
+				<input type="hidden" name="overtime_type" id="overtime_type" value=""/>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top" class="column-label"><!--{$REMARK_LABEL}--></td>
+			<td><textarea name="remark" id="remark"></textarea>
+			</td>
+		</tr>
+        <!--{if !empty($isassistant)}-->
+        <tr>
+            <td colspan="2">
+                <!--{include file="block_batch_apply_detail.html" }-->
+            </td>
+        </tr>
+        <!--{else}-->
+        <tr>
+			<td></td>
+			<td>
+				<input type="submit" name="submit" value="<!--{$SUBMIT_BTN_LABEL}-->" class="button-submit"/>
+			</td>
+		</tr>
+        <!--{/if}-->		
+	</table>
+
+	<script type="text/javascript">
+		/* add by boll 2009-04-20
+		**  取加班時數
+		*/
+		$("#overtime_date").change(function(){
+			getFactHour();
+		});
+		$("#begin_time").change(function(){
+			getFactHour();
+		});
+		$("#end_time").change(function(){
+			getFactHour();
+		});
+		// change by dennis 2011-12-09
+		$().ready(function(){
+			getFactHour();
+			<!--{if $isassistant}-->
+			// add by dennis 2011-12-09 for fixed
+			$('#overtime_type1').change(function(){
+				$('#overtime_type').val($(this).val());
+			});			
+			$('#overtime_fee_type1').change(function(){
+				$('#overtime_fee_type').val($(this).val());
+			});
+			<!--{/if}-->
+			$('#overtime_date').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeMonth:true,
+				changeYear:true,
+			 	showOn: "button",
+			 	buttonImage: "../img/date.png",
+			 	buttonImageOnly: true
+			});
+	    	
+	    	$('.ui-datepicker-trigger').attr('style','margin-left:2px;margin-bottom:-4px;');
+		});
+		
+		function getFactHour(){
+			var action=$("#action").val(); // 批量申請不處理
+			if(action=='batch_apply') return false;
+			<!--{$otfeejs_code}--> //add by dennis 2011-12-09 22:18
+			var d1=$("#begin_time").val();
+			var d2=$("#end_time").val();
+			var d3=$("#overtime_date").val();
+			$.ajax(
+			{
+				type:'post',
+			   	url:'?scriptname=ajax_overtime&do=GetOverTime',
+			   	data:{begin_time:    d1,
+					  end_time:      d2,
+					  overtime_date: d3},
+			  	success: function(data){
+					$("#overtime_hours").val(data['hours']);
+					$("#overtime_type1").val(data['day_type']);
+					$("#overtime_type").val(data['day_type']);
+					//　如果没有抓到计费还是补休的话，就让其可以选择计费或是补休  // add by dennis 2011-12-09 22:18
+					var otfeetype = otfee[data['day_type']] != '' ? otfee[data['day_type']] : '';
+					if (otfeetype != '')
+					{
+						$("#overtime_fee_type1").attr('disabled',true);
+						$("#overtime_fee_type1").val(otfeetype);
+						$("#overtime_fee_type").val(otfeetype);
+					}else{
+						$("#overtime_fee_type1").attr('disabled',false);
+						// 如果没有抓到计费还是补休的话，就让其可以选择计费或是补休  // add by dennis 2011-12-15 13:55
+						$("#overtime_fee_type1").change(function(){
+							$('#overtime_fee_type').val($(this).val());
+						});
+					}
+			   },
+			   dataType: 'json'});
+		}
+	</script>

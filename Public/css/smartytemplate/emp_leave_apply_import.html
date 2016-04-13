@@ -1,0 +1,161 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'請假申請匯入' showLine=1}-->
+<!--{if $show=='List'}-->
+<form id="postForm" name="postForm" method="POST" >
+	<div class="notice">
+		<strong>
+		匯入前資料檢查:成功<!--{$count_successfull}-->筆,
+		失敗<!--{$count_all-$count_successfull}-->筆,共<!--{$count_all}-->筆.
+		<!--{if $count_successfull >0 }-->確認匯入請按"送出",否則請按"取消". <!--{/if}-->
+		</strong>
+	</div>
+	<br clear="all"/>
+	<!--{if $count_successfull >0 }-->
+	<div align="center">
+		<input type="button" id="doSave"
+		       value="<!--{$SUBMIT_BTN_LABEL|default:'送出'}-->"
+			   class="button-submit"/>
+		<input type="button" id="doCancel"
+		       value="<!--{$CANCEL_BTN_LABEL|default:'取消'}-->"
+			   class="button-submit"/>
+	</div>
+	<br clear="all"/>
+	<!--{/if}-->
+	<table class="bordertable" id="empList">
+		<thead>
+		<tr>
+			<th nowrap><!--{$LINE_NO_LABEL|default:'行號'}--></th>
+			<th nowrap><!--{$DEPT_NO_LABEL|default:'部門代碼'}--></th>
+			<th nowrap><!--{$DEPT_NAME_LABEL|default:'部門名稱'}--></th>
+			<th nowrap><!--{$EMP_NO_LABEL|default:'員工代碼'}--></th>
+			<th nowrap><!--{$EMP_NAME_LABEL|default:'姓名'}--></th>		
+			<th nowrap><!--{$ABSENCE_TYPE_LABEL|default:'假別'}--></th>
+			<th nowrap><!--{$BEGIN_TIME_LABEL|default:'開始時間<br>(yyyymmdd hh24mi)'}--></th>
+			<th nowrap><!--{$END_TIME_LABEL|default:'結束時間<br>(yyyymmdd hh24mi)'}--></th>
+			<th nowrap><!--{$REASON_LABEL|default:'事由'}--></th>
+			<th nowrap><!--{$REMARK_LABEL|default:'備註/錯誤原因'}--></th>
+		</tr>
+		</thead>
+		<!--{section name="i" loop=$list}-->
+		<!--{if $list[i].ERROR_CODE==''}-->
+		<tr>
+		    <td><!--{$list[i].LINE_NO}--></td>
+		    <td><!--{$list[i].DEPT_ID}--></td>
+		    <td><!--{$list[i].DEPT_NAME}--></td>
+		    <td><!--{$list[i].COL1}--></td>
+		    <td><!--{$list[i].EMP_NAME}--></td>
+		    <td><!--{$list[i].COL4}--></td>
+			<td><!--{$list[i].COL2}--></td>
+			<td><!--{$list[i].COL3}--></td>
+			<td><!--{$list[i].COL5}--></td>
+			<td>&nbsp; </td>
+		</tr>
+		<!--{else}-->
+		<tr >
+		    <td class="error"><!--{$list[i].LINE_NO}--></td>
+		    <td class="error"><!--{$list[i].DEPT_ID}--></td>
+		    <td class="error"><!--{$list[i].DEPT_NAME}--></td>
+		    <td class="error"><!--{$list[i].COL1}--></td>
+		    <td class="error"><!--{$list[i].EMP_NAME}--></td>  
+		    <td class="error"><!--{$list[i].COL4}--></td><!-- 假別 -->	    
+		    <td class="error"><!--{$list[i].COL2}--></td>
+			<td class="error"><!--{$list[i].COL3}--></td>		
+			<td class="error"><!--{$list[i].COL5}--></td>
+			<td class="error">
+				<!--{$list[i].ERROR_CODE}-->:<!--{$list[i].ERROR_TEXT}-->
+			</td>         
+		</tr>
+		<!--{/if}-->
+		<!--{/section}-->
+	</table>  
+	<input type="hidden" name="successfull_line_no" value="<!--{$successfull_line_no}-->"/>
+	<input type="hidden" name="do"  id="doaction" value="SaveApply"/>
+</form>
+<!--{/if}-->
+
+<!--{if $show=='result'}-->
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+	<table class="bordertable" id="infoList">
+		<thead>
+		<tr>
+			<th nowrap><!--{$LINE_NO|default:'行號'}--></th>
+			<th nowrap><!--{$DEPT_NO|default:'部門代碼'}--></th>
+			<th nowrap><!--{$DEPT_NAME|default:'部門名稱'}--></th>
+			<th nowrap><!--{$EMP_NO|default:'員工代碼'}--></th>
+			<th nowrap><!--{$EMP_NAME|default:'姓名'}--></th>
+			<th nowrap><!--{$ABSENCE_TYPE_LABEL|default:'假別'}--></th>
+			<th nowrap><!--{$BEGIN_TIME_LABEL|default:'開始時間<br>(yyyymmdd hh24mi)'}--></th>
+			<th nowrap><!--{$END_TIME_LABEL|default:'結束時間<br>(yyyymmdd hh24mi)'}--></th>
+			<th nowrap><!--{$REASON_LABEL|default:'事由'}--></th>
+			<th nowrap><!--{$REMARK_LABEL|default:'備註/錯誤原因'}--></th>		
+			<th nowrap><!--{$INFOR_ALERT|default:'提示訊息'}--></th>
+			<th nowrap><!--{$INFOR_RESULT|default:'送出結果'}--></th>
+		</tr>
+		</thead>
+		<!--{section name="i" loop=$list}-->
+		<!--{if $list[i].ERROR_CODE==''}-->
+		<tr>
+		    <td><!--{$list[i].LINE_NO}--></td>
+		    <td><!--{$list[i].DEPT_ID}--></td>
+		    <td><!--{$list[i].DEPT_NAME}--></td>
+		    <td><!--{$list[i].COL1}--></td>
+		    <td><!--{$list[i].EMP_NAME}--></td>	
+		    <td><!--{$list[i].COL4}--></td><!-- 假別 -->	    
+		    <td><!--{$list[i].COL2}--></td>
+			<td><!--{$list[i].COL3}--></td>		
+			<td><!--{$list[i].COL5}--></td>
+			<td></td>
+		    <td><!--{$list[i].msg}--></td>
+			<td><img src="<!--{$IMG_DIR}-->/<!--{$list[i].is_success}-->.png" alt=""/></td>
+		</tr>
+		<!--{else}-->
+		<tr >
+		    <td class="error"><!--{$list[i].LINE_NO}--></td>
+		    <td class="error"><!--{$list[i].DEPT_ID}--></td>
+		    <td class="error"><!--{$list[i].DEPT_NAME}--></td>
+		    <td class="error"><!--{$list[i].COL1}--></td>
+		    <td class="error"><!--{$list[i].EMP_NAME}--></td>	    
+		    <td class="error"><!--{$list[i].COL2}--></td>
+			<td class="error"><!--{$list[i].COL3}--></td>
+			<td class="error"><!--{$list[i].COL4}--></td>
+			<td class="error"><!--{$list[i].COL5}--></td>
+			<td class="error"><!--{$list[i].COL6}--></td>
+			<td class="error"><!--{$list[i].COL7}--></td>
+			<td class="error"><!--{$list[i].COL8}--></td>
+			<td class="error">
+				<!--{$list[i].ERROR_CODE}-->:<!--{$list[i].ERROR_TEXT}-->
+			</td>         
+		</tr>
+		<!--{/if}-->
+		<!--{/section}-->
+	    <tr>
+	    	<td colspan="13">
+	    		<!--{include file="block_info.html" msg_txt="送出成功: $count_successfull 筆,失敗: $fail_rows 筆,共:$count_all 筆"}-->
+	    	</td>
+	    </tr>
+	</table>
+</form>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<script type="text/javascript">
+	$("#doReset").click(function(){	
+		clearForm('editForm');
+	});
+	
+	$("#doCancel").click(function(){
+		$('#doaction').val('Cancel');
+		document.postForm.submit();
+		//location.href="redirect.php?scriptname=emp_leave_apply_import&do=List";
+	});
+	
+	$("#doSave").click(function(){	
+		document.postForm.submit();
+	});
+	
+	$("#function_id").change(function(){	
+		if('<!--{$action}-->'!='Update')  $("#menu_code").val(this.options[this.selectedIndex].value);
+	});
+</script>

@@ -1,0 +1,27 @@
+</head>
+<body class="page-container">
+<!--{include file="block_salary_period.html"}-->
+<!--{include file="block_box_header.html"}-->
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$SALARY_MONTH_LABEL}--></th>
+		<th nowrap><!--{$PAY_TYPE_CODE_LABEL}--></th>
+		<th nowrap><!--{$PAY_TYPE_NAME_LABEL}--></th>
+		<th nowrap><!--{$TAX_AMOUNT_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$salary_tax_list}-->
+	<tr>
+		<td><!--{$salary_tax_list[i].SALARY_YM}--></td>
+		<td><!--{$salary_tax_list[i].PAY_TYPE_CODE}--></td>
+		<td><!--{$salary_tax_list[i].PAY_TYPE_DESC}--></td>
+		<td><!--{$salary_tax_list[i].TAX_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="4">
+             <!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+        </td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->

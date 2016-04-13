@@ -1,0 +1,20 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+<table class="bordertable">
+	<tr>
+		<td>
+			<!--{if $year_goal}-->
+				<pre><!--{$year_goal|nl2br}--></pre>
+			<!--{else}-->
+	              <!--{include file="block_info.html" msg_txt=$NO_YEAR_OBJECTIVE_MSG}-->
+			<!--{/if}-->
+		</td>
+	</tr>
+</table>
+<!--{include file="block_box_footer.html"}-->
+
+<script type="text/javascript">
+    $(document).attr('title','<!--{$BLOCK_TITLE}-->');
+</script>

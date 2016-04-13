@@ -1,0 +1,39 @@
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<thead>
+		<tr>
+			<th><!--{$C_YEAR_DAYS_LABEL}--></th>
+			<th><!--{$ADJUST_DAYS_LABEL}--></th>
+			<th><!--{$DEFER_DAYS_LABEL}--></th>
+			<th><!--{$EXT_ADJUST_DAYS_LABEL|default:'遞調天數'}--></th>
+			<th><!--{$USED_DAYS_LABEL}--></th>
+			<th><!--{$USED_HOURS_LABEL|default:'已休時數'}--></th>
+			<th><!--{$LEFT_DAYS_LABEL}--></th>
+			<th><!--{$LEFT_HOURS_LABEL|default:'剩餘時數'}--></th>
+			<th><!--{$EFFECTIVE_DATE_LABEL|default:'生效日期'}--></th>
+			<th><!--{$EXPIRED_DATE_LABEL|default:'失效日期'}--></th>
+		</tr>
+	</thead>
+	<tbody>
+		<!--{section name="i" loop=$year_vacation}-->
+		<tr>
+			<td><!--{$year_vacation[i].YEAR_VACATION_DAYS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].MODULATE_DAYS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].EXTEND_DAYS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].EXTEND_ADJ_DAYS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].USED_DAYS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].USED_HOURS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].LEFT_DAYS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].LEFT_HOURS|string_format:'%.2f'}--></td>
+			<td><!--{$year_vacation[i].EFFECTIVE_DATE}--></td>
+			<td><!--{$year_vacation[i].EXPIRED_DATE}--></td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="10">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+		</tr>
+		<!--{/section}-->
+	</tbody>
+</table>

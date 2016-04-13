@@ -1,0 +1,102 @@
+
+<!-- 绩效考核目标设置 -->
+<style type="text/css">
+	.input-date {
+		width:70px;
+	}
+	.goal_type{
+		width:80px;
+	}
+	.work-goal{
+		height:98%;
+	}
+	.work-plan{
+		width:98%;
+	}
+	.add-detail-row,.del_detail_row{
+		width:24px;
+		height:24px;
+	}
+	textarea{
+		height:100%;
+	}
+	
+</style>
+</head>
+<body class="page-container">
+
+<!--{include file="block_box_header.html" title='期初目标设定' showLine = '1'}-->
+
+<!--{include file="block_box_header.html" title='基本信息' showLine = '1'}-->
+	<!--{include file="block_pa_emp_info.html"}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html" title='目标设定' showLine = '1'}-->
+<form name="form1" action="?scriptname=pa_goal_setting" method="post">
+	<input type="hidden" name="pa_form_seqno" value="<!--{$smarty.get.pa_seqno}-->"/>
+	<input type="hidden" name="doaction" id="doaction" value="save"/>
+	<table class="bordertable" id="goal_set_tab">
+		<tr>
+			<td colspan="12" style="text-align:right;">
+				<button id="add_row_btn">添加目标</button>
+				<button id="del_row_btn">删除目标</button>
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<th><!--{$SEQ_LABEL|default:'序'}--></th>
+			<th><!--{$GOAL_CATALOG_LABEL|default:'目标类型'}--></th>
+			<th><!--{$WORK_GOAL_LABEL|default:'工作目标(KPI+KPI值)'}--></th>
+			<th><!--{$GOAL_WEIGHT_LABEL|default:'目标权重'}--></th>
+			<th><!--{$SEQ_LABEL|default:'序'}--></th>
+			<th><!--{$WORK_PLAN_LABEL|default:'工作计划(考核明细)'}--></th>
+			<th><!--{$PLAN_WEIGHT_LABEL|default:'计划权重'}--></th>
+			<th><!--{$ARCHIVE_DATE_LABEL|default:'达成日期'}--></th>
+			<th><!--{$OWNER_LABEL|default:'负责人'}--></th>
+			<th><!--{$REMARK_LABEL|default:'备注'}--></th>
+			<th width="80"><!--{$EDIT_LABEL|default:'操作'}--></th>
+		</tr>
+		<tr class="master_row_0">
+			<td rowspan="2"><input type="checkbox" class="master_chk"/></td>
+			<td rowspan="2" class="master_seqno">1</td>
+			<td rowspan="2">
+				<select class="goal_type required" name="goal_type[0]">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+	                <!--{html_options options=$goal_type_list selected=$s_goal_type_id}-->
+				</select>
+			</td>
+			<td rowspan="2">
+				<textarea name="work_goal[0]" cols="10" class="work-goal required"></textarea>
+			</td>
+			<td rowspan="2"><input type="text" size="5" name="wgoal_weight[0]" value="" class="number required"/></td>
+			
+			<td class="detail_seqno0">1</td>
+			<td><textarea name="work_plan[0][0]" rows="2" cols="10" class="required"></textarea></td>
+			<td><input type="text" size="5" name="plan_weight[0][0]" class="required number"/></td>
+			<td><input type="text" class="input-date required date" name="archive_date[0][0]"/></td>
+			<td><input type="text" size="5" name="work_owner[0][0]" class="required"/></td>
+			<td><textarea name="remark[0][0]" rows="2" cols="10"></textarea></td>
+			<td><button class="add-detail-row">添加工作计划</button></td>
+		</tr>
+		<tr class="master_row_0">
+			<td class="detail_seqno0">2</td>
+			<td><textarea name="work_plan[0][1]" rows="2"  cols="10" class="required"></textarea></td>
+			<td><input type="text" size="5" name="plan_weight[0][1]" class="required number"/></td>
+			<td><input type="text" class="input-date required date"  name="archive_date[0][1]"/></td>
+			<td><input type="text" size="5" name="work_owner[0][1]" class="required"/></td>
+			<td><textarea name="remark[0][1]" rows="2" cols="10"></textarea></td>
+			<td><button class="del_detail_row">删除工作计划</button></td>
+		</tr>
+	</table>
+	
+	<div align="center">
+		<hr size="1"/>
+		<!-- <button id="tmp_save_btn">暂存</button>-->
+		<button class="save_form_btn">提交</button>
+	</div>
+</form>
+
+<!--{include file="block_box_footer.html"}-->
+<!--{include file="block_box_footer.html"}-->
+<!-- public js file  -->
+<!--{include file="pa_goal_js.html"}-->

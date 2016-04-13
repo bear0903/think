@@ -1,0 +1,89 @@
+
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+		<th nowrap><!--{$TRANS_DATE_LABEL}--></th>
+		<th nowrap><!--{$TRANS_TYPE_LABEL}--></th>
+		<th nowrap><!--{$TRANS_NAME_LABEL}--></th>
+		<th nowrap><!--{$NEW_DEPARTMENT_LABEL}--></th>
+		<th nowrap><!--{$NEW_TITLE_LABEL}--></th>
+		<th nowrap><!--{$NEW_JOBCATEGORY_LABEL}--></th>
+		<th nowrap><!--{$NEW_PERIOD_LABEL}--></th>
+		<th nowrap><!--{$NEW_COSTALLOCATION_LABEL}--></th>
+		<th nowrap><!--{$NEW_CONTRACT_LABEL}--></th>
+		<th nowrap><!--{$NEW_NB_NEWLEADER_LABEL}--></th>
+		<th nowrap><!--{$NEW_TRANSFER_RESON_LABEL}--></th>
+		<th nowrap><!--{$NEW_OVERTIME_TYPE_LABEL}--></th>
+		<th nowrap><!--{$NEW_ABSENCE_TYPE_LABEL}--></th>
+		<th nowrap><!--{$NEW_YEAR_TYPE_LABEL}--></th>
+		<th nowrap><!--{$NEW_JOB_LABEL}--></th>
+		<th nowrap><!--{$NEW_TAX_LABEL}--></th>
+		<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--></th>
+		<th nowrap><!--{$EXCEPTION_DESC_LABEL}--></th>
+		<th nowrap><!--{$ACTION_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$trans_workflow_list}-->
+	<tr>
+		<td nowrap><!--{$smarty.section.i.rownum}--></td>
+		<td nowrap><!--{$trans_workflow_list[i].EMP_ID}--></td>
+		<td nowrap><!--{$trans_workflow_list[i].EMP_NAME}--></td>
+		<td nowrap><!--{$trans_workflow_list[i].TRANS_DATE}--></td>
+		<td><!--{$trans_workflow_list[i].TRANS_TYPE}--></td>
+		<td><!--{$trans_workflow_list[i].TRANS_NAME}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_DEPT_NAME}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_TITLE}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_JOBCATEGORY}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_PERIOD}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_COSTALLOCATION}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_CONTRACT}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_NB_NEWLEADER}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_TRANSFER_RESON}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_OVERTIME_TYPE}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_ABSENCE_TYPE}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_YEAR_TYPE}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_JOB}--></td>
+		<td><!--{$trans_workflow_list[i].NEW_TAX}--></td>
+
+		<td><!--{$trans_workflow_list[i].STATUS_NAME}--></td>
+		<td><!--{$trans_workflow_list[i].REJECT_COMMENT}--></td>
+		<td nowrap>
+		<!--{* 未签核过或未提交 (暂存的)人事异动申请可以被删除*}-->
+		<!--{if $trans_workflow_list[i].FLOW_STATUS <'02' && $whoami !='admin' }-->
+			<!--{if $trans_workflow_list[i].FLOW_STATUS == "00"}-->
+			<a href="?scriptname=<!--{$smarty.get.scriptname}-->&action=submit&trans_flowseqno=<!--{$trans_workflow_list[i].TRANS_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/y.png" alt="Submit"/>
+			</a>
+			<!--{/if}-->
+			<a onclick="return confirm('<!--{$CONFIRM_DELETE_MSG}-->');"
+			   href="?scriptname=<!--{$smarty.get.scriptname}-->&action=delete&trans_flowseqno=<!--{$trans_workflow_list[i].TRANS_FLOW_SEQNO}-->">
+                <img src="<!--{$IMG_DIR}-->/cancel.png" alt="Delete"/>
+            </a>
+		<!--{/if}-->
+		<!--{* 未提交不可查看流程图 add by dennis 2006-04-21 17:07:59 *}-->
+		<!--{if $trans_workflow_list[i].FLOW_STATUS <> "00"}-->
+			<!-- type="popup" user defined attributes for js -->
+			<a type="popup" href="?scriptname=view_flowchart&action=view_flowchart&apply_type=trans&flow_seqno=<!--{$trans_workflow_list[i].TRANS_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/pe.png" alt="View Workflow flowchart"/>
+			</a>
+		<!--{/if}-->
+		<!--{* 只有管理员才能作废流程 *}-->
+			<!--{if $trans_workflow_list[i].FLOW_STATUS >'00' &&
+					$trans_workflow_list[i].FLOW_STATUS <'05' &&
+					$trans_workflow_list[i].FLOW_STATUS <>'03' &&
+					$whoami =='admin' }-->
+			<a onclick="return CancelWorkflow(this);"  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=cancelflow&apply_type=<!--{$trans_workflow_list[i].APPLY_TYPE}-->&trans_flowseqno=<!--{$trans_workflow_list[i].TRANS_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Cancel Flow" title="Cancel Workflow"/>
+		 	</a>
+			<!--{/if}-->
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="23">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

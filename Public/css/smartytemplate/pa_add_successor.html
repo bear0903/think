@@ -1,0 +1,99 @@
+
+<script type="text/javascript" src="<!--{$JS_DIR}-->/functions.js"></script>
+<script type="text/javascript" language="javascript">
+	function submitUpdateForm()
+	{
+		//alert($('#emp_seq_no_0')[0].value);
+		checkMustBeInput(0);
+		checkMustBeInput(1);
+		checkMustBeInput(2);
+		if(checkUserInputData('form1')== false) return false;
+		if (parseInt('<!--{$smarty.get.pa_successor_seq}-->')>0)
+		{
+			document.getElementById('doaction').value = 'save';
+		}
+	}// end submitUpdateForm()
+	
+	function checkMustBeInput(seqno)
+	{
+		if ($('#emp_seq_no_'+seqno)[0].value)
+		{
+			$('#gradus_'+seqno)[0].required = "Y";
+			$('#approve_time_'+seqno)[0].required = "Y";
+			$('#job_represent_'+seqno)[0].required = "Y";
+			$('#possabilitiy_'+seqno)[0].required = "Y";
+			//$('#merit_'+seqno)[0].required = "Y";
+			//$('#demerit_'+seqno)[0].required = "Y";
+			//$('#train_emphasis_'+seqno)[0].required = "Y";
+		}/*else{
+			$('#gradus_'+seqno)[0].required = "Y";
+			$('#approve_time_'+seqno)[0].required = "Y";
+			$('#job_represent_'+seqno)[0].required = "Y";
+			$('#possabilitiy_'+seqno)[0].required = "Y";
+			$('#merit_'+seqno)[0].required = "Y";
+			$('#demerit_'+seqno)[0].required = "Y";
+			$('#train_emphasis_'+seqno)[0].required = "Y";
+		}*/
+	}
+	function loadLeast3PAScore(emp_seqno,column_seqno)
+	{
+		if (emp_seqno != '' && column_seqno!=''){
+			$.ajax({
+				type:"POST",
+				url:"?scriptname=pa_add_successor",
+				data:"ajaxcall=1&emp_seqno="+emp_seqno,
+				async: false, 
+				timeout:1000,
+				dataType:'json', 
+				success: function(json){
+					addPAScoreList('pa_score_list_'+column_seqno,json);
+		        },
+			    error: function(){alert('error');}
+		    });
+	    }// end if
+	}// end loadMonth
+
+	function addPAScoreList(cid,data)
+	{
+		// Clear before add
+		$('#'+cid).empty();
+		$('#'+cid).append('<tr><th><!--{$PA_PERIOD_LABEL|default:"考核期間"}--></th><th><!--{$PA_SCORE_LABEL|default:"考核成績"}--></th><th><!--{$PA_RANK_LABEL|default:"等第"}--></th></tr>');
+		var c= data.length;
+		if (c>0)
+		{
+			for (var j=0; j<c; j++)
+			{
+				$('#'+cid).append('<tr><td>'+data[j][8]+'</td><td>'+data[j][11]+'</td><td>'+data[j][11]+'</td></tr>');
+			}// end for loop
+		}else{
+			$('#'+cid).append('<tr><td colspan="3" class="notice">沒有考核歷史紀錄</td></tr>');
+		}		
+	}// end addOptionToList()
+</script>
+</head>
+<body class="page-container">
+<!--{include file='block_box_header.html' title=$ADD_NEW_LABEL showLine=1}-->
+<form name="form1" method="post">
+<input type="hidden" name="doaction" id="doaction" value="<!--{$smarty.get.doaction}-->"/>
+<input type="hidden" name="pa_successor_key" value="<!--{$smarty.get.pa_successor_seq}-->"/>
+<!--{include file='block_add_successor_form.html' column_seqno=0}-->
+<!--{if $smarty.get.doaction neq 'update' }-->
+<hr size="1"/>
+<!--{include file='block_add_successor_form.html' column_seqno=1}-->
+<hr size="1"/>
+<!--{include file='block_add_successor_form.html' column_seqno=2}-->
+<hr size="1"/>
+<!--{/if}-->
+<div align="center">
+	<input type="submit" 
+		   name="submitform" 
+		   value="<!--{$SUBMIT_BTN_LABEL}-->" 
+		   class="button-submit" 
+		   onclick="return submitUpdateForm();"/>
+	<input type="button"
+		   name="cancel" 
+		   value="<!--{$CANCEL_BTN_LABEL}-->" 
+		   class="button-submit" 
+		   onclick="document.location = '?scriptname=pa_successor_plan&menu_offset=61'"/>
+</div>
+<!--{include file='block_box_footer.html'}-->

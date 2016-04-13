@@ -1,0 +1,283 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+    <!--        
+    /**
+    * Get select emp list
+    */
+    function getSelectRow(tablid)
+    {
+        var emplist = new Array();
+        $tabl = $('#'+tablid);
+        var add_rows = 0;
+        var j=0;
+        var diff = 0;
+        var diff_msg = '';
+        $tabl.find('tr:gt(0)').each(function(){
+            if ($(this).find(':checkbox').attr('checked') == true)
+            {
+                emplist[j] = new Array();
+                emplist[j]['emp_seqno'] = $(this).find(':checkbox').val();
+                emplist[j]['emp_id'] = $(this).find('td:nth-child(2)').text();
+                emplist[j]['emp_name'] = $(this).find('td:nth-child(3)').text();
+                emplist[j]['dept_seqno'] = $(this).find('input[type=hidden]').val();
+                emplist[j]['dept_id'] = $(this).find('td:nth-child(5)').text();
+                emplist[j]['dept_name'] = $(this).find('td:nth-child(6)').text();
+                emplist[j]['overtimetype'] = $(this).find('td:nth-child(8)').text();
+                emplist[j]['overtimetype_name'] = $(this).find('td:nth-child(9)').text();
+                j++;
+            }
+        });
+        if(j>0)
+        {
+            //alert(1);alert(window.opener.hasLoaded);//pr(opener);//Hunk
+			window.opener.hasLoaded = true;//alert(window.opener.hasLoaded);//pr(opener);//Hunk
+            $opener_tab = $("#emplist", window.opener.document);
+            add_rows = addRowsToTable($opener_tab,emplist); 
+        }// end if
+        if (add_rows < j) diff = j - add_rows;
+        if (diff >0) diff_msg = '\r\n'+diff+'筆資料重複選取，未添加到員工列表.'; 
+        alert(add_rows + '<!--{$EMP_ADDED_MSG}-->'+diff_msg);
+        //if (add_rows>0) self.close.__proto__();
+		if (add_rows>0) self.close();
+    }
+
+	//Hunk
+	// emp_lov.html/emp_import.html 共用 functions add by dennis 2013-03-27
+	/**
+	 * Check employee exists the selected list according the primary ke (psn_id)
+	 */
+	 function isRowExists(tabobj,kval){
+		var rows = tabobj.find('tr:gt(0)'); 
+		var r = 0;
+		rows.each(function(index) {
+	         if (kval == $(':first-child', this).children('input:nth-child(2)').val()) r=1;
+	    });
+		return r;
+	}
+	/**
+	* add some trs to table
+	* @param tabObj object the target table object
+	* @param rows   array  data of row
+	* @author Dennis
+	*/
+	function addRowsToTable(tabObj,rows)
+	{
+	    var rcnt = rows.length;
+	    var j = 0;
+	    var emp_list_html = '';
+	    for (var i=0; i<rcnt; i++) 
+	    {
+	        if(isRowExists(tabObj,rows[i]['emp_seqno']) == 0)
+	        {
+	        	emp_list_html += '<tr>';
+	        	emp_list_html += '<td><input type="checkbox" name = "emp_seqno_chk[]" />';
+	        	emp_list_html += '<input type="hidden" name = "emp_seqno[]" value="'+rows[i]['emp_seqno']+'"/></td>';
+	        	emp_list_html += '<td>'+rows[i]['dept_id'];
+	        	emp_list_html += '<input type="hidden" name = "dept_seqno[]" value="'+rows[i]['dept_seqno']+'"/>';
+	        	emp_list_html += '<input type="hidden" name = "dept_id[]" value="'+rows[i]['dept_id']+'"/></td>';
+	        	emp_list_html += '<td>'+rows[i]['dept_name'];
+	        	emp_list_html += '<input type="hidden" name = "dept_name[]" value="'+rows[i]['dept_name']+'"/></td>';
+	        	emp_list_html += '<td>'+rows[i]['emp_id'];
+	        	emp_list_html += '<input type="hidden" name = "emp_id[]" value="'+rows[i]['emp_id']+'"/></td>';
+	        	emp_list_html += '<td>'+rows[i]['emp_name'];
+	        	emp_list_html += '<input type="hidden" name = "emp_name[]" value="'+rows[i]['emp_name']+'"/></td>';
+	        	emp_list_html += '<td>'+rows[i]['overtimetype'];
+	        	emp_list_html += '<input type="hidden" name = "overtimetype[]" value="'+rows[i]['overtimetype']+'"/></td>';
+	        	emp_list_html += '<td>'+rows[i]['overtimetype_name'];
+	        	emp_list_html += '<input type="hidden" name = "overtimetype_name[]" value="'+rows[i]['overtimetype_name']+'"/></td>';
+	        	//emp_list_html += '<td><img class="delete_row_img" src="<!--{$IMG_DIR}-->/close.gif" border="0" alt="Delete"/></td>';
+				emp_list_html += '</tr>';
+	        	j++;
+	        }// end if
+	    }// end for loop
+	    tabObj.find('tr:last').after(emp_list_html);
+		//tabObj.find('tr:last').__proto__.after.__proto__(emp_list_html);
+	    return j;
+	}// end addRowsToTable()
+	// end emp_lov.html/emp_import.html 共用 functions
+	//Hunk
+    
+    /**
+     *	单选型 LOV, 把值返回到单选的页面
+     * @param rowindex 当前所选的row index
+     **/
+    function returnLOVSelected(rowindex)
+    {
+        var oRow = document.getElementById('emplist').rows(rowindex);
+        var opr = opener.document;
+        opr.getElementById('emp_seq_no_<!--{$smarty.get.columnseq}-->').value = oRow.cells(0).firstChild.value;
+        opr.getElementById('emp_id_<!--{$smarty.get.columnseq}-->').value = oRow.cells(1).innerText;
+        opr.getElementById('emp_name_<!--{$smarty.get.columnseq}-->').value = oRow.cells(2).innerText;
+        opr.getElementById('dept_name_<!--{$smarty.get.columnseq}-->').value = oRow.cells(5).innerText;
+        opr.getElementById('emp_title_<!--{$smarty.get.columnseq}-->').value = oRow.cells(6).innerText;
+        self.close();
+    }// end returnLOVSelected()
+    //-->
+</script>
+<style type="text/css">
+    .long_col {width:275px;}
+	table{
+		width:95%;
+	}
+</style>
+</head>
+<body class="page-container" style="margin:5px;padding:5px;">
+    <form name="form1" id="form1" method="post">
+        <table class="bordertable">
+            <tr>
+                <td width="100"><!--{$BASE_DATE_LABEL}--></td>
+                <td>
+                    <input type="text"
+                           name="base_date"
+                           id="base_date"
+                           class="input-date"
+                           readonly
+                           value="<!--{$smarty.post.base_date|default:$smarty.now|date_format:"%Y-%m-%d"}-->"
+                           title="Date Format: YYYY-MM-DD"/>
+                </td>
+            </tr>
+            <!--{if $smarty.get.fromapp !== 'add_successor'}-->
+            <tr>
+                <td><!--{$FACTORY_BE_LABEL}--></td>
+                <td>
+                    <select name="factory_area1" id="factory_area1" class="long_col">
+                        <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                        <!--{html_options options=$factory_area_list selected=$smarty.post.factory_area1}-->
+                    </select>
+                    <select name="factory_area2" id="factory_area2" class="long_col">
+                        <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                        <!--{html_options options=$factory_area_list selected=$smarty.post.factory_area2}-->
+                    </select>
+                </td>
+            </tr>
+            <!--{/if}-->
+            <tr>
+                <td><!--{$DEPT_BE_LABEL}--></td>
+                <td>
+                    <select name="dept_id1" id="dept_id1" class="long_col">
+                        <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                        <!--{html_options options=$dept_name_list selected=$smarty.post.dept_id1}-->
+                    </select>
+                    <select name="dept_id2" id="dept_id2" class="long_col">
+                        <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                        <!--{* begin department list *}-->
+                        <!--{html_options options=$dept_name_list selected=$smarty.post.dept_id2}-->
+                        <!--{* end department list *}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><!--{$EMP_BE_LABEL}--></td>
+                <td>
+                    <input type="text"
+                           name="emp_id1"
+                           class="input-text long_col"
+                           value="<!--{$smarty.post.emp_id1}-->"/>
+                    <input type="text"
+                           name="emp_id2"
+                           class="input-text long_col"
+                           value="<!--{$smarty.post.emp_id2}-->"/>
+                </td>
+            </tr>
+            <!--{* 班别条件去掉 performance issue (Dennis 2008-09-27)
+            <tr>
+                <td><!--{$WORK_GROUP_LABEL}--></td>
+            <td>
+                <select name="workgroup" id="workgroup">
+                    <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                    <!--{html_options options=$workgroup_list selected=$smarty.post.workgroup}-->
+                </select>
+            </td>
+            </tr>*}-->
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit"
+                           name="submit"
+                           id="submit"
+                           value="<!--{$SUBMIT_QRY_BTN_LABEL}-->"
+                           class="button-submit"/>
+                    <input type="button"
+                           name="continue"
+                           value="<!--{$RESET_BTN_LABEL}-->"
+                           class="button-submit"
+                           onClick="clear_form('form1');"/>
+
+                </td>
+            </tr>
+        </table>
+    </form>
+    <hr size="1"/>
+    <!--{if (isset($smarty.post.submit))}-->
+    <form name="form2" method="post" onsubmit = "return CheckMustBeEntry(this);">
+        <table class="bordertable" id="emplist">
+            <tr>
+                <th nowrap>
+                    <!--{if $smarty.get.select_type !== 'single'}-->
+                    <input type="checkbox" name="chkall" onclick="CheckAll(document.form2,this.checked)" title="<!--{$CHECK_ALL_LABEL}-->"/>
+                    <!--{/if}-->
+                </th>
+                <th nowrap><!--{$EMP_ID_LABEL}--></th>
+                <th nowrap><!--{$EMP_NAME_LABEL}--></th>
+                <th nowrap><!--{$GENDER_LABEL}--></th>
+                <th nowrap><!--{$DEPT_ID_LABEL}--></th>
+                <th nowrap><!--{$DEPT_NAME_LABEL}--></th>
+                <th nowrap><!--{$TITLE_LABEL}--></th>
+                <!--加班费代号 added by Gracie at 20090624-->
+                <th nowrap><!--{$OVERTIMETYPE_LABEL}--></th>
+                <th nowrap><!--{$OVERTIMETYPE_NAME_LABEL}--></th>
+                <!-- added end -->
+            </tr>
+            <!--{section name="i" loop=$employee_list}-->
+            <tr>
+                <td align="center">
+                    <!--{if $smarty.get.select_type == 'single'}-->
+                    <input type="radio" name="empseqno" value="<!--{$employee_list[i].EMP_SEQ_NO}-->" ondblclick="returnLOVSelected(<!--{$smarty.section.i.rownum}-->)"/>
+                    <!--{else}-->
+                    <input type="checkbox" value="<!--{$employee_list[i].EMP_SEQ_NO}-->"/>
+                    <!--{/if}-->
+                </td>
+                <td><!--{$employee_list[i].EMP_ID}--></td>
+                <td><!--{$employee_list[i].EMP_NAME}--></td>
+                <td><!--{$employee_list[i].SEX}--></td>
+                <td><input type="hidden" name="dept_seqno" value="<!--{$employee_list[i].DEPT_SEQ_NO}-->"/><!--{$employee_list[i].DEPT_ID}--></td>
+                <td><!--{$employee_list[i].DEPT_NAME}--></td>
+                <td><!--{$employee_list[i].TITLE_NAME}--></td>
+                <!--加班费代号 added by Gracie at 20090624-->
+                <td><!--{$employee_list[i].OVERTIMETYPE_CODE}--></td>
+                <td><!--{$employee_list[i].OVERTIME_FEE_NAME}--></td>
+                <!-- added end -->
+            </tr>
+            <!--{sectionelse}-->
+            <tr>
+                <td colspan="9">
+                	<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+                </td>
+            </tr>
+            <!--{/section}-->
+        </table>
+        <!--{if $smarty.section.i.total>0 && $smarty.get.select_type != 'single' }-->
+        <div align="center" style="padding:5px;"><BR>
+            <input type="hidden" name="action" value="batch_apply" />
+            <input type="button"
+                   value="<!--{$OK_BTN_LABEL}-->"
+                   name="ok"
+                   id="ok"
+                   class="button-submit"
+                   onClick ="if(isChecked(document.form2)){getSelectRow('emplist');}else{alert('至少要选取一个员工.');}"/>
+            <input type="button"
+                   value="<!--{$CLOSE_BTN_LABEL}-->"
+                   onclick="self.close();"
+                   class="button-submit"/>
+        </div>
+        </form>
+        <!--{/if}-->
+<!--{/if}-->
+
+<script type="text/javascript">
+    $().ready(function(){
+		$('#base_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+		$(document).attr('title','Employee List');
+	});
+</script>

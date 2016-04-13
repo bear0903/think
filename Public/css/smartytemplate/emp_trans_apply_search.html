@@ -1,0 +1,180 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+	<form name="form1" id="form1" method="post">
+		<table class="bordertable">
+		<!--{* Assistand or Workflow Admin, advanced search*}-->
+		<!--{if $isassistant || $isadmin}-->
+
+		<!--{/if}-->
+		 <tr>
+			<td class="column-label"><!--{$TRANS_DATE_LABEL}--></td>
+			<td>
+				<input type="text"
+					   name="trans_date"
+					   id="trans_date"
+					   class="input-date"
+					   title="Date Format: YYYY-MM-DD"
+					   value="<!--{$smarty.post.trans_date}-->"/>
+			</td>
+			<td class="column-label"><!--{$NEW_NB_NEWLEADER_LABEL}--></td>
+			<td>
+				<select name="new_nb_newleader" id="new_nb_newleader">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_nb_list selected=$smarty.post.new_nb_newleader}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$TRANS_TYPE_LABEL}--></td>
+			<td>
+				<select name="trans_type"
+						id="trans_type"
+						onchange="changeSubListValue(this.options[this.selectedIndex].value)">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$transtype_list selected=$smarty.post.trans_type}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$NEW_TRANSFER_RESON_LABEL}--></td>
+			<td>
+				<select name="new_reason" id="new_reason">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_reason_list selected=$smarty.post.new_reason}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NEW_DEPARTMENT_LABEL}--></td>
+			<td>
+				<select name="new_department" id="new_department">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_department_list selected=$smarty.post.new_department}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$NEW_OVERTIME_TYPE_LABEL}--></td>
+			<td>
+				<select name="new_overtime_type_id" id="new_overtime_type_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_otype_list selected=$smarty.post.new_overtime_type_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NEW_TITLE_LABEL}--></td>
+			<td>
+				<select name="new_title_id" id="new_title_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_title_list selected=$smarty.post.new_title_id}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$NEW_ABSENCE_TYPE_LABEL}--></td>
+			<td>
+				<select name="new_absence_type_id" id="new_absence_type_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_absence_list selected=$smarty.post.new_absence_type_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NEW_JOBCATEGORY_LABEL}--></td>
+			<td>
+				<select name="new_jobcategory" id="new_jobcategory">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_jobcategory_list selected=$smarty.post.new_jobcategory}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$NEW_YEAR_TYPE_LABEL}--></td>
+			<td>
+				<select name="new_yeartype_id" id="new_yeartype_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_year_list selected=$smarty.post.new_yeartype_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NEW_PERIOD_LABEL}--></td>
+			<td>
+				<select name="new_period_id" id="new_period_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_period_list selected=$smarty.post.new_period_id}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$NEW_JOB_LABEL}--></td>
+			<td>
+				<select name="new_job_id" id="new_job_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_job_list selected=$smarty.post.new_job_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NEW_COSTALLOCATION_LABEL}--></td>
+			<td>
+				<select name="new_costallocation" id="new_costallocation">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_costallocation_list selected=$smarty.post.new_costallocation}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$NEW_TAX_LABEL}--></td>
+			<td>
+				<select name="new_tax_id" id="new_tax_id">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_tax_list selected=$smarty.post.new_tax_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+		  <td class="column-label"><!--{$NEW_CONTRACT_LABEL}--></td>
+			<td>
+				<select name="new_contract" id="new_contract">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$new_contract_list selected=$smarty.post.new_contract}-->
+				</select>
+			</td>
+			<td class="column-label"><!--{$WORKFLOW_STATUS_LABEL}--></td>
+			<td>
+				<select name="db_flow_status" id="db_flow_status">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$flow_status_list selected=$smarty.get.flowstatus|default:$smarty.post.db_flow_status}-->
+				</select>
+			</td>
+	    </tr>
+		<tr>
+			<td></td>
+			<td colspan="3">
+			    <input type="submit" name="submit" id="submit" value="<!--{$SUBMIT_QRY_BTN_LABEL}-->" class="button-submit"/>
+				<input type="button" name="reset"  value="<!--{$RESET_LABEL}-->"  onClick="clear_form('form1');" class="button-submit" />
+			</td>
+		</tr>
+	</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+<!--{if isset($smarty.post.submit) || isset($smarty.get.flowstatus)}-->
+
+<!--{include file="block_box_header.html"}-->
+<!--{include file="block_trans_apply_list.html"}-->
+<!--{$pagingbar}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+
+<script type="text/javascript">
+$().ready(function(){
+	$('#trans_date').datepicker({dateFormat:'yy-mm-dd',changeYear:true});
+	attachClickEvent();
+});
+//add by dennis 2006-04-29 15:39:43
+function CancelWorkflow(obj)
+{
+    var _cancel_comment = '';
+    _cancel_comment = prompt('<!--{$CONFIRM_CANCEL_MSG}-->','');
+    if (_cancel_comment!=null && _cancel_comment!='' )
+    {
+        obj.href += "&cancel_comment="+_cancel_comment;
+        return true;
+    }else{
+        return false;
+    }
+}
+</script>

@@ -1,0 +1,82 @@
+
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$ACTION_LABEL}--></th><!--變更操作欄位 by nicolas 20110223-->
+		<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--></th><!--變更操作欄位 by nicolas 20110224-->
+		<th nowrap><!--{$DEPT_NAME_LABEL}--></th>
+		<th nowrap><!--{$EMP_ID_LABEL}--></th>
+		<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+		<th nowrap><!--{$ABSENCE_NAME_LABEL}--></th>
+		<th nowrap><!--{$BEGIN_TIME_LABEL}--></th>
+		<th nowrap><!--{$END_TIME_LABEL}--></th>
+		<th nowrap><!--{$HOURS_LABEL}--></th>
+		<th nowrap><!--{$WORK_DAYS_LABEL}--></th>
+		<th nowrap><!--{$LEAVE_REASON_LABEL}--></th>
+		<!--<th nowrap><!--{$WORKFLOW_STATUS_LABEL}--></th>-->
+		<th nowrap><!--{$EXCEPTION_DESC_LABEL}--></th>
+		<!--<th nowrap><!--{$ACTION_LABEL}--></th>-->
+	</tr>
+	<!--{section name="i" loop=$cancel_leave_workflow_list}-->
+	<tr>
+		<td><!--{$smarty.section.i.rownum}--></td>
+		<!--變更操作欄位 by nicolas 20110223 v-->
+		<td nowrap>
+			<!--{* 未提交后,下一step 没有签核的仍可以删除 *}-->
+			<!--{if $cancel_leave_workflow_list[i].FLOW_STATUS <'02' && $whoami !='admin' }-->
+			<!--{if $cancel_leave_workflow_list[i].FLOW_STATUS == "00"}-->
+			<a href="?scriptname=<!--{$smarty.get.scriptname}-->&action=submit&cancel_leave_flowseqno=<!--{$cancel_leave_workflow_list[i].CANCEL_LEAVE_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/Y.png" width="20" height="20" border="0" align="absmiddle" alt="Submit" title="Submit Apply"/>
+			</a>
+			<!--{/if}-->
+			<a onclick="return confirm('<!--{$CONFIRM_DELETE_MSG}-->');"
+			  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=delete&cancel_leave_flowseqno=<!--{$cancel_leave_workflow_list[i].CANCEL_LEAVE_FLOW_SEQNO}-->">
+	            <img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Delete" title="Delete">
+	         </a>
+         	<!--{/if}-->
+
+         	<!--{* 未提交不可查看流程图 add by dennis 2006-04-21 17:07:59 *}-->
+		  	<!--{if $cancel_leave_workflow_list[i].FLOW_STATUS <> "00"}-->
+			<!-- type="popup" user defined attributes for js -->
+			<a type="popup" href="?scriptname=view_flowchart&action=viewflowchart&apply_type=<!--{$cancel_leave_workflow_list[i].APPLY_TYPE}-->&flow_seqno=<!--{$cancel_leave_workflow_list[i].CANCEL_LEAVE_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/pe.png" border="0" align="absmiddle" alt="View Workflow flowchart" title="View Workflow flowchart"/>
+		 	</a>
+			<!--{/if}-->
+			<!--{* 只有管理员才能作废流程 *}-->
+			<!--{if $cancel_leave_workflow_list[i].FLOW_STATUS >'00'  &&
+					$cancel_leave_workflow_list[i].FLOW_STATUS <'05'  &&
+					$cancel_leave_workflow_list[i].FLOW_STATUS <>'03' &&
+					$cancel_leave_workflow_list[i].FLOW_STATUS <>'04' &&
+					$whoami =='admin' }-->
+			<a onclick="return CancelWorkflow(this);"  href="?scriptname=<!--{$smarty.get.scriptname}-->&action=cancelflow&apply_type=<!--{$cancel_leave_workflow_list[i].APPLY_TYPE}-->&cancel_leave_flowseqno=<!--{$cancel_leave_workflow_list[i].CANCEL_LEAVE_FLOW_SEQNO}-->">
+				<img src="<!--{$IMG_DIR}-->/cancel.png" border="0" align="absmiddle" alt="Cancel Flow" title="Cancel Workflow"/>
+		 	</a>
+			<!--{/if}-->
+		</td>
+		<!--變更操作欄位 by nicolas 20110223 ^-->
+		<td><!--{$cancel_leave_workflow_list[i].STATUS_NAME}--></td><!--變更操作欄位 by nicolas 20110224-->
+		<td nowrap><!--{$cancel_leave_workflow_list[i].DEPT_NAME}--></td>
+		<td><!--{$cancel_leave_workflow_list[i].EMP_ID}--></td>
+		<td><!--{$cancel_leave_workflow_list[i].EMP_NAME}--></td>
+		<td nowrap><!--{$cancel_leave_workflow_list[i].ABSENCE_NAME}--></td>
+		<td nowrap><!--{$cancel_leave_workflow_list[i].BEGIN_TIME}--></td>
+		<td nowrap><!--{$cancel_leave_workflow_list[i].END_TIME}--></td>
+		<td>
+			<!--{$cancel_leave_workflow_list[i].HOURS|string_format:"%.2f"}-->
+		</td>
+		<td>
+			<!--{$cancel_leave_workflow_list[i].DAYS|string_format:"%.2f"}-->
+		</td>
+		<td><!--{$cancel_leave_workflow_list[i].REASON|nl2br}--></td>
+		<!--<td><!--{$cancel_leave_workflow_list[i].STATUS_NAME}--></td>-->
+		<td><!--{$cancel_leave_workflow_list[i].REJECT_COMMENT}--></td>
+
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="13">
+            <!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

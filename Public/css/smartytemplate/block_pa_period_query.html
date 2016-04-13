@@ -1,0 +1,21 @@
+
+<form name="form1" method="post">
+<table class="bordertable">
+	<tr>
+		<td class="column-label" width="120"><!--{$PA_PERIOD_LABEL}--></td>
+		<td>
+			<select name="period_id" id="period_id">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$period_list selected=$smarty.post.period_id}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="submit" name="submit" class="button-submit" value="<!--{$buttonLabel.SUBMIT}-->"/>
+			<input type="submit" name="reset" class="button-submit"  value="<!--{$buttonLabel.CLEAR}-->"/>
+		</td>
+	</tr>
+</table>
+</form>

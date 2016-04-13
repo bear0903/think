@@ -1,0 +1,190 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'分组设定' showLine=1}-->
+
+<!--{if $show=='List'}-->
+<table class="bordertable">
+	<thead>
+	<tr>
+		<th><!--{$PROGRAM_NO_LABEL|default:'程序编号'}--> </th>
+		<th><!--{$GROUP_ID_LABEL|default:'分组ID'}--> </th>
+		<th><!--{$GROUP_NAME_LABEL|default:'分组名称'}--> </th>
+		<th><!--{$GROUP_DESC_LABEL|default:'分组描述'}--> </th>
+		<th><!--{$MUTI_LANG_PK_LABEL|default:'多语PK'}--> </th>
+		<th><!--{$SORT_SEQ_LABEL|default:'排序'}--> </th>
+		<!--<th><!--{$COMMENTS_LABEL|default:'备注'}-->  </th>
+		-->
+		<th colspan=6><!--{$OPERATE|default:'操作'}--> </th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+
+	    <td><!--{$list[i].PROGRAM_NO}--></td>
+	    <td><!--{$list[i].GROUP_ID}--></td>
+		<td><!--{$list[i].GROUP_NAME}--></td>
+		<td><!--{$list[i].GROUP_DESC}--></td>
+		<td><!--{$list[i].MUTI_LANG_PK}--></td>
+		<td><!--{$list[i].SORT_SEQ}--></td>
+		<!--<td><!--{$list[i].COMMENTS}--></td>
+		-->
+		<td>
+			<a target="_self" href="javascript:doNew('<!--{$list[i].PROGRAM_NO}-->');">
+		    	<!--{$SaveSearchButton.NEW}-->
+		    </a>
+			<a target="_self" href="javascript:doEdit('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].GROUP_ID}-->');">
+		    	<!--{$SaveSearchButton.EDIT}-->
+		    </a>
+			<a href="javascript:doDelete('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].GROUP_ID}-->');">
+		    	<!--{$SaveSearchButton.DELETE}-->
+		    </a>
+		</td>
+	</tr>
+	 <!--{/section}-->
+	 
+    <tr><td colspan=9><!--{$pageDownUp}--></td></tr>
+	 </tbody>
+</table>
+<form id="editForm" name="editForm" METHOD="POST" ACTION="#">
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO">
+<input type="hidden" name="GROUP_ID" id="GROUP_ID">
+</form>
+<!--{/if}-->
+
+<!--{if $show=='New' or $show=='Edit'}-->
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+
+	<tr >
+		<td  width="30%"><!--{$PROGRAM_NO_LABEL|default:'程序編碼'}--> </td>
+		<td><input readonly id="PROGRAM_NO" NAME="PROGRAM_NO" class="input-text-display-only" TYPE="text" 
+			value="<!--{$row.PROGRAM_NO}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td  width="30%"><!--{$GROUP_ID_LABEL|default:'分组ID'}--> </td>
+		<td><input readonly id="GROUP_ID" NAME="GROUP_ID" class="input-text-display-only" TYPE="text" 
+			value="<!--{$row.GROUP_ID}-->" >
+		</td>
+	</tr>
+	</tr>
+
+	<tr>
+		<td nowrap><!--{$GROUP_NAME_LABEL|default:'分组名称'}--> </td>
+		<td><input id="GROUP_NAME" NAME="GROUP_NAME" class="input-text" TYPE="text" 
+			REQUIRED=Y title='<!--{$INPUT_PLEASE|default:'请输入'}--><!--{$GROUP_NAME_LABEL|default:'分组名称'}-->' 
+			value="<!--{$row.GROUP_NAME}-->" > <font color="red">*</font>
+		</td>
+	</tr>
+	
+	<tr>
+		<td ><!--{$GROUP_DESC_LABEL|default:'分组描述'}--> </td>
+		<td >
+		   <input id="GROUP_DESC" NAME="GROUP_DESC" class="input-text" TYPE="text" 
+		    REQUIRED=Y title='<!--{$INPUT_PLEASE|default:'请输入'}--><!--{$GROUP_DESC_LABEL|default:'分组描述'}-->' 
+			value="<!--{$row.GROUP_DESC}-->" > <font color="red">*</font>
+		</td>
+	</tr>
+	
+	<!--{section name="i" loop=$lang}-->
+	<input  TYPE="hidden" name="LANG_CODE[]" VALUE="<!--{$lang[i].ID}-->">
+	<tr>
+		<td nowrap><!--{$GROUP_DESC_LABEL|default:'多语值'}-->(<!--{$lang[i].TEXT}-->) </td>
+		<td > <input id="menu_name"  class="input-text" TYPE="text" name="GROUP_DESC_<!--{$lang[i].ID}-->" value="<!--{$lang[i].VALUE}-->"> </td>
+		 
+	</tr>
+	<!--{/section}-->
+	<tr >
+		<td nowrap><!--{$SORT_SEQ_LABEL|default:'排序'}--> </td>
+		<td><input id="SORT_SEQ" NAME="SORT_SEQ" class="input-text" TYPE="text" 
+			value="<!--{$row.SORT_SEQ}-->" 
+			required='Y' check_range=Y area_min=1 area_max=200  title='<!--{$INPUT_PLEASE|default:'请输入'}--><!--{$MENU_INDEX_LABEL|default:'数值'}-->'>
+		</td>
+	</tr>
+    
+	<!-- 
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'备注'}--> </td>
+		<td >
+		   <input id="COMMENTS" NAME="COMMENTS" class="input-text" TYPE="text" 
+			value="<!--{$row.COMMENTS}-->" >
+		</td>
+	</tr>
+	-->
+	<tr>
+		<td ></td>
+		<td >
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SaveSearchButton.SAVE}--> " id="doSave">
+			<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SaveSearchButton.CANCEL}--> " id="doCancel">
+		</td>
+	</tr>
+</tbody>
+</table>
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="MUTI_LANG_PK" value="<!--{$row.MUTI_LANG_PK}-->" >
+</form>
+<!--{/if}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+/*
+function doSave(){
+	//var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	var indata=$("#editForm").serialize(); 
+	$.post(
+		'?scriptname=train_enter_for&do=Save',
+		indata,//{ SUBJECT_CLASS_ID: subject_class_id },
+		function(data){
+		      alert(data);
+			  
+		} 
+	);
+}
+*/
+function doDelete(program_no,group_id){
+	var confirm=window.confirm("<!--{$SaveSearchButton.ALERT_DELETE_CONFIRM}-->"); 
+	if(confirm){
+		$("#do").val('DeleteGroup');
+		$("#PROGRAM_NO").val(program_no);
+		$("#GROUP_ID").val(group_id);
+		document.editForm.submit();
+	}
+}
+function doEdit(program_no,group_id){
+	//alert(program_no);alert(group_id);
+	$("#do").val('EditGroup');
+	$("#PROGRAM_NO").val(program_no);
+	$("#GROUP_ID").val(group_id);
+	document.editForm.submit();
+}
+
+function doNew(program_no){
+	//alert(program_no);alert(group_id);
+	$("#do").val('NewGroup');
+	$("#PROGRAM_NO").val(program_no);
+	//$("#GROUP_ID").val(group_id);
+	document.editForm.submit();
+}
+$("#doSave").click(function(){
+	if(!checkUserInputData('postForm')) return false;
+	$("#do").val('SaveGroup');
+	document.postForm.submit();
+});
+$("#doCancel").click(function(){
+	$("#do").val('ListGroup');
+	document.postForm.submit();
+});
+
+$(document).ready(function(){
+	document.title='分组设定';
+});
+</script>
+ 
+
+

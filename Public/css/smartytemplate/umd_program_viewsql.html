@@ -1,0 +1,54 @@
+
+</head>
+<body class="page-container" onblur="doTop();">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'View SQL' showLine=1}-->
+
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+	<tr >
+		<td><!--{$PROGRAM_NO_LABEL|default:'程序名'}--> </td>
+		<td><input readonly id="PROGRAM_NO" NAME="PROGRAM_NO" class="input-text" TYPE="text" 
+			value="<!--{$row.PROGRAM_NO}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td><!--{$GROUP_ID_LABEL|default:'SQL'}--> </td>
+		<td><textarea readonly style="width:450px;height:260px;" id="RESULT_SQL" NAME="RESULT_SQL" class="input-text"
+			><!--{$row.RESULT_SQL}--></textarea>
+		</td>
+	</tr>
+	
+	<tr>
+		<td ></td>
+		<td >
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$CONFIRM_BTN_LABEL|default:'确定'}--> " id="doClose">
+		</td>
+	</tr>
+</tbody>
+</table>
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$row.PROGRAM_NO}-->">
+<input type="hidden" name="MUTI_LANG_PK" value="<!--{$row.MUTI_LANG_PK}-->">
+</form>
+
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+
+$("#doClose").click(function(){
+	window.close();
+});
+
+$(document).ready(function(){
+	document.title='自定義程序';
+});
+function doTop(){
+	self.focus();
+}
+</script>
+ 
+
+

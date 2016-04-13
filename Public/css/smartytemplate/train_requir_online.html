@@ -1,0 +1,347 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+    <!--{if $show=='New'}-->
+    <form id="editForm" name="postForm" METHOD="POST" ACTION="redirect.php?scriptname=train_requir_online&appdesc=<!--{$appdesc}-->">
+        <table class="bordertable">
+            <tr >
+                <td nowrap><!--{$REQUIRE_TIME}--></td>
+                <td nowrap>
+                    <INPUT class="input-text" id="require_time"  TYPE="text" NAME="REQUIRE_TIME" style="width:165px;"   value="<!--{$row.REQUIRE_TIME}-->" required='Y' title='<!--{$REQUIRE_TIME}-->'>
+                </td>
+            <tdwidth="5%" rowspan="6"></td>
+                <td nowrap><!--{$REQUIRE_TYPE}-->*</td>
+                <td nowrap>
+                    <select id="id_require_type"   NAME="REQUIRE_TYPE" style="width:170px;"  required='Y' title='<!--{$REQUIRE_TYPE}-->'>
+                        <option value=''></option>
+                        <option value='1' <!--{if $row.REQUIRE_TYPE=='1'}-->selected<!--{/if}--> >年度申请</option>
+                        <option value='2' <!--{if $row.REQUIRE_TYPE=='2'}-->selected<!--{/if}--> >临时申请</option>
+                    </select>
+                </td>
+                </tr>
+                <tr >
+                    <td nowrap><!--{$REQUIRE_YYMM}--></td>
+                    <td nowrap>
+                        <INPUT class="input-text" id="require_yymm"  TYPE="text" NAME="REQUIRE_YYMM" style="width:165px;"  value="<!--{$row.REQUIRE_YYMM}-->" required='Y' title='<!--{$REQUIRE_YYMM}-->'>
+                    </td>
+                    <td nowrap><!--{$REQUIRE_LEVEL}-->*</td>
+                    <td nowrap>
+                        <select id="require_level"   NAME="REQUIRE_LEVEL" style="width:170px;"  value="<!--{$row.REQUIRE_LEVEL}-->"  required='Y' title='<!--{$REQUIRE_LEVEL}-->'>
+                            <option value=''></option>
+                            <option value='05' <!--{if $row.REQUIRE_LEVEL=='05'}-->selected<!--{/if}-->>很高</option>
+                            <option value='04' <!--{if $row.REQUIRE_LEVEL=='04'}-->selected<!--{/if}-->>高</option>
+                            <option value='03' <!--{if $row.REQUIRE_LEVEL=='03'}-->selected<!--{/if}-->>一般</option>
+                            <option value='02' <!--{if $row.REQUIRE_LEVEL=='02'}-->selected<!--{/if}-->>低</option>
+                            <option value='01' <!--{if $row.REQUIRE_LEVEL=='01'}-->selected<!--{/if}-->>很低</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr >
+                    <td nowrap><!--{$SUBJECT_NAME}-->*</td>
+                    <td nowrap>
+                        <input   id="subject_id" type="hidden" Name="REQUIRE_SUBJECT" value="<!--{$row.REQUIRE_SUBJECT}-->">
+                        <INPUT   class="input-text"  id="subject_no" TYPE="text" NAME="SUBJECT_NO" style="width:60px;"  value="<!--{$row.SUBJECT_NO}-->" required='Y' title='<!--{$SUBJECT_NAME}-->'>
+                        <INPUT  class="input-text"  id="subject_name"  TYPE="text" NAME="SUBJECT_NAME" style="width:100px;" value="<!--{$row.SUBJECT_NAME}-->">
+                    </td>
+
+                    <td nowrap><!--{$TEACHER_NAME}--></td>
+                    <td nowrap>
+                        <input   id="teacher_id" type="hidden" Name="REQUIRE_TEACHER" value="<!--{$row.REQUIRE_TEACHER}-->">
+                        <INPUT  class="input-text"  id="teacher_no" TYPE="text" NAME="TEACHER_NO" style="width:60px;"  value="<!--{$row.REQUIRE_TEACHER_NO}-->">
+                        <INPUT  class="input-text"  id="teacher_name"  TYPE="text" NAME="TEACHER_NAME" style="width:100px;" value="<!--{$row.TEACHER_NAME}-->">
+                    </td>
+                </tr>
+
+                <tr >
+                    <td nowrap><!--{$REQUIRE_INSERT}--></td>
+                    <td nowrap>
+                        <input type="checkbox" id="id_require_insert" name="REQUIRE_INSERT" <!--{if $row.REQUIRE_INSERT=='Y'}-->checked<!--{/if}--> value="Y" >
+                    </td>
+
+                    <td nowrap><!--{$REQUIRE_EXPLAIN}--></td>
+                    <td nowrap>
+                        <input id="require_explain" class="input-text" type="text" name="REQUIRE_EXPLAIN" style="width:165px;" value="<!--{$row.REQUIRE_EXPLAIN}-->"  required='N' title='<!--{$REQUIRE_EXPLAIN}-->' readonly>
+                    </td>
+                </tr>
+
+                <tr >
+                    <td nowrap><!--{$MASTER_REASON_NO}--> </td>
+                    <td nowrap>
+                        <input   id="master_reason_id" type="hidden" Name="MASTER_REASON_ID" value="<!--{$row.MASTER_REASON_ID}-->">
+                        <INPUT  class="input-text"  id="master_reason_no"  TYPE="text" NAME="MASTER_REASON_NO" style="width:57px;"  value="<!--{$row.MASTER_REASON_NO}-->">
+                        <INPUT  class="input-text"  id="master_reason_name"  TYPE="text" NAME="MASTER_REASON_DESC" style="width:100px;" value="<!--{$row.MASTER_REASON_DESC}-->">
+                    </td>
+
+                    <td nowrap><!--{$DETAIL_REASON_DESC}--></td>
+                    <td nowrap>
+                        <input   id="detail_reason_id" type="hidden" Name="DEATIL_REASON_ID" value="<!--{$row.DEATIL_REASON_ID}-->">
+                        <INPUT  class="input-text"  id="detail_reason_no" TYPE="text" NAME="DETAIL_REASON_NO" style="width:60px;"  value="<!--{$row.DETAIL_REASON_NO}-->">
+                        <INPUT  class="input-text"  id="detail_reason_name"  TYPE="text" NAME="DETAIL_REASON_DESC" style="width:100px;" value="<!--{$row.DETAIL_REASON_DESC}-->">
+                    </td>
+                </tr>
+
+                <tr >
+                    <td nowrap><!--{$REQUIRE_HOURS}--> </td>
+                    <td nowrap>
+                        <INPUT  class="input-text" id="require_hours"  TYPE="text" NAME="REQUIRE_HOURS" style="width:165px;" value="<!--{$row.REQUIRE_HOURS}-->">
+                    </td>
+                    <td nowrap><!--{$REMARK}--></td>
+                    <td nowrap>
+                        <textarea rows="2" cols="160"  id="remark" NAME="REMARK" style="width:160px;"><!--{$row.REMARK}--></textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        <INPUT TYPE="submit" class="button-submit" VALUE=" <!--{$SUBMIT_BTN_LABEL|default:'提交'}--> " id="doSave">
+                        <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$BTN_CANCEL_LABEL|default:'取消'}--> " id="doCancel">
+                    </td>
+                </tr>
+                </tbody>
+        </table>
+        <input type="hidden" name="EMP_REQUIRE_ID" value="<!--{$row.EMP_REQUIRE_ID}-->">
+        <input type="hidden" name="do" value="Save">
+    </form>
+    <!--{include file="block_box_footer.html"}-->
+    <!--{/if}-->
+
+    <form name="form1" METHOD="POST" ACTION="redirect.php?scriptname=train_requir_online&appdesc=<!--{$appdesc}-->">
+        <!--{if $show=='SearchCondition'}-->
+        <!--{include file="block_box_header.html"}-->
+        <table >
+            <tbody>
+                <tr >
+                    <td nowrap><!--{$REQUIRE_TIME}--> </td>
+                    <td nowrap>
+                        <INPUT id="require_date1" TYPE="text" NAME="REQUIRE_DATE1" SIZE=8  value="<!--{$post.REQUIRE_DATE1}-->">
+                        -- <INPUT id="require_date2"  TYPE="text" NAME="REQUIRE_DATE2" SIZE=8  value="<!--{$post.REQUIRE_DATE2}-->">
+                    </td>
+                    <td nowrap width="15%">&nbsp;</td>
+
+                    <td nowrap><!--{$SUBJECT_NAME}--></td>
+                    <td nowrap>
+                        <input   id="subject_id" type="hidden" Name="SUBJECT_ID" value="<!--{$post.SUBJECT_ID}-->">
+                        <INPUT  class="input-text"  id="subject_no" TYPE="text" NAME="SUBJECT_NO" style="width:60px;"  value="<!--{$post.SUBJECT_NO}-->">
+                        <INPUT  class="input-text"  id="subject_name"  TYPE="text" NAME="SUBJECT_NAME" style="width:100px;" value="<!--{$post.SUBJECT_NAME}-->">
+                    </td>
+                    <td nowrap width="15%">&nbsp;</td>
+                </tr>
+                <tr >
+                    <td nowrap><!--{$REQUIRE_YYMM}--> </td>
+                    <td nowrap>
+                        <INPUT id="class_date1" TYPE="text" NAME="CLASS_DATE1" SIZE=8  value="<!--{$post.CLASS_DATE1}-->">
+                        -- <INPUT id="class_date1"  TYPE="text" NAME="CLASS_DATE2" SIZE=8  value="<!--{$post.CLASS_DATE2}-->">
+                    </td>
+                    <td nowrap width="15%">&nbsp;</td>
+
+                    <td nowrap><!--{$TEACHER_NAME}--></td>
+                    <td nowrap>
+                        <input   id="teacher_id" type="hidden" Name="TEACHER_ID" value="<!--{$post.TEACHER_ID}-->">
+                        <INPUT  class="input-text"  id="teacher_no" TYPE="text" NAME="TEACHER_NO" style="width:60px;"  value="<!--{$post.TEACHER_NO}-->">
+                        <INPUT  class="input-text"  id="teacher_name"  TYPE="text" NAME="TEACHER_NAME" style="width:100px;" value="<!--{$post.TEACHER_NAME}-->">
+                    </td>
+                    <td nowrap width="15%">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td colspan=6>
+                        <!--{* search save 保存查询模块*}-->
+                        <!--{include file="../../mgr/smartytemplate/box_search_save.html"}-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!--{include file="block_box_footer.html"}-->
+        <!--{/if}-->
+    </form>
+    &nbsp;
+    <!--{$search_condition_alert}-->
+    <!--{if $show=='List'}-->
+    <!--{include file="block_box_header.html"}-->
+    <table class="bordertable">
+        <thead>
+            <tr>
+                <th > <!--{$REQUIRE_TIME}--></th>
+                <th > <!--{$REQUIRE_TYPE}--></th>
+                <th>  <!--{$SUBJECT_NO}--></th>
+                <th>  <!--{$SUBJECT_NAME}--></th>
+                <th>  <!--{$REQUIRE_YYMM}--></th>
+                <th>  <!--{$TEACHER_NAME}--></th>
+                <th>  <!--{$MASTER_REASON_DESC}--></th>
+                <th>  <!--{$DETAIL_REASON_DESC}--></th>
+                <th>  <!--{$OPERATE}--></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--{section name="i" loop=$list}-->
+            <tr>
+                <td NOWRAP><!--{$list[i].REQUIRE_TIME}--></td>
+                <td><!--{$list[i].REQUIRE_TYPE}--></td>
+                <td><!--{$list[i].SUBJECT_NO}--></td>
+                <td><!--{$list[i].SUBJECT_NAME}--></td>
+                <td><!--{$list[i].REQUIRE_YYMM}--></td>
+                <td><!--{$list[i].TEACHER_NAME}--></td>
+                <td><!--{$list[i].MASTER_REASON_DESC}--></td>
+                <td><!--{$list[i].DETAIL_REASON_DESC}--></td>
+                <td nowrap>
+                    [<a href="redirect.php?scriptname=train_requir_online&do=New&appdesc=<!--{$appdesc}-->">
+                        <!--{$BTN_NEW_LABEL|default:'新增'}-->
+                    </a>] <br>
+                    [<a href="redirect.php?scriptname=train_requir_online&do=Edit&key=<!--{$list[i].EMP_REQUIRE_ID}-->&appdesc=<!--{$appdesc}-->">
+                        <!--{$BTN_EDIT_LABEL|default:'修改'}-->
+                    </a>] <br>
+                    [<a href="javascript:doDelete('redirect.php?scriptname=train_requir_online&do=Delete&key=<!--{$list[i].EMP_REQUIRE_ID}-->&appdesc=<!--{$appdesc}-->');">
+                        <!--{$BTN_DELETE_LABEL|default:'刪除'}-->
+                    </a>]
+                </td>
+            </tr>
+            <!--{/section}-->
+            <tr><td colspan="12"><!--{$pageDownUp}--></td></tr>
+        </tbody>
+    </table>
+    <!--{/if}-->
+
+    <script type="text/javascript">
+        //$('#tab-adv-search> ul').tabs({ fx: { opacity: 'toggle' },cache:true});
+
+        function doDelete(url){
+            var confirm=window.confirm("确认删除?");
+            if(confirm)   location.href=url;
+        }
+
+        $("#dept_no").click(function(){
+            openLovDept();
+        });
+
+        $("#dept_name").click(function(){
+            openLovDept();
+        });
+        function openLovDept(){
+            var url="?scriptname=train_agency_lov";
+            var txt_id = document.getElementById("dept_id");
+            var txt_no = document.getElementById("dept_no");
+            var txt_name = document.getElementById("dept_name");
+
+            showLov(url,txt_id,txt_no,txt_name);
+        }
+
+        //课程lov
+        $("#subject_no").click(function(){
+            openLovSubject();
+        });
+
+        $("#subject_name").click(function(){
+            openLovSubject();
+        });
+        function openLovSubject(){
+            var url="../mgr/redirect.php?scriptname=train_subject_lov";
+            var txt_id = document.getElementById("subject_id");
+            var txt_no = document.getElementById("subject_no");
+            var txt_name = document.getElementById("subject_name");
+            showLov(url,txt_id,txt_no,txt_name);
+        }
+
+        //老师lov
+        $("#teacher_no").click(function(){
+            openLovTeacher();
+        });
+
+        $("#teacher_name").click(function(){
+            openLovTeacher();
+        });
+        function openLovTeacher(){
+            var url="../mgr/redirect.php?scriptname=train_teacher_lov";
+            var txt_id = document.getElementById("teacher_id");
+            var txt_no = document.getElementById("teacher_no");
+            var txt_name = document.getElementById("teacher_name");
+
+            showLov(url,txt_id,txt_no,txt_name);
+        }
+
+        //主要原因lov
+        $("#master_reason_no").click(function(){
+            openLovMastReason();
+        });
+
+        $("#master_reason_name").click(function(){
+            openLovMastReason();
+        });
+        function openLovMastReason(){
+            var url="../mgr/redirect.php?scriptname=train_master_reason_lov";
+            var txt_id = document.getElementById("master_reason_id");
+            var txt_no = document.getElementById("master_reason_no");
+            var txt_name = document.getElementById("master_reason_name");
+
+            showLov(url,txt_id,txt_no,txt_name);
+        }
+
+
+        //具体原因lov
+        $("#detail_reason_no").click(function(){
+            openLovDetailReason();
+        });
+
+        $("#detail_reason_name").click(function(){
+            openLovDetailReason();
+        });
+        function openLovDetailReason(){
+            var master_reason_id = document.getElementById("master_reason_id").value;
+            var url="../mgr/redirect.php?scriptname=train_detail_reason_lov&master_reason_id="+master_reason_id;
+            var txt_id = document.getElementById("detail_reason_id");
+            var txt_no = document.getElementById("detail_reason_no");
+            var txt_name = document.getElementById("detail_reason_name");
+
+            showLov(url,txt_id,txt_no,txt_name);
+        }
+
+        //$("#search_save_button_td").append("<input type='button' value='<!--{$SaveSearchButton.NEW}-->' class='button-submit'>");
+        $("#doCancel").click(function(){
+            document.location.href="redirect.php?scriptname=train_requir_online&do=List&appdesc=<!--{$appdesc}-->";
+        });
+
+        $("#doSave").click(function(){
+            var passed = true;
+            $('#editForm').find('[@required*=Y]').each(function(){
+                //alert($(this).attr('required'));
+                if($(this).val().replace(/ /g,'')==''){
+                    alert("请输入"+$(this).attr('title'));
+                    $(this).focus();
+                    passed = false;
+                    return false;
+                }
+            });
+            return passed;
+        });
+
+        $("#id_require_insert").click(function(){
+            setSubjectIsNew();
+        });
+        function setSubjectIsNew(){
+            var isChecked = $("#id_require_insert").attr('checked');
+            if(isChecked){
+                $("#require_explain").attr('required','Y');
+                $("#require_explain").attr("readonly",'');
+
+                $("#subject_id").val('-1');
+                $("#subject_no").val('');
+                $("#subject_name").val('');
+                $("#subject_no").attr('required','N');
+                $("#subject_no").attr("disabled",'disabled');
+                $("#subject_name").attr("disabled",'disabled');
+            }else{
+                $("#require_explain").attr('required','N');
+                $("#require_explain").val('');
+                $("#require_explain").attr("readonly",'readonly');
+
+                $("#subject_no").attr('required','Y');
+                $("#subject_no").attr("disabled",'');
+                $("#subject_name").attr("disabled",'');
+            }
+        }
+        setSubjectIsNew();
+
+
+    </script>
+
+

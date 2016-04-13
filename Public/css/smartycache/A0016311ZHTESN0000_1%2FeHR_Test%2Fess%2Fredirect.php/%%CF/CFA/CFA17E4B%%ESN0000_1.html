@@ -1,0 +1,329 @@
+136
+a:4:{s:8:"template";a:1:{s:14:"ESN0000_1.html";b:1;}s:9:"timestamp";i:1460365968;s:7:"expires";i:1460369568;s:13:"cache_serials";a:0:{}}<!DOCTYPE html>
+<head xmlns="http://www.w3.org/1999/html">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Employee Self-Service</title>
+	<link rel = "icon" href = "../img/ares.ico" type = "image/x-icon"/>
+	<link rel = "shortcut icon" href = "../img/ares.ico"/>
+	<link rel="stylesheet" href="../css/jqueryui/themes/redmond/jquery.ui.all.css" type="text/css" />
+	<link rel="stylesheet" href="../css/layout/layout.min.css" type="text/css">
+	<!--[if lte IE 7]>
+		<style type="text/css"> body { font-size: 85%; } </style>
+	<![endif]-->
+	<!-- REQUIRED scripts for layout widget -->
+	<style type="text/css">
+		#logo {
+			width: 20%;
+			float: left;
+		}
+		
+		#topnav {
+			background-color: #eee;
+			float: left;
+			height: 78px;
+			width: 60%;
+		}
+		
+		#topnav a:link {
+			text-decoration: none
+		}
+		
+		#topnav a:visited {
+			text-decoration: none
+		}
+		
+		#topnav a:active {
+			text-decoration: none
+		}
+		
+		#topmenu {
+			position: absolute;
+			margin-top: 15px;
+			left: 50%;
+		}
+		#accordion{
+			width:98%;
+			margin:2px 15px 2px 2px;
+			padding:0;
+			font-size:13px;
+		}
+		#accordion ul{
+			margin:0;
+			padding:0;
+		} 
+		#accordion ul li{ 
+			background:url(../img/Person.png) no-repeat;
+			list-style-type:none;
+			text-indent:18px;
+			margin-left:-10px;
+			padding-bottom:5px;
+		}
+	</style>
+</head>
+<body>
+<div class="ui-layout-north">
+	<div id="logo">
+		<img src="../img/logo.gif">
+	</div>
+	<div id="topnav">
+		<div id="topmenu">
+						<a href="../mgr/redirect.php">
+				<img title="MSS" src="../img/icon_md.png" border="0"/>
+			</a>
+						<a id="myobj" href="?scriptname=year_objective&appdesc=%E7%9B%AE%E6%A8%99">
+				<img title="目標" src="../img/icon_obj.png" alt="" border="0"/>
+			</a>	
+			<a href="?scriptname=job_desc" id="myjd">
+				<img title="職務說明書" src="../img/icon_jd.png" border="0"/>
+			</a>
+			<a href="?scriptname=about" id="about">
+				<img title="關于 ESS" src="../img/icon_about.png" border="0"/>
+			</a>
+			<a href="../docs/eHRUserGuideESS_ZHT.pdf" id="help"  target="_blank">
+				<img title="幫助" src="../img/icon_help.png"  border="0"/></a>
+					    <a href="#" id="logout">
+		    	<img title="375 登出" src="../img/icon_exit.png"  border="0"/>
+		    </a>
+		    	    </div>
+	</div>
+	<div id="tophuman"></div>
+</div><!-- end top -->
+
+<div class="ui-layout-west" style="display:none;">
+	<div class="header" style="height:20px;text-indent:5px;">
+		Welcome,Test
+	</div>
+	<div class="ui-layout-content" id="accordion">
+				<h4><a href="?scriptname=ESNH" target="mainFrame">首頁</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNH000&appdesc=%E9%A6%96%E9%A0%81" target="mainFrame">首頁</a></li>
+																			<li><a href="?scriptname=ESNH003&appdesc=%E8%AB%8B%E5%81%87%E7%B0%BD%E6%A0%B8" target="mainFrame">請假簽核</a></li>
+																			<li><a href="?scriptname=ESNH004&appdesc=%E5%8A%A0%E7%8F%AD%E7%B0%BD%E6%A0%B8" target="mainFrame">加班簽核</a></li>
+																			<li><a href="?scriptname=ESNH006&appdesc=%E5%BF%98%E5%88%B7%E7%B0%BD%E6%A0%B8" target="mainFrame">忘刷簽核</a></li>
+																			<li><a href="?scriptname=ESNH007&appdesc=%E7%A6%BB%E8%81%B7%2F%E7%95%99%E5%81%9C%E7%B0%BD%E6%A0%B8" target="mainFrame">离職/留停簽核</a></li>
+																			<li><a href="?scriptname=ESNH008&appdesc=%E9%8A%B7%E5%81%87%E7%B0%BD%E6%A0%B8" target="mainFrame">銷假簽核</a></li>
+																			<li><a href="?scriptname=ESNH100&appdesc=%E6%89%B9%E9%87%8F%E7%B0%BD%E6%A0%B8%E7%B5%90%E6%9E%9C" target="mainFrame">批量簽核結果</a></li>
+																			<li><a href="?scriptname=ESNA297&appdesc=ESNA297" target="mainFrame">ESNA297</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNA" target="mainFrame">個人信息</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNA018&appdesc=%E5%87%BA%E5%8B%A4%E5%8C%AF%E7%B8%BD" target="mainFrame">出勤匯總</a></li>
+																			<li><a href="?scriptname=ESNA001&appdesc=%E5%9F%BA%E6%9C%AC%E8%B3%87%E6%96%99" target="mainFrame">基本資料</a></li>
+																			<li><a href="?scriptname=ESNA002&appdesc=%E6%95%99%E8%82%B2%E8%83%8C%E6%99%AF" target="mainFrame">教育背景</a></li>
+																			<li><a href="?scriptname=ESNA021&appdesc=%E4%BA%BA%E4%BA%8B%E5%BC%82%E5%8A%A8%E7%94%B3%E8%AF%B7" target="mainFrame">人事异动申请</a></li>
+																			<li><a href="?scriptname=ESNA003&appdesc=%E5%B7%A5%E4%BD%9C%E7%B6%93%E6%AD%B7" target="mainFrame">工作經歷</a></li>
+																			<li><a href="?scriptname=ESNA004&appdesc=%E5%AE%B6%E5%BA%AD%E6%88%90%E5%93%A1" target="mainFrame">家庭成員</a></li>
+																			<li><a href="?scriptname=ESNA005&appdesc=%E8%81%B7%E5%8B%99%E6%AD%B7%E5%8F%B2" target="mainFrame">職務歷史</a></li>
+																			<li><a href="?scriptname=ESNA006&appdesc=%E7%8D%8E%E6%87%B2%E8%A8%98%E9%8C%84" target="mainFrame">獎懲記錄</a></li>
+																			<li><a href="?scriptname=ESNA007&appdesc=%E6%88%91%E7%9A%84%E6%8E%92%E7%8F%AD" target="mainFrame">我的排班</a></li>
+																			<li><a href="?scriptname=ESNA008&appdesc=%E5%87%BA%E7%BC%BA%E5%8B%A4%E4%BF%A1%E6%81%AF" target="mainFrame">出缺勤信息</a></li>
+																			<li><a href="?scriptname=ESNA009&appdesc=%E6%88%91%E7%9A%84%E8%AB%8B%E5%81%87" target="mainFrame">我的請假</a></li>
+																			<li><a href="?scriptname=ESNA010&appdesc=%E6%88%91%E7%9A%84%E5%8A%A0%E7%8F%AD" target="mainFrame">我的加班</a></li>
+																			<li><a href="?scriptname=ESNA011&appdesc=%E6%88%91%E7%9A%84%E5%B9%B4%E5%81%87" target="mainFrame">我的年假</a></li>
+																			<li><a href="?scriptname=ESNA016&appdesc=%E5%A4%96%E6%B4%BE%E8%A8%98%E9%8C%84" target="mainFrame">外派記錄</a></li>
+																			<li><a href="?scriptname=ESNA017&appdesc=%E7%BC%96%E8%BE%91%E4%B8%AA%E4%BA%BA%E8%B5%84%E6%96%99" target="mainFrame">编辑个人资料</a></li>
+																			<li><a href="?scriptname=ESNA901&appdesc=%E9%9B%A2%E8%81%B7%E5%8E%9F%E5%9B%A0%E8%AA%BF%E6%9F%A5" target="mainFrame">離職原因調查</a></li>
+																			<li><a href="?scriptname=ESNA019&appdesc=%E5%AF%A9%E6%A0%B8%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99" target="mainFrame">審核個人資料</a></li>
+																			<li><a href="?scriptname=ESNA020&appdesc=%E5%8F%AF%E4%BC%91%E5%81%87%E6%9F%A5%E8%A9%A2" target="mainFrame">可休假查詢</a></li>
+																			<li><a href="?scriptname=ESNA902&appdesc=ESNA902" target="mainFrame">ESNA902</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNK" target="mainFrame">申请单</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNA012&appdesc=%E8%AB%8B%E5%81%87%E7%94%B3%E8%AB%8B" target="mainFrame">請假申請</a></li>
+																			<li><a href="?scriptname=ESNA013&appdesc=%E8%AB%8B%E5%81%87%E7%94%B3%E8%AB%8B%E6%9F%A5%E8%A9%A2" target="mainFrame">請假申請查詢</a></li>
+																			<li><a href="?scriptname=ESNA014&appdesc=%E5%8A%A0%E7%8F%AD%E7%94%B3%E8%AB%8B" target="mainFrame">加班申請</a></li>
+																			<li><a href="?scriptname=ESNA015&appdesc=%E5%8A%A0%E7%8F%AD%E7%94%B3%E8%AB%8B%E6%9F%A5%E8%A9%A2" target="mainFrame">加班申請查詢</a></li>
+																			<li><a href="?scriptname=ESNA027&appdesc=%E9%8A%B7%E5%81%87%E7%94%B3%E8%AB%8B" target="mainFrame">銷假申請</a></li>
+																			<li><a href="?scriptname=ESNA028&appdesc=%E9%8A%B7%E5%81%87%E7%94%B3%E8%AB%8B%E6%9F%A5%E8%A9%A2" target="mainFrame">銷假申請查詢</a></li>
+																			<li><a href="?scriptname=ESNA023&appdesc=%E5%BF%98%E5%88%B7%E7%94%B3%E8%AB%8B" target="mainFrame">忘刷申請</a></li>
+																			<li><a href="?scriptname=ESNA024&appdesc=%E5%BF%98%E5%88%B7%E7%94%B3%E8%AB%8B%E6%9F%A5%E8%A9%A2" target="mainFrame">忘刷申請查詢</a></li>
+																			<li><a href="?scriptname=ESNA025&appdesc=%E9%9B%A2%E8%81%B7%2F%E7%95%99%E5%81%9C%E7%94%B3%E8%AB%8B" target="mainFrame">離職/留停申請</a></li>
+																			<li><a href="?scriptname=ESNA026&appdesc=%E9%9B%A2%E8%81%B7%2F%E7%95%99%E5%81%9C%E7%94%B3%E8%AB%8B%E6%9F%A5%E8%A9%A2" target="mainFrame">離職/留停申請查詢</a></li>
+																			<li><a href="?scriptname=ESNA021&appdesc=%E4%BA%BA%E4%BA%8B%E5%BC%82%E5%8A%A8%E7%94%B3%E8%AF%B7" target="mainFrame">人事异动申请</a></li>
+																			<li><a href="?scriptname=ESNA022&appdesc=%E4%BA%BA%E4%BA%8B%E5%BC%82%E5%8A%A8%E7%94%B3%E8%AF%B7%E6%9F%A5%E8%AF%A2" target="mainFrame">人事异动申请查询</a></li>
+																			<li><a href="?scriptname=ESNA299&appdesc=ESNA299" target="mainFrame">ESNA299</a></li>
+																			<li><a href="?scriptname=ESNA298&appdesc=ESNA298" target="mainFrame">ESNA298</a></li>
+																			<li><a href="?scriptname=ESNA297&appdesc=ESNA297" target="mainFrame">ESNA297</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNB" target="mainFrame">目標與績效</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNB001&appdesc=%E8%81%B7%E5%8B%99%E8%AA%AA%E6%98%8E%E6%9B%B8" target="mainFrame">職務說明書</a></li>
+																			<li><a href="?scriptname=ESNB002&appdesc=%E6%88%91%E7%9A%84%E5%B9%B4%E5%BA%A6%E7%9B%AE%E6%A8%99" target="mainFrame">我的年度目標</a></li>
+																			<li><a href="?scriptname=ESNB020&appdesc=%E6%9C%9F%E5%88%9D%E7%9B%AE%E6%A0%87" target="mainFrame">期初目标</a></li>
+																			<li><a href="?scriptname=ESNB003&appdesc=%E6%AD%B7%E5%B9%B4%E8%80%83%E7%B8%BE" target="mainFrame">歷年考績</a></li>
+																			<li><a href="?scriptname=ESNB004&appdesc=%E5%B7%A5%E4%BD%9C%E8%81%B7%E8%83%BD" target="mainFrame">工作職能</a></li>
+																			<li><a href="?scriptname=ESNB005&appdesc=%E5%B0%88%E9%95%B7%E8%A8%98%E9%8C%84" target="mainFrame">專長記錄</a></li>
+																			<li><a href="?scriptname=ESNB006&appdesc=%E6%88%91%E7%9A%84%E8%81%B7%E8%83%BD" target="mainFrame">我的職能</a></li>
+																			<li><a href="?scriptname=ESNB007&appdesc=%E8%87%AA%E8%A9%95%E5%96%AE%E6%9F%A5%E8%A9%A2" target="mainFrame">自評單查詢</a></li>
+																			<li><a href="?scriptname=ESNB008&appdesc=%E7%B8%BE%E6%95%88%E8%80%83%E6%A0%B8%E6%88%90%E7%B8%BE" target="mainFrame">績效考核成績</a></li>
+																			<li><a href="?scriptname=ESNB010&appdesc=%E6%8E%A5%E7%8F%AD%E4%BA%BA%E7%B6%AD%E8%AD%B7" target="mainFrame">接班人維護</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNC" target="mainFrame">我的薪資</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNC000&appdesc=%E6%88%91%E7%9A%84%E8%96%AA%E8%B3%87" target="mainFrame">我的薪資</a></li>
+																			<li><a href="?scriptname=ESNC001&appdesc=%E8%96%AA%E8%B3%87%E8%AA%BF%E6%95%B4%E8%A8%98%E9%8C%84" target="mainFrame">薪資調整記錄</a></li>
+																			<li><a href="?scriptname=ESNC002&appdesc=%E7%A4%BE%E6%9C%83%E4%BF%9D%E9%9A%AA" target="mainFrame">社會保險</a></li>
+																			<li><a href="?scriptname=ESNC003&appdesc=%E7%B9%B3%E7%A8%85%E7%B4%80%E9%8C%84" target="mainFrame">繳稅紀錄</a></li>
+																			<li><a href="?scriptname=ESNC004&appdesc=%E8%96%AA%E8%B3%87%E6%A2%9D" target="mainFrame">薪資條</a></li>
+																			<li><a href="?scriptname=ESNC005&appdesc=%E7%8D%8E%E9%87%91" target="mainFrame">獎金</a></li>
+																			<li><a href="?scriptname=ESNC006&appdesc=%E7%94%B5%E5%AD%90%E8%96%AA%E8%B5%84%E6%9D%A1" target="mainFrame">电子薪资条</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESND" target="mainFrame">我的成長</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESND000&appdesc=%E6%88%91%E7%9A%84%E6%88%90%E9%95%B7" target="mainFrame">我的成長</a></li>
+																			<li><a href="?scriptname=ESND001&appdesc=%E5%B9%B4%E5%BA%A6%E9%96%8B%E8%AA%B2%E8%A8%88%E5%8A%83" target="mainFrame">年度開課計劃</a></li>
+																			<li><a href="?scriptname=ESND002&appdesc=%E6%9C%88%E4%BB%BD%E9%96%8B%E8%AA%B2%E6%9F%A5%E8%A9%A2" target="mainFrame">月份開課查詢</a></li>
+																			<li><a href="?scriptname=ESND003&appdesc=%E5%BF%85%E4%BF%AE%E8%AA%B2%E7%A8%8B" target="mainFrame">必修課程</a></li>
+																			<li><a href="?scriptname=ESND004&appdesc=%E8%A8%93%E7%B7%B4%E6%88%90%E7%B8%BE" target="mainFrame">訓練成績</a></li>
+																			<li><a href="?scriptname=ESND006&appdesc=%E6%88%91%E7%9A%84%E8%AD%89%E7%85%A7" target="mainFrame">我的證照</a></li>
+																			<li><a href="?scriptname=ESND010&appdesc=%E8%A8%93%E7%B7%B4%E5%9C%A8%E7%B6%AB%E7%94%B3%E8%AB%8B" target="mainFrame">訓練在綫申請</a></li>
+																			<li><a href="?scriptname=ESND901&appdesc=%E8%AC%9B%E5%B8%AB%E6%84%8F%E8%A6%8B%E8%AA%BF%E6%9F%A5" target="mainFrame">講師意見調查</a></li>
+																			<li><a href="?scriptname=ESND902&appdesc=%E8%AA%B2%E7%A8%8B%E6%84%8F%E8%A6%8B%E8%AA%BF%E6%9F%A5" target="mainFrame">課程意見調查</a></li>
+																			<li><a href="?scriptname=ESND903&appdesc=%E5%85%B6%E4%BB%96%E6%84%8F%E8%A6%8B%E8%AA%BF%E6%9F%A5" target="mainFrame">其他意見調查</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNE" target="mainFrame">助理桌面</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNE000&appdesc=%E5%8A%A9%E7%90%86%E6%A1%8C%E9%9D%A2" target="mainFrame">助理桌面</a></li>
+																			<li><a href="?scriptname=ESNE001&appdesc=%E6%89%B9%E9%87%8F%E5%8A%A0%E7%8F%AD%E7%94%B3%E8%AB%8B" target="mainFrame">批量加班申請</a></li>
+																			<li><a href="?scriptname=ESNE003&appdesc=%E6%89%B9%E9%87%8F%E5%8A%A0%E7%8F%AD%E6%9F%A5%E8%A9%A2" target="mainFrame">批量加班查詢</a></li>
+																			<li><a href="?scriptname=ESNE007&appdesc=%E5%8A%A0%E7%8F%AD%E7%94%B3%E8%AB%8B%E5%8C%AF%E5%85%A5" target="mainFrame">加班申請匯入</a></li>
+																			<li><a href="?scriptname=ESNE023&appdesc=%E5%8A%A0%E7%8F%AD%E5%8C%AF%E5%85%A5%E7%B5%90%E6%9E%9C%E6%9F%A5%E8%A9%A2" target="mainFrame">加班匯入結果查詢</a></li>
+																			<li><a href="?scriptname=ESNE020&appdesc=%E6%89%B9%E9%87%8F%E5%88%AA%E9%99%A4%E5%8A%A0%E7%8F%AD%E7%94%B3%E8%AF%B7" target="mainFrame">批量刪除加班申请</a></li>
+																			<li><a href="?scriptname=ESNE002&appdesc=%E6%89%B9%E9%87%8F%E8%AB%8B%E5%81%87%E7%94%B3%E8%AB%8B" target="mainFrame">批量請假申請</a></li>
+																			<li><a href="?scriptname=ESNE004&appdesc=%E6%89%B9%E9%87%8F%E8%AB%8B%E5%81%87%E6%9F%A5%E8%A9%A2" target="mainFrame">批量請假查詢</a></li>
+																			<li><a href="?scriptname=ESNE008&appdesc=%E8%AB%8B%E5%81%87%E7%94%B3%E8%AB%8B%E5%8C%AF%E5%85%A5" target="mainFrame">請假申請匯入</a></li>
+																			<li><a href="?scriptname=ESNE022&appdesc=%E6%9F%A5%E8%AF%A2%E6%89%B9%E6%AC%A1%E6%A0%B8%E5%87%86%E7%BB%93%E6%9E%9C" target="mainFrame">查询批次核准结果</a></li>
+																			<li><a href="?scriptname=ESNE024&appdesc=%E8%AF%B7%E5%81%87%E6%B1%87%E5%85%A5%E7%BB%93%E6%9E%9C%E6%9F%A5%E8%AF%A2" target="mainFrame">请假汇入结果查询</a></li>
+																			<li><a href="?scriptname=ESNE021&appdesc=%E6%89%B9%E9%87%8F%E5%88%AA%E9%99%A4%E8%AB%8B%E5%81%87%E7%94%B3%E8%AF%B7" target="mainFrame">批量刪除請假申请</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNF" target="mainFrame">流程管理</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNF000&appdesc=%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">流程管理</a></li>
+																			<li><a href="?scriptname=ESNF001&appdesc=%E8%AB%8B%E5%81%87%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">請假流程管理</a></li>
+																			<li><a href="?scriptname=ESNF002&appdesc=%E5%8A%A0%E7%8F%AD%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">加班流程管理</a></li>
+																			<li><a href="?scriptname=ESNF299&appdesc=%E9%A2%84%E5%8A%A0%E7%8F%AD%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">预加班流程管理</a></li>
+																			<li><a href="?scriptname=ESNF003&appdesc=%E9%8A%B7%E5%81%87%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">銷假流程管理</a></li>
+																			<li><a href="?scriptname=ESNF006&appdesc=%E5%BF%98%E5%88%B7%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">忘刷流程管理</a></li>
+																			<li><a href="?scriptname=ESNF007&appdesc=%E9%9B%A2%E8%81%B7%2F%E7%95%99%E5%81%9C%E6%B5%81%E7%A8%8B%E7%AE%A1%E7%90%86" target="mainFrame">離職/留停流程管理</a></li>
+																			<li><a href="?scriptname=ESNF101&appdesc=%E5%8A%A0%E7%8F%AD%E8%A6%8F%E5%89%87%E8%AA%AC%E6%98%8E" target="mainFrame">加班規則説明</a></li>
+																			<li><a href="?scriptname=ESNF102&appdesc=%E8%AB%8B%E5%81%87%E8%A6%8F%E5%89%87%E8%AA%AC%E6%98%8E" target="mainFrame">請假規則説明</a></li>
+																			<li><a href="?scriptname=ESNW001&appdesc=ESNW001" target="mainFrame">ESNW001</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNR" target="mainFrame">自訂報表</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNR001&appdesc=%E5%A0%B1%E8%A1%A8%E7%B2%BE%E9%9D%88" target="mainFrame">報表精靈</a></li>
+																			<li><a href="?scriptname=ESNR002&appdesc=%E7%B7%A8%E8%BC%AF%E5%A0%B1%E8%A1%A8" target="mainFrame">編輯報表</a></li>
+																			<li><a href="?scriptname=ESNR003&appdesc=%E6%88%91%E7%9A%84%E5%A0%B1%E8%A1%A8" target="mainFrame">我的報表</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNJ" target="mainFrame">在线查房</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNJ001&appdesc=%E5%91%98%E5%B7%A5%E6%AF%94%E5%AF%B9" target="mainFrame">员工比对</a></li>
+																			<li><a href="?scriptname=ESNJ002&appdesc=%E5%8D%AB%E7%94%9F%E6%A3%80%E6%9F%A5" target="mainFrame">卫生检查</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNS" target="mainFrame">系統設置</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNS004&appdesc=%E9%BB%98%E8%AA%8D%E9%A6%96%E9%A0%81" target="mainFrame">默認首頁</a></li>
+																			<li><a href="?scriptname=ESNS001&appdesc=%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A2%BC" target="mainFrame">修改密碼</a></li>
+																			<li><a href="?scriptname=ESNS003&appdesc=%E7%99%BB%E9%8C%84%E6%97%A5%E8%AA%8C" target="mainFrame">登錄日誌</a></li>
+																			<li><a href="?scriptname=ESNS201&appdesc=%E6%96%B0%E5%BB%BA%E8%8F%9C%E5%96%AE" target="mainFrame">新建菜單</a></li>
+																			<li><a href="?scriptname=ESNS202&appdesc=%E8%8F%9C%E5%96%AE%E6%9F%A5%E8%A9%A2" target="mainFrame">菜單查詢</a></li>
+																			<li><a href="?scriptname=ESNS205&appdesc=%E5%A4%9A%E5%9C%8B%E8%AA%9E%E8%A8%AD%E7%BD%AE" target="mainFrame">多國語設置</a></li>
+																			<li><a href="?scriptname=ESNS206&appdesc=%E4%BB%A3%E7%90%86%E4%BA%BA%E8%A8%AD%E7%BD%AE" target="mainFrame">代理人設置</a></li>
+																			<li><a href="?scriptname=ESNS207&appdesc=%E4%BB%A3%E7%90%86%E4%BA%BA%E6%9F%A5%E8%A9%A2" target="mainFrame">代理人查詢</a></li>
+																														</ul>
+		</div>
+				<h4><a href="?scriptname=ESNWC" target="mainFrame">ESNWC</a></h4>
+		<div>
+			<ul>
+														<li><a href="?scriptname=ESNWC002&appdesc=ESNWC002" target="mainFrame">ESNWC002</a></li>
+																			<li><a href="?scriptname=ESNWC001&appdesc=ESNWC001" target="mainFrame">ESNWC001</a></li>
+																														</ul>
+		</div>
+			</div>
+</div>
+<!--left end-->
+<div class="ui-layout-center content">
+	<iframe name="mainFrame" src="?scriptname=ESNH000" frameborder="0" height="99%" width="100%"  scrolling="auto"></iframe>
+</div>
+<!--right end-->
+<script type="text/javascript" src="../js/jqueryui/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../js/jqueryui/jquery-ui-1.8.11.custom.min.js"></script>
+<script type="text/javascript" src="../js/jquery.layout.min-1.2.0.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.min.js"></script>
+<script type="text/javascript">
+	var pageLayout;
+	$(document).ready(function(){
+		// create page layout
+		pageLayout = $('body').layout({
+			scrollToBookmarkOnLoad:		false, // handled by custom code so can 'unhide' section first
+			defaults: {},
+			north: {
+				size:					75,
+				spacing_open:			0,
+				closable:				false,
+				resizable:				false
+			},
+			west: {
+				size:					200,
+				spacing_closed:			22,
+				togglerLength_closed:	140,
+				togglerAlign_closed:	"top",
+				togglerContent_closed:	"显<BR>示<BR>菜<BR>单<BR>",
+				togglerTip_closed:		"Open & Pin Contents",
+				sliderTip:				"Slide Open Contents",
+				slideTrigger_open:		"mouseover"
+			}
+		});
+
+		$('#myjd').click(function(){
+			window.open(this.href,'win','left=300px,top=200px,toolbar=no,menubar=no,scrollbars=yes');
+			return false;
+		});
+		$('#myobj').click(function(){
+			window.open(this.href,'win','left=300px,top=200px,toolbar=no,menubar=no,scrollbars=yes');
+			return false;
+		});
+
+		$('#about').click(function(){
+			showModalDialog(this.href,'about','dialogWidth=475px;dialogHeight=370px;dialogLeft=300px;dialogTop=200px;toolbar=no;menubar=no;scrollbars=no');
+			return false;
+		});
+		$('#logout').click(function(){
+			if(confirm('您確定要退出系統?')){
+				top.location='../ess/index.php?action=logout';
+			}// end if
+		});
+		$('#accordion').accordion({
+			fillSpace: true,
+			collapsible: true,
+			autoHeight: true,
+			navigation: true,
+			clearStyle: true,
+			active: false
+		});
+	});
+</script>
+</body>
+</html>
