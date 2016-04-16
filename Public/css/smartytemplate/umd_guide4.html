@@ -1,0 +1,193 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'自定程式向导' showLine=1}-->
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<tr><td colspan=13 class="error"><b><!--{$STEP04_LABEL|default:'第四步：设定查询表'}--></b> &nbsp;   [ <!--{$PROGRAM_NO_LABEL|default:'程序编号'}-->: <!--{$PROGRAM_NO}--> ]</td></tr>
+</table>
+<br>
+
+<!--{if $show=='List'}-->
+<table class="bordertable">
+	<thead>
+	<tr>
+		<th><!--{$TABLE_NAME_LABEL|default:'表名'}--></th>
+		<th><!--{$TABLE_ALLIES_NAME_LABEL|default:'別名'}--></th>
+		<th><!--{$IS_DEFINE_LABEL|default:'自定義表'}--></th>
+		<th><!--{$RELATION_SQL_LABEL|default:'关联SQL'}--></th>
+		<th><!--{$OPERATE_LABEL|default:'操作'}--></th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+	    <td><!--{$list[i].TABLE_NAME}--></td>
+	    <td><!--{$list[i].TABLE_ALLIES_NAME}--></td>
+		<td><!--{$list[i].IS_DEFINE}--></td>
+		<td><!--{$list[i].RELATION_SQL}--></td>
+		<td>
+			<a target="_self" href="javascript:doNew('<!--{$list[i].PROGRAM_NO}-->');">
+		    	<!--{$NEW_BTN_LABEL|default:'新增'}-->
+		    </a>
+			<a target="_self" href="javascript:doEdit('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].TABLE_ALLIES_NAME}-->');">
+		    	<!--{$EDIT_BTN_LABEL|default:'修改'}-->
+		    </a>
+			<a href="javascript:doDelete('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].TABLE_ALLIES_NAME}-->','<!--{$list[i].TABLE_NAME}-->');">
+		    	<!--{$DELETE_BTN_LABEL|default:'删除'}-->
+		    </a>
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+    <tr> 
+        <td colspan="6">
+        	<!--{include file="block_info.html" msg_txt=$NO_TABLE_DEFINE_LABEL|default:'没有设定任何查詢表!'}-->
+        	<a target="_self" href="javascript:doNew('<!--{$PROGRAM_NO}-->');">
+		    	 &nbsp;&nbsp;&nbsp;  [<!--{$NEW_BTN_LABEL|default:'新增'}-->]
+		    </a>
+        </td>
+    </tr>
+	<!--{/section}-->
+	 
+	 </tbody>
+</table>
+<br>
+<form id="editForm" name="editForm" METHOD="POST" ACTION="#">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$UP_STEP_BTN_LABEL|default:'上一步'}--> " id="up_step">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$NEXT_STEP_LABEL|default:'下一步'}--> " id="next_step">
+
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO"  value="<!--{$PROGRAM_NO}-->" >
+<input type="hidden" name="TABLE_ALLIES_NAME" id="TABLE_ALLIES_NAME">
+<input type="hidden" name="TABLE_NAME" id="TABLE_NAME">
+</form>
+<!--{/if}-->
+
+<!--{if $show=='New' or $show=='Edit'}-->
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+	<tr >
+		<td  width="30%"><!--{$TABLE_NAME_LABEL|default:'表名'}-->*</td>
+		<td><input  id="TABLE_NAME" NAME="TABLE_NAME" class="input-text-lov" TYPE="text"
+			REQUIRED=Y title='<!--{$INPUT_PLEASE_LABEL|default:'请输入'}--><!--{$TABLE_NAME_LABEL|default:'表名'}-->'  
+			value="<!--{$row.TABLE_NAME}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td width="30%"><!--{$TABLE_ALLIES_NAME_LABEL|default:'表別名'}-->*</td>
+		<td><input  id="TABLE_ALLIES_NAME" NAME="TABLE_ALLIES_NAME" class="input-text" TYPE="text" 
+			REQUIRED=Y title='<!--{$INPUT_PLEASE_LABEL|default:'请输入'}--><!--{$TABLE_ALLIES_NAME_LABEL|default:'別名'}-->'  
+			value="<!--{$row.TABLE_ALLIES_NAME}-->" >
+		</td>
+	</tr>
+	</tr>
+
+	<tr>
+		<td nowrap><!--{$IS_DEFINE_LABEL|default:'自定義表'}--></td>
+		<td><input id="IS_DEFINE" NAME="IS_DEFINE" class="input-text" TYPE="text" 
+			value="<!--{$row.IS_DEFINE}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$RELATION_SQL_LABEL|default:'关联SQL'}--></td>
+		<td><input id="RELATION_SQL" NAME="RELATION_SQL" class="input-text" TYPE="text" 
+			value="<!--{$row.RELATION_SQL}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$REMARKS_LABEL|default:'备注'}--></td>
+		<td><input id="REMARKS" NAME="REMARKS" class="input-text" TYPE="text" 
+			value="<!--{$row.REMARKS}-->" >
+		</td>
+	</tr>
+</tbody>
+</table>
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SAVE_BTN_LABEL|default:'保存'}--> " id="doSave">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$CANCEL_BTN_LABEL|default:'取消'}--> " id="doCancel">
+
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$row.PROGRAM_NO}-->">
+<input type="hidden" name="OLD_TABLE_ALLIES_NAME" id="OLD_TABLE_ALLIES_NAME" value="<!--{$row.TABLE_ALLIES_NAME}-->">
+</form>
+<!--{/if}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+/*
+function doSave(){
+	//var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	var indata=$("#editForm").serialize(); 
+	$.post(
+		'?scriptname=train_enter_for&do=Save',
+		indata,//{ SUBJECT_CLASS_ID: subject_class_id },
+		function(data){
+		      alert(data);
+			  
+		} 
+	);
+}
+*/
+function doDelete(program_no,tb_allies_name,tb_name){
+	var confirm=window.confirm("<!--{$DELETE_CONFIRM_LABEL|default:'确认删除?'}-->"); 
+	if(confirm){
+		$("#do").val('DeleteTable');
+		$("#PROGRAM_NO").val(program_no);
+		$("#TABLE_ALLIES_NAME").val(tb_allies_name);
+		$("#TABLE_NAME").val(tb_name);
+		document.editForm.submit();
+	}
+}
+function doEdit(program_no,tb_name){
+	//alert(program_no);alert(group_id);
+	$("#do").val('EditTable');
+	$("#PROGRAM_NO").val(program_no);
+	$("#TABLE_ALLIES_NAME").val(tb_name);
+	document.editForm.submit();
+}
+
+function doNew(program_no){
+	//alert(program_no);alert(group_id);
+	$("#do").val('NewTable');
+	$("#PROGRAM_NO").val(program_no);
+	//$("#GROUP_ID").val(group_id);
+	document.editForm.submit();
+}
+$("#doSave").click(function(){
+	if(!checkUserInputData('postForm')) return false;
+	$("#do").val('SaveTable');
+	document.postForm.submit();
+});
+
+$("#doCancel").click(function(){
+	$("#do").val('ListTable');
+	document.postForm.submit();
+});
+
+
+///  [上一步]，[下一步]按钮
+$("#up_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide3&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+$("#next_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide5&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+
+// lov 选择表
+$("#TABLE_NAME").click(function(){	
+	var url="../mgr/redirect.php?scriptname=sys_table_lov&search_condition=HCP_SUMMARY_KPI";
+	var txt_id = document.getElementById("TABLE_NAME");
+    var txt_no = document.getElementById("");
+    var txt_name = document.getElementById("REMARKS");
+    showLov(url,txt_id,txt_no,txt_name);
+});
+</script>
+ 
+
+

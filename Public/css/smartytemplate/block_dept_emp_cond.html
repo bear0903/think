@@ -1,0 +1,35 @@
+		
+		<tr>
+			<td class="column-label"><!--{$DEPT_START_LABEL}--></td>
+			<td>
+				<select name="start_dept" 
+						id="start_dept"
+						style="width:275px;">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$dept_list selected=$smarty.post.start_dept|default:$s_dept_seqno}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$DEPT_END_LABEL}--></td>
+			<td>
+				<select name="end_dept" 
+						id="end_dept"
+						style="width:275px;">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$dept_list selected=$smarty.post.end_dept|default:$s_dept_seqno}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$EMP_START_LABEL}--></td>
+			<td>
+				<input type="text" name="start_emp" class="input-text" value="<!--{$smarty.post.start_emp}-->"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$EMP_END_LABEL}--></td>
+			<td>
+				<input type="text" name="end_emp" class="input-text" value="<!--{$smarty.post.end_emp}-->"/>
+			</td>
+		</tr>

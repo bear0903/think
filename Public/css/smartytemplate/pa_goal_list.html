@@ -1,0 +1,52 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = 1}-->
+<form name="form1" method="post">
+<input type="hidden" name="doaction" value="q">
+<table class="bordertable">
+	<tr>
+		<td class="column-label">年度</td>
+		<td>
+			<input type="text" name="pa_year">
+		</td>
+		<td class="column-label">考核期间</td>
+		<td>
+			<select name="pa_period">
+				<option value=""> - 请选择 - </option>
+				<!--{html_options options=$period_list selected=$smarty.post.pa_period}-->
+			</select>
+		</td>
+		<td><input type="submit" value="查询" class="button-submit"/></td>
+	</tr>
+</table>
+</form>
+<!--{if $smarty.post.doaction }-->
+<table class="bordertable">
+	<tr>
+		<th>年份</th>
+		<th>考核期间</th>
+		<th>开始时间</th>
+		<th>结束时间</th>
+		<th>考核单状态</th>
+		<th>操作</th>
+	</tr>
+	<!--{section name="i" loop=$pa_goal_list}-->
+	<tr>
+		<td><!--{$pa_goal_list[i].PA_YEAR}--></td>
+		<td><!--{$pa_goal_list[i].PERIOD_DESC}--></td>
+		<td><!--{$pa_goal_list[i].PA_BEGIN_DATE}--></td>
+		<td><!--{$pa_goal_list[i].PA_END_DATE}--></td>
+		<td>已审核</td>
+		<td><a href="?scriptname=pa_goal_edit&pa_seqno=<!--{$pa_goal_list[i].PA_FORM_SEQNO}-->&mode=viewonly">查看明细</a></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="6">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->

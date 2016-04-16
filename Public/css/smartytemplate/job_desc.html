@@ -1,0 +1,227 @@
+
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:$JOB_DESCRIPTION_LABEL showLine = '1'}-->
+    <div id="acc_div">
+        <h3><a href="#"><!--{$JOB_DESCRIPTION_LABEL}-->(Job Description)</a></h3>
+        <div>
+            <table class="bordertable">
+                <tbody>
+                    <tr>
+                        <td width="120" class="column-label"><!--{$TITLE_NAME_LABEL}--></td>
+                        <td width="120"><!--{$TITLE_NAME}--></td>
+                        <td width="120" class="column-label"><!--{$TITLE_LEVLE_LABEL}--></td>
+                        <td width="120"><!--{$TITLE_LEVLE}--></td>
+                        <td width="120" class="column-label"><!--{$ACC_DEPT_LABEL}--></td>
+                        <td width="120"><!--{$DEPT_ID}--> &nbsp;<!--{$DEPT_NAME}--></td>
+                    </tr>
+                    <tr>
+                        <td class="column-label"><!--{$JD_PURPOSE_LABEL}--></td>
+                        <td colspan="5"><pre><!--{$JD_PURPOSE}--></pre></td>
+                    </tr>
+                    <tr>
+                        <td class="column-label"><!--{$DUTY_CONTENTS_LABEL}--></td>
+                        <td colspan="5">
+                            <table class="bordertable">
+                                <tbody>
+                                    <tr>
+                                        <th><!--{$DUTY_LABEL}--><br>
+                                            (Start From the Most Important Duty)</td>
+                                        <th><!--{$WEIGHT_LABEL}-->(%)<br>
+                                            (Percent of Responsibilities)</td>
+                                    </tr>
+                                    <!--{section name="position_duty" loop=$position_duty_list}-->
+                                    <tr>
+                                        <td ><!--{$position_duty_list[position_duty].ASSIGNMENT_DESC}--></td>
+                                        <td ><!--{$position_duty_list[position_duty].ASSIGNMENT_PER}--></td>
+                                    </tr>
+                                    <!--{sectionelse}-->
+                                    <tr>
+                                        <td colspan="2"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+                                    </tr>
+                                    <!--{/section}-->
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3><a href="#"><!--{$REQUIRED_QUAL_LABEL}-->(Required Qualification)</a></h3>
+        <div>
+            <table class="bordertable">
+                <tbody>
+                    <tr>
+                        <td width="120" class="column-label"><!--{$EDU_BG_LABEL}--></td>
+                        <td width="120"><!--{$EDU_BG}--></td>
+                        <td width="120" class="column-label"><!--{$MAJOR_LABEL}--></td>
+                        <td width="120"><!--{$MAJOR}--></td>
+                        <td width="120" class="column-label"><!--{$IS_SHIFT_REQUIRED_LABEL}--></td>
+                        <td width="120"><!--{$IS_SHIFT_REQUIRED}--></td>
+                    </tr>
+                    <tr>
+                        <td class="column-label"><!--{$WORK_EXPERIENCE_LABEL}--></td>
+                        <td colspan="5"><pre><!--{$WORK_EXPERIENCE|wordwrap:40:"<br/>\n"}--></pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column-label"><!--{$SPECIAL_SKILL_LABEL}--></td>
+                        <td colspan="5"><pre><!--{$SPECIAL_SKILL|wordwrap:40:"<br/>\n"}--></pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="column-label"><!--{$PROFESS_TRAINING_LABEL}--></td>
+                        <td colspan="5"><!--{$PROFESS_TRAINING|wordwrap:40:"<br/>\n"}--></td>
+                    </tr>
+                    <tr>
+                        <td class="column-label"><!--{$OTHERS_REQUIRE_LABEL}--></td>
+                        <td colspan="5"><!--{$OTHERS_REQUIRE|wordwrap:40:"<br/>\n"}--></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3><a href="#"><!--{$ACCOUNTABILITY_LABEL}-->(Accountability)</a></h3>
+        <div>
+            <table class="bordertable">
+                <tbody>
+                    <tr>
+                        <td><!--{$ACCOUNTABILITY|nl2br|wordwrap:40}--></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3><a href="#"><!--{$ORG_REL_LABEL}-->(Organization Relationship)</a></h3>
+        <div>
+            <table class="bordertable">
+                <tbody>
+                    <tr>
+                        <td width="120" class="column-label"><!--{$CURRENT_POSITION_LABEL}--></td>
+                        <td colspan="3"><!--{$JOB_POSITION}--></td>
+                    </tr>
+                    <tr>
+                        <td width="120" class="column-label"><!--{$AUTHORITY_SUPER_LABEL}--></td>
+                        <td width="180"><!--{$AUTHORITY_SUPER}-->&nbsp;</td>
+                        <td class="column-label"><!--{$IMME_SUPER_LABEL}--></td>
+                        <td width="180"><!--{$IMME_SUPER}-->&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="column-label"><!--{$SUB_DEPT_LABEL}--></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><!--{$TITLE_ID_LABEL}--></th>
+                        <th colspan="2"><!--{$TITLE_DESC_LABEL}--></th>
+                    </tr>
+                    <!--{section name="sub_dept" loop=$sub_dept_list}-->
+                    <tr>
+                        <td  colspan="2"><!--{$sub_dept_list[sub_dept].TITLE_ID}-->
+                        </td>
+                        <td  colspan="2"><!--{$sub_dept_list[sub_dept].TITLE_DESC}-->
+                        </td>
+                    </tr>
+                    <!--{sectionelse}-->
+                    <tr>
+                        <td colspan="4">
+                            <!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+                        </td>
+                    </tr>
+                    <!--{/section}-->
+                </tbody>
+            </table>
+        </div>
+
+        <h3><a href="#"><!--{$PMD_LABEL}--> (Performance Management & Development)</a></h3>
+        <div>
+            <table class="bordertable">
+                <tbody>
+                    <tr>
+                        <th width="120"><!--{$PMD_ID_LABEL}--></th>
+                        <th><!--{$PMD_DESC_LABEL}--></th>
+                        <th><!--{$PMD_WEIGHT_LABEL}--></th>
+                    </tr>
+                    <!--{section name="pmd" loop=$pmd_list}-->
+                    <tr>
+                        <td><!--{$pmd_list[pmd].PMD_NO}--></td>
+                        <td><!--{$pmd_list[pmd].PMD_DESC}--></td>
+                        <td align="right"><!--{$pmd_list[pmd].PMD_WEIGHT}-->
+                        </td>
+                    </tr>
+                    <!--{sectionelse}-->
+                    <tr>
+                        <td  colspan="3">
+                            <!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+                        </td>
+                    </tr>
+                    <!--{/section}-->
+                </tbody>
+            </table>
+        </div>
+
+        <h3><a href="#"><!--{$COMPETENCY_LABEL}-->(Competences)</a></h3>
+        <div>
+            <table class="bordertable">
+                <tbody>
+                    <tr>
+                        <th width="120"><!--{$COMPETENCE_ID_LABEL}--></th>
+                        <th><!--{$COMPETENCE_DESC_LABEL}--></th>
+                        <th><!--{$COMPETENCE_WEIGHT_LABEL}--></th>
+                        <th><!--{$COMPETENCE_LEVEL_LABEL}--></th>
+                        <th><!--{$REMARK_LABEL}--></td>
+                    </tr>
+                    <!--{section name="competence" loop=$competence_list}-->
+                    <tr>
+                        <td ><!--{$competence_list[competence].COMPETENCE_ID}-->
+                        </td>
+                        <td ><!--{$competence_list[competence].COMPETENCE_DESC}-->
+                        </td>
+                        <td  align="right"><!--{$competence_list[competence].COMPETENCE_WEIGHT}-->
+                        </td>
+                        <td ><!--{$competence_list[competence].COMPETENCE_LEVEL}-->
+                        </td>
+                        <td ><!--{$competence_list[competence].REMARK}-->
+                        </td>
+                    </tr>
+                    <!--{sectionelse}-->
+                    <tr>
+                        <td colspan="5">
+                            <!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+                        </td>
+                    </tr>
+                    <!--{/section}-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div>&nbsp;</div>
+    <div>
+        <table class="bordertable">
+            <tbody>
+                <tr>
+                    <td width="12%" class="column-label"><!--{$PREPARED_BY_LABEL}--></td>
+                    <td><!--{$PREPARED_EMP_NAME}--></td>
+                    <td width="12%" class="column-label"><!--{$APPROVED_BY_LABEL}--></td>
+                    <td ><!--{$APPROVED_EMP_NAME}--></td>
+                    <td width="12%" class="column-label"><!--{$PREPARED_DATE_LABEL}--></td>
+                    <td ><!--{$PREPARED_DATE}--></td>
+                    <td width="12%" class="column-label"><!--{$APPROVED_DATE_LABEL}--></td>
+                    <td ><!--{$APPROVED_DATE}--></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--{include file="block_box_footer.html"}-->
+
+    <script type="text/javascript">
+        $(function() {
+            $("#acc_div").accordion({
+                fillSpace: true,
+                collapsible: true,
+                autoHeight: true,
+                navigation: true,
+                clearStyle: true,
+                active: false
+            });
+        });
+    </script>

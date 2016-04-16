@@ -1,0 +1,84 @@
+
+</head>
+ <script>
+	$(function() {
+		$( "#tabs").tabs({
+			collapsible: true
+		}).tabs({selected: <!--{if ($smarty.get.year == ($year-1))}-->1<!--{else}-->0<!--{/if}-->});
+	});
+</script>
+<body class="page-container">
+<h4 class="ui-widget-header ui-corner-all" id="panel_title" style="padding:5px;">
+<!--{$smarty.get.appdesc}-->
+</h4>
+<div id="tabs">
+	<ul>
+		<li><a href="#tabs-<!--{$year}-->"><!--{$year}--></a></li>
+		<!--{if count($pyear_ins_list)>0}-->
+		<li><a href="#tabs-<!--{$year-1}-->"><!--{$year-1}--></a></li>
+		<!--{/if}-->
+	</ul>
+	<div id="tabs-<!--{$year}-->">
+		<table class="bordertable">
+			<tr>
+			<!--{section name="i" loop=$year_ins_list}-->
+				<th width="5%" <!--{if $year_ins_list[i].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->><!--{$year_ins_list[i].YEAR_MON|substr:5:2}--></th>
+				<td width="20%" <!--{if $year_ins_list[i].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->>
+					<!--{$COMPANY_PAY_LABEL}-->:<a href="../ess/redirect.php?scriptname=salary_ss_his_new&empseqno=<!--{$smarty.get.empseqno}-->&salary_result_id=<!--{$year_ins_list[i].SAL_RESULT_ID}-->&master_id=<!--{$year_ins_list[i].MASTER_ID}-->&detail_id=<!--{$year_ins_list[i].DETAIL_ID}-->&year=<!--{$year_ins_list[i].YEAR_MON|substr:0:4}-->&appdesc=<!--{$smarty.get.appdesc}-->&ym=<!--{$year_ins_list[i].YEAR_MON}-->"><!--{$year_ins_list[i].COM_TOTAL|number_format:'2%'}--></a>
+					<br/><!--{$EMP_PAY_LABEL}-->:<a href="../ess/redirect.php?scriptname=salary_ss_his_new&empseqno=<!--{$smarty.get.empseqno}-->&salary_result_id=<!--{$year_ins_list[i].SAL_RESULT_ID}-->&master_id=<!--{$year_ins_list[i].MASTER_ID}-->&detail_id=<!--{$year_ins_list[i].DETAIL_ID}-->&year=<!--{$year_ins_list[i].YEAR_MON|substr:0:4}-->&appdesc=<!--{$smarty.get.appdesc}-->&ym=<!--{$year_ins_list[i].YEAR_MON}-->"><!--{$year_ins_list[i].EMP_TOTAL|number_format:'2%'}--></a>
+				</td>
+			<!--{if in_array($smarty.section.i.rownum,array(4,8))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+	</div>
+	<!--{if count($pyear_ins_list)>0}-->
+	<div id="tabs-<!--{$year-1}-->">
+		<table class="bordertable">
+			<tr>
+			<!--{section name="r" loop=$pyear_ins_list}-->
+				<th width="5%" <!--{if $pyear_ins_list[r].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->><!--{$pyear_ins_list[r].YEAR_MON}--></th>
+				<td width="20%" <!--{if $pyear_ins_list[r].DETAIL_ID == $detail_id}--> class="ui-state-highlight" <!--{/if}-->>
+					<!--{$COMPANY_PAY_LABEL}-->:<a href="?scriptname=salary_ss_his_new&empseqno=<!--{$smarty.get.empseqno}-->&salary_result_id=<!--{$pyear_ins_list[r].SAL_RESULT_ID}-->&master_id=<!--{$pyear_ins_list[r].MASTER_ID}-->&detail_id=<!--{$pyear_ins_list[r].DETAIL_ID}-->&year=<!--{$pyear_ins_list[r].YEAR_MON|substr:0:4}-->&appdesc=<!--{$smarty.get.appdesc}-->&ym=<!--{$pyear_ins_list[i].YEAR_MON}-->"><!--{$pyear_ins_list[r].COM_TOTAL|number_format:'2%'}--></a>
+					<br/><!--{$EMP_PAY_LABEL}-->:<a href="?scriptname=salary_ss_his_new&empseqno=<!--{$smarty.get.empseqno}-->&salary_result_id=<!--{$pyear_ins_list[r].SAL_RESULT_ID}-->&master_id=<!--{$pyear_ins_list[r].MASTER_ID}-->&detail_id=<!--{$pyear_ins_list[r].DETAIL_ID}-->&year=<!--{$pyear_ins_list[r].YEAR_MON|substr:0:4}-->&appdesc=<!--{$smarty.get.appdesc}-->&ym=<!--{$pyear_ins_list[i].YEAR_MON}-->"><!--{$pyear_ins_list[r].EMP_TOTAL|number_format:'2%'}--></a>
+				</td>
+			<!--{if in_array($smarty.section.r.rownum,array(4,8))}--></tr><tr><!--{/if}-->
+			<!--{/section}-->
+			</tr>
+		</table>
+	</div>
+	<!--{/if}-->
+</div>
+<!-- <div style="font-size:18px;text-align:center;"><strong><!--{$smarty.get.ym|default:$year|cat:$mon}-->社保明细</strong></div>-->
+<!--{include file="block_box_header.html"}-->
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$SALARY_MONTH_LABEL}--></th>
+		<th nowrap><!--{$SALARY_STD_DESC_LABEL}--></th>
+		<th nowrap><!--{$INSURE_DESC_LABEL}--></th>
+		<th nowrap><!--{$EMP_BASE_LABEL}--></th>
+		<th nowrap><!--{$COMPANY_BASE_LABEL}--></th>
+		<th nowrap><!--{$EMP_PAY_LABEL}--></th>
+		<th nowrap><!--{$COMPANY_PAY_LABEL}--></th>
+		<th nowrap><!--{$INSURE_UNIT_DESC_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$salary_ss_list}-->
+	<tr>
+		<td><!--{$salary_ss_list[i].SALARY_YM}--></td>
+		<td><!--{$salary_ss_list[i].SALARY_STD_DESC}--></td>
+		<td><!--{$salary_ss_list[i].INSURE_NAME_CN}--></td>
+		<td><!--{$salary_ss_list[i].EMP_BASE|string_format:"%.2f"|number_format:2}--></td>
+		<td><!--{$salary_ss_list[i].COMPANY_BASE|string_format:"%.2f"|number_format:2}--></td>
+		<td><!--{$salary_ss_list[i].EMP_PAY|string_format:"%.2f"|number_format:2}--></td>
+		<td><!--{$salary_ss_list[i].COMPANY_PAY|string_format:"%.2f"|number_format:2}--></td>
+		<td><!--{$salary_ss_list[i].INSURE_UNIT_NAME}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="8">
+            <!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+        </td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->

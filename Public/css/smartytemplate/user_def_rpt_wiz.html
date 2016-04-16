@@ -1,0 +1,374 @@
+
+<style type="text/css">
+select {width: 128px;}
+p {	text-indent: 25px;}
+li{	list-style-type:none;}
+label{margin-right:5px;}
+
+#def_col_list,#dis_col_list,#dis_col_list1,#dis_col_list2,#dis_col_list3,#ui_col_list,#ui_group_col_list,#cond_col_list,#sort_col_list,#stts_col_list
+{height: 240px;	width: 240px;}
+
+#def_col_list li,#dis_col_list li,#dis_col_list1 li,#dis_col_list2 li,#dis_col_list3 li,#ui_col_list li,#ui_group_col_list li,#cond_col_list li,#sort_col_list li,#stts_col_list li
+{cursor: move;margin: 4px;padding: 2px;}
+
+#attr_dis_col_list li,#col_grp_acc li {
+	cursor: default;margin: 4px;padding: 2px;
+}
+
+#def_col_list li span,#dis_col_list li span,#dis_col_list1 li span,#dis_col_list2 li span,#dis_col_list3 li span,#attr_dis_col_list li span,#ui_col_list li span,#ui_group_col_list li span,#col_grp_acc li span,#cond_col_list li span,#sort_col_list li span,#stts_col_list li span
+{float: left;cursor: default;}
+
+#toolbar {padding-left: 5px;}
+
+.dialog_link {
+	padding: .4em 1em .4em 20px;
+	text-decoration: none;
+	position: relative;
+}
+
+.dialog_link span.ui-icon {
+	margin: 0 5px 0 0;
+	position: absolute;
+	left: .2em;
+	top: 50%;
+	margin-top: -8px;
+}
+
+.cols-area {
+	height: 250px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 5px;
+}
+
+.short-text {
+	width: 122px;
+}
+
+.addbtn,.delbtn {
+	width: 24px;
+	height: 24px;
+}
+
+.ui-state-highlight {
+	height: 1.5em;
+	line-height: 1.2em;
+}
+
+.hide {
+	display: none;
+}
+</style>
+</head>
+<body class="page-container">
+	<div style="overflow-y:auto;overflow-x:hidden;padding:10px;" class="ui-widget-content ui-corner-all">
+		<h4 class="ui-widget-header ui-corner-all" style="padding:5px;">
+			<div>
+				[<span id="c_step">1</span>/<span id="t_step">5</span>]
+				<span><!--{$BLOCK_TITLE}-->:</span><span id="panel_title"></span>
+			</div>
+		</h4>
+		<form name="form1" id="form1" method="post">		
+			<input type="hidden" name="wiz_step" id="wiz_step" value="0"/>
+			<input type="hidden" name="func" value="save" id="curr_func"/>
+			<input type="hidden" name="program_no" id ="program_no" value="<!--{$PROGRAM_NO}-->"/>
+			<!-- Store JSON data -->
+			<input type="hidden" name="colsattr"  id="colsattr"  value=""/>
+			<input type="hidden" name="colsgroup" id="colsgroup" value=""/>
+			<input type="hidden" name="moduleid"  id="moduleid"  value="ESNR"/>
+			
+			<!-- 报表名称  -->
+			<!--{include file="user_def_rpt_step0.html"}-->
+			
+			<!-- 设定画面布局  -->
+			<!--{include file="user_def_rpt_step1.html"}-->
+			
+			<!-- 设定数据来源 -->
+			<!--{include file="user_def_rpt_step2.html"}-->	
+			
+			<!--设定栏位相关属性 -->
+			<!--{include file="user_def_rpt_step3.html"}-->
+			
+			<!--设定栏位分组(单笔显示时) not used now, mv to step3 by dennis 2012-08-10 -->
+			<!--{*include file="user_def_rpt_step4.html"*}-->
+			
+			<!--显示最后设好的画面 (Real Data) -->
+			<!--{include file="user_def_rpt_step5.html"}-->
+			
+			<!-- 报表授权给相关用户 -->
+			<!--{*include file="user_def_rpt_step6.html"*}-->
+						
+			<!-- Wizard Buttons -->			
+			<br clear="all"/>
+			<p style="text-align:right;">
+				<input type="button" id="btn_back" class="hide" value="上一步"/>
+				<input type="button" id="btn_next" value="下一步"/>
+				<input type="submit" id="btn_complete" class="hide" value="完成"/>
+			</p>
+		</form>
+	</div>
+	<script>
+	<!--{if $smarty.get.action == 'update' && $smarty.get.rptid != ''}-->
+	
+	(function($) {
+		$.fn.outerHTML = function(s) {
+			return (s) 
+				? this.before(s).remove() 
+				: $('<p>').append(this.eq(0).clone()).html();
+		}
+	})(jQuery);
+	var rptColsList = _getCols(<!--{$cols_list}-->);
+	/*
+	Array
+		(
+		    [PROGRAM_NO] => ESNR004
+		    [RPT_DESC] => 测试日期数字文字
+		    [TARGET_TABLE_DETAIL_ID] => 1
+		    [PAGE_SIZE] => 20
+		    [DEFAULT_WHERE] => 
+		    [DEFAULT_ORDER_BY] => 
+		    [ALLOW_SORTING] => 1
+		    [SORT_MODE] => remote
+		    [ALLOW_SELECTED] => 
+		    [ALLOW_MOUSE_EVENT] => 
+		    [ALLOW_PAGING] => 1
+		    [HEADER_PAGING] => 0
+		    [FOOTER_PAGING] => 1
+		    [GRIDVIEW_STYLE] => 
+		    [HEADER_STYLE] => 
+		    [SELECTED_ROW_STYLE] => 
+		    [WIDTH] => 
+		    [HEIGHT] => 
+		    [UI_STYLE] => 
+		    [COMMENTS] => 
+		    [ALLOW_QUERYING] => 1
+		    [APPLICATION_TYPE] => gridview
+		    [ALLOW_GROUPING] => 
+		    [IS_SHOW] => 1
+		    [SHOW_WHERE] => 
+		    [ALLOW_EXP] => 1
+		    [ALLOW_PRINT] => 
+		    [ALLOW_STTS_GRP] => 
+		)
+	*/
+	/*
+	* Directly jump to step n,
+	* (0 < n < 5)
+	*/
+	function _jump2StepN(n)
+	{
+		$wiz_step.val(n);
+		w(n,$('#btn_next'));
+	}
+
+	function _initEditRpt()
+	{
+		_setTitle('<!--{$RPT_DESC}-->');
+		$('#curr_func').val('update');
+		var rtype = _setRptType('<!--{$APPLICATION_TYPE}-->');
+		_setGridAttr('<!--{$ALLOW_PAGING}-->',
+					 '<!--{$PAGE_SIZE}-->',
+					 _getPagerPos('<!--{$HEADER_PAGING}-->','<!--{$FOOTER_PAGING}-->'),
+					 '<!--{$ALLOW_SORTING}-->',
+					 '<!--{$ALLOW_QUERYING}-->',
+					 '<!--{$ALLOW_STTS_GRP}-->',
+					 '<!--{$ALLOW_EXP}-->',
+					 '<!--{$ALLOW_PRINT}-->');
+		if (rtype == 'singlerow') _setSingRowAttr('<!--{$ALLOW_GROUPING}-->');
+		_setTableName('<!--{$PROGRAM_NO}-->','<!--{$TABLE_NAME}-->');
+		
+		_initUICol();
+		//$dis_col_list1 = $dis_cols_list
+		// set firt page to step3
+		//_jump2StepN(3); remark by dennis 2012-07-31 for standard use
+	}
+	/**
+	* 根据栏位设定,区分出显示/排序/查询/统计栏位
+	* @param cols_list json type array
+	*/
+	function _getCols(cols_list)
+	{
+		var col_cnt = cols_list.length;
+		var cols = new Array();
+		cols['display'] = new Array();
+		cols['sort']    = new Array();
+		cols['cond']    = new Array();
+		cols['stts']	= new Array();
+		var j = 0;
+		var k = 0;
+		var m = 0;
+		for(var i=0; i<col_cnt; i++)
+		{
+			var colname = cols_list[i]['COLUMN_NAME'];
+			var isstts  = cols_list[i]['GROUPBY_TYPE'] != null;
+			cols['display'][i] = isstts ? 
+								 cols['sort'][j] = colname.replace(cols_list[i]['GROUPBY_TYPE']+'_',''):
+								 colname;
+			if (cols_list[i]['ALLOW_SORTING'] == '1')
+			{
+				cols['sort'][j] = colname;	j++;
+			}
+			if (cols_list[i]['ALLOW_QUERYING'] == '1')
+			{
+				//alert(colname)
+				cols['cond'][j] = colname; k++;
+			}
+			//alert(cols_list[i]['GROUPBY_TYPE'])
+			if (isstts)
+			{
+				cols['stts'][m] = cols['display'][i]; m++;
+			}
+		}
+		return cols;
+	}
+	/*
+	* 设定编辑时的标题
+	*/
+	function _setTitle(rpt_desc)
+	{
+		$('#panel_title').text('编辑自订报表:'+rpt_desc);
+	}
+	/*
+	* 取得分页工具列的位置
+	*/
+	function _getPagerPos(top,bottom)
+	{
+		var pos = '';
+		if (top == 1 && bottom == 0) pos = 'top';
+		if (top == 0 && bottom == 1) pos = 'bottom';
+		if (top == 1 && bottom == 1) pos = 'both';
+		return pos;
+	}
+	
+	/*
+	* Read User Define Report Setting from DB and Display on Screen
+	*/
+	
+	/**
+	 * Set rpt type when edit
+	 */
+	function _setRptType(rtype)
+	{
+		if (rtype == 'gridview') $('#radio_layout_mrow').click();
+		if (rtype == 'singlerow') $('#radio_layout_srow').click();
+		return rtype;
+	}
+	
+	/*
+	* Set grid property
+	*/
+	function _setGridAttr(allow_paging,
+						  numperpage,
+						  pager_pos,
+						  allow_sort,
+						  allow_query,
+						  allow_stts_grp,
+						  allow_exp,
+						  allow_print)
+	{
+		$('#allow_paging').attr('checked',(allow_paging == '1' ? true : false));	
+		$('#numperpage').val(numperpage);
+		$('#pagerbarpos').val(pager_pos);
+		$('#allow_sort').attr('checked',(allow_sort == '1' ? true : false));
+		$('#allow_query').attr('checked',(allow_query == '1' ? true : false));
+		$('#allow_stts_group').attr('checked',(allow_stts_grp == '1' ? true : false));
+		$('#allow_exp').attr('checked',(allow_exp == '1' ? true : false));
+		$('#allow_print').attr('checked',(allow_print == '1' ? true : false));
+	}
+	
+	/*
+	* 编辑时,根据设定允许分组是否选中
+	*/
+	function _setSingRowAttr(allow_group)
+	{
+		$('#allow_col_group').attr('checked',(allow_group == '1' ? true : false));
+	}
+	
+	/*
+	* Set report data source
+	*/
+	function _setTableName(module_id,data_source)
+	{
+		var moduleid = module_id.substring(0,4);
+		// will automatically load data source when tab selected
+		// fire the tabselect trigger
+		_setDSTabSelect(moduleid);
+		// fire the radio buttion trigger
+		//alert($('#'+data_source))
+		currViewName = data_source;
+		_initColsList();
+	}
+	
+	/*
+	* 选中 datasource table name
+	*/
+	function _setDSTabSelect(module_id)
+	{
+		var tabidx = 0;
+		$step2_tab_sub.find('ul').children().each(function(){
+			if ('m-'+module_id == $(this).attr('id'))
+			{
+				$step2_tab_sub.tabs('select', tabidx);
+				return;
+			}
+			tabidx++;
+		});
+	}
+	
+	function _setDefaultWhere(default_where)
+	{
+		$('#default_where').val(default_where);
+	}
+	/**
+	* @param array  cols_list
+	* @param object source_container
+	* @param object dest_container
+	*/
+	function _mv2d(cols_list,source_container,dest_container)
+	{
+		var cnt = cols_list.length;
+		source_container.children().each(function(){
+			for(var i=0; i<cnt; i++)
+			{
+				if ($(this).attr('id') == cols_list[i])
+				{
+					dest_container.last().append($(this).outerHTML());
+					$(this).remove();
+					continue;
+				}
+			}
+		});
+		//alert(dest_container.html());
+	}
+	
+	function _setDisplayCol(cols_list)
+	{
+		_mv2d(cols_list,$def_col_list,$dis_col_list);
+	}
+		
+	function _setQueryAllowCol(cols_list)
+	{
+		//alert(cols_list);
+		_mv2d(cols_list,$dis_col_list1,$cond_col_list);
+	}
+	
+	function _setSortAllowCol(cols_list)
+	{
+		_mv2d(cols_list,$dis_col_list2,$sort_col_list);
+	}
+	
+	function _setSttsAllowCol(cols_list)
+	{
+		_mv2d(cols_list,$dis_col_list3,$stts_col_list);
+	}
+	/*
+	* Set all cols setting
+	*/
+	function _setColsAttr()
+	{
+		// not implement code 
+	}
+	<!--{/if}-->
+	</script>
+	<script type="text/javascript" src="<!--{$JS_DIR}-->/report_wizard.js"></script>
+	<script type="text/javascript" src="<!--{$JS_DIR}-->/jqueryui/jquery.validate.min.js"></script>

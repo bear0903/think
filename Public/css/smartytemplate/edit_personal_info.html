@@ -1,0 +1,86 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:$smarty.session.appdesc showLine = '1'}-->
+<form name="form1" method="post">
+<table>
+	<tr>
+		<td width="120"><!--{$EMP_NAME_LABEL}--></td>
+		<td><!--{$EMP_NAME|default:$smarty.session.user.emp_name}--></td>
+	</tr>
+	<tr>
+		<td><!--{$HOME_TEL_LABEL}--></td>
+		<td><input type="text" class="input-text" name="address_tel"
+			value="<!--{$HOME_TEL}-->"/></td>
+	</tr>
+	<tr>
+		<td><!--{$CELLPHONE_NO_LABEL}--></td>
+		<td><input type="text" class="input-text" name="mobiletel"
+			value="<!--{$CELLPHONE_NO}-->"/></td>
+	</tr>
+	<tr>
+		<td><!--{$EXTENSION_LABEL}--></td>
+		<td><input type="text" class="input-text" name="tel_part" value="<!--{$EXTENSION}-->"
+		size="20"/></td>
+	</tr>
+	<tr>
+		<td><!--{$PERMANENT_ADDRESS_LABEL}--></td>
+		<td><input type="text" class="input-text" name="address" value="<!--{$PERMANENT_ADDRESS}-->"
+		size="20"/></td>
+	</tr>
+	<tr>
+		<td><!--{$ADDRESS_CONTACTOR_LABEL}--></td>
+		<td><input type="text" class="input-text" name="address_man"
+			value="<!--{$ADDRESS_CONTACTOR}-->"/></td>
+	</tr>
+	<tr>
+		<td><!--{$POSTCODE_LABEL}--></td>
+		<td><input type="text" class="input-text" name="addresszipcode"
+			value="<!--{$POSTCODE}-->"/></td>
+	</tr>
+	<tr>
+		<td><!--{$MAIL_ADDRESS_LABEL}--></td>
+		<td><input type="text" class="input-text" name="mailaddress"
+			value="<!--{$MAIL_ADDRESS}-->"/></td>
+	</tr>
+	<tr>
+		<td><!--{$MAIL_CONTACTOR_LABEL}--></td>
+		<td><input type="text" class="input-text" name="mailaddress_man"
+			value="<!--{$MAIL_CONTACTOR}-->"/></td>
+	</tr>
+	<tr>
+		<td><!--{$MAIL_POSTCODE_LABEL}--></td>
+		<td><input type="text" class="input-text"
+			name="mailaddresszipcode" value="<!--{$MAIL_POSTCODE}-->"
+		size="20"/></td>
+	</tr>
+	<tr>
+		<td><!--{$EMERGENCY_CONTRACTOR_LABEL}--></td>
+		<td>
+			<input type="text" class="input-text"
+			name="emergencycontactor" value="<!--{$EMERGENCY_CONTRACTOR}-->"
+			size="20"
+			maxlength="20"/></td>
+	</tr>
+	<tr>
+		<td><!--{$EMERGENCY_TEL_LABEL}--></td>
+		<td><input type="text" class="input-text"
+			name="emergencycontactor_tel" value="<!--{$EMERGENCY_TEL}-->"
+		size="20"/></td>
+	</tr>
+	<!-- 
+	<tr>
+		<td><!--{$DATA_STATUS_LABEL|default:"資料狀態"}--></td>
+		<td><!--{if $DATA_STATUS == '0'}--><!--{$DISAPPROVED_LABEL|default:"未生效"}--><!--{/if}--></td>
+	</tr>
+	 -->
+	<tr>
+		<td></td>
+		<td>
+			<input name="submit" type="submit" value="<!--{$SUBMIT_BTN_LABEL}-->" id="submit"
+			class="button-submit" />
+		</td>
+	</tr>
+</table>
+</form>
+<!--{include file="block_box_footer.html"}-->

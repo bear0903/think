@@ -1,0 +1,47 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+<table border="0" class="bordertable">
+	<tr class="header-style">
+		<th><!--{$ROW_NO_LABEL}--></th>
+		<!--<th><!--{$UPDATETYPE_NO_LABEL}--></th>-->
+		<th><!--{$UPDATETYPE_NAME_LABEL}--></th>
+		<th><!--{$SLY_GRADE_LABEL}--></th>
+		<th><!--{$NEW_GRADE_LABEL}--></th>
+		<th><!--{$SLY_DEGREE_LABEL}--></th>
+		<th><!--{$NEW_DEGREE_LABEL}--></th>
+		<th><!--{$VALIDDATE_LABEL}--></th>
+		<th><!--{$PRE_VALIDDATE_LABEL}--></th>
+		<!-- <th><!--{$SALARY_PROPORTION_LABEL}--></th> -->
+		<th><!--{$REMARK_LABEL}--></th>
+		<th><!--{$VIEW_RESULT_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$salary_promotion_list}-->
+	<tr>
+		<td><!--{$smarty.section.i.rownum}--></td>
+		<!-- <td nowrap><!--{$salary_promotion_list[i].UPDATETYPE_NO}--></td> -->
+		<td nowrap><!--{$salary_promotion_list[i].UPDATETYPE_NAME}--></td>
+		<td><!--{$salary_promotion_list[i].SLY_GRADE}--></td>
+		<td><!--{$salary_promotion_list[i].NEW_GRADE}--></td>
+		<td><!--{$salary_promotion_list[i].SLY_DEGREE}--></td>
+		<td><!--{$salary_promotion_list[i].NEW_DEGREE}--></td>
+		<td nowrap><!--{$salary_promotion_list[i].VALIDDATE}--></td>
+		<td nowrap><!--{$salary_promotion_list[i].NEXT_VALIDDATE}--></td>
+		<!-- <td><!--{$salary_promotion_list[i].SALARY_PROPORTION}--></td> -->
+		<td><!--{$salary_promotion_list[i].REMARK}--></td>
+		<td>
+			<!--{if $salary_promotion_list[i].NEXT_VALIDDATE }-->
+			<a href="?scriptname=salary_adjust_his_detail&companyid=<!--{$salary_promotion_list[i].PSN_SEG_SEGMENT_NO}-->&empseqno=<!--{$salary_promotion_list[i].PSN_ID}-->&vdate=<!--{$salary_promotion_list[i].VALIDDATE}-->&nvdate=<!--{$salary_promotion_list[i].NEXT_VALIDDATE}-->&appdesc=<!--{$BLOCK_TITLE|urlencode}-->">
+				<img src="<!--{$IMG_DIR}-->/pe.png" alt="View Detail"/>
+			</a>
+			<!--{/if}-->
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="12"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->

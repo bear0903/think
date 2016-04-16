@@ -1,0 +1,66 @@
+<!--program code: ESND   ref form: HRHF407-->
+</head>
+<body class="page-container">
+		<!--{include file="block_box_header.html" title="$MONTH_COURSE_LABEL" showLine=1}-->
+		<table  class="bordertable" >
+		<thead>
+			<tr>
+				<th><!--{$CLASS_DATE_LABEL}--></th>
+				<th><!--{$SUBJECT_NAME_LABEL}--></th>
+				<th><!--{$HOUR_BEGIN_LABEL}--></th>
+				<th><!--{$HOUR_END_LABEL}--></th>
+				<th><!--{$HOUR_LABEL}--></th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--{section name="i" loop=$course_list}-->
+			<tr>
+				<td><!--{$course_list[i].CLASS_DATE}--></td>
+				<td nowrap>
+					<a href="javascript:openw('../mgr/redirect.php?scriptname=train_subject&subject_code=<!--{$course_list[i].SUBJECT_CLASS_NO}-->');">
+					<!--{$course_list[i].SUBJECT_CLASS_NAME}-->
+					</a>
+				</td>
+				<td><!--{$course_list[i].HOUR_BEGIN}--></td>
+				<td><!--{$course_list[i].HOUR_END}--></td>
+				<td><!--{$course_list[i].SUBJECT_HOUR}--></td>
+			</tr>
+			<!--{sectionelse}-->
+			<tr>
+				<td colspan="5">
+					<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+				</td>
+			</tr>
+			<!--{/section}-->
+		</tbody>
+		</table>
+		<!--{include file="block_box_footer.html"}-->
+
+		<!--{include file="block_box_header.html" title="$UN_LEARNED_COURSE_LABEL" showLine=1}-->
+		<table  class="bordertable" >
+			<thead>
+				<tr>
+					<th><!--{$SUBJECT_ID_LABEL}--></th>
+					<th><!--{$SUBJECT_NAME_LABEL}--></th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--{section name="i" loop=$un_learned_list}-->
+				<tr>
+					<td><!--{$un_learned_list[i].SUBJECT_NO}--></td>
+					<td>
+						<a href="javascript:showDetail('../mgr/redirect.php?scriptname=train_subject&subject_code=<!--{$un_learned_list[i].SUBJECT_NO}-->');">
+						<!--{$un_learned_list[i].SUBJECT_NAME}-->
+					</a>
+					</td>
+				</tr>
+				<!--{sectionelse}-->
+				<tr>
+					<td colspan="2">
+						<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+					</td>
+				</tr>
+				<!--{/section}-->
+			</tbody>
+		</table>
+		<!--{include file="block_box_footer.html"}-->

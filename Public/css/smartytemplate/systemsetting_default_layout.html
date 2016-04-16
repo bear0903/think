@@ -1,0 +1,29 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+<form name="form1" method="post">
+	<table class="bordertable">
+		<tr>
+			<td>
+				<input type="radio" name="default_layout" id="layout_iframe"
+					value="iframeLayout"<!--{if $row.DEFAULT_LAYOUT=='iframeLayout'}-->checked<!--{/if}-->/>
+				<label for="layout_iframe"><!--{$IFRAME_LAYOUT_LABEL}--></label>
+			</td>
+			<td>
+				<input type="radio" name="default_layout" id="layout_default"
+					value="defaultLayout"<!--{if $row.DEFAULT_LAYOUT=='defaultLayout'}-->checked<!--{/if}-->/>
+				<label for="layout_default"><!--{$DEFAULT_LAYOUT_LABEL}--></label>
+			</td>
+		</tr>
+		<tr>
+			<td><img src="<!--{$IMG_DIR}-->/thumb_iframe.gif" /></td>
+			<td><img src="<!--{$IMG_DIR}-->/thumb_default.gif" border="0" alt="default layout"/></td>
+		</tr>
+	</table>
+	<input type="hidden" name="do" value="Save">
+	<div align="center">
+		<input type="submit" class="button-submit" value="<!--{$SUBMIT_BTN_LABEL}-->"/>
+	</div>
+</form>
+<!--{include file="block_box_footer.html"}-->

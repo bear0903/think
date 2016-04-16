@@ -1,0 +1,375 @@
+<style>
+ .input-text{background-color:#eee;}
+</style>
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<script type='text/javascript' src='<!--{$JS_DIR}-->/translate.js'></script>
+<script type='text/javascript'>
+
+function check_emp(idcardno)
+{
+	var msg = '';
+	$.ajax({
+		type:"post",
+		url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+		data:"isajaxcall=1&cardno="+idcardno,
+		async: false,
+		timeout:1000,
+		dataType:'json',
+		success: function(json){
+			if (json['is_success'] == 'Y')
+			{
+				msg = '<font color="blue">'+json['msg']+'</font>';				
+			}
+			if (json['is_blacklist'] == 'Y')
+			{
+				msg = '<font color="red">'+json['msg']+'</font>';
+			}
+			if (json['is_child'] == 'Y')
+            {
+                msg = '<font color="red">'+json['msg']+'</font>';				
+            }
+			if (json['is_child'] == 'N')
+            {
+                msg = '<font color="blue">'+json['msg']+'</font>';				
+            }
+			if (json['is_rehire'] == 'Y')
+			{
+				msg = '<font color="blue">'+json['msg']+'</font>';
+				$('#div_print_old_data').show();
+				
+			}else{
+				$('#div_print_old_data').hide();
+			}
+			if (json['is_onjob'] == 'Y')
+			{
+				 msg = '<font color="blue">'+json['msg']+'</font>';
+				 
+			}
+			setMessage('info',msg);
+		},// end function
+		error: function (json)
+		{
+			msg = '<font color="red">身份證未檢核成功，請稍候再試.</font>';
+			setMessage('error',msg);
+		}// end function
+	});
+}
+
+function get_age(idcardno)
+{
+	var age = 0;
+	$.ajax({
+        type:"post",
+        url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+        data:"isajaxcall=1&isgetage=1&cardno="+idcardno,
+        async: false,
+        timeout:1000,
+        dataType:'json',
+        success: function(json){
+            age = json;
+        },// end function
+        error: function (json)
+        {
+            age = '取年齡出錯，請稍後再試.';
+        }// end function
+	});
+	return age;
+}
+
+var OCX_OBJ = {};
+/*
+* OCX_OBJ 读卡成功后的回调函数
+*/
+function getData()
+{
+	with(document.form1){
+		//name.value = OCX_OBJ.Name;	//<-- 姓名--!>
+		name.value = OCX_OBJ.NameL;		//<-- 姓名--!>
+		//sex.value = OCX_OBJ.Sex;		//<-- 性别--!>
+		sex.value = OCX_OBJ.SexL;		//<-- 性别--!>
+		//nation.value = OCX_OBJ.Nation;//<-- 民族--!>
+		nation.value = OCX_OBJ.NationL;	//<-- 民族--!>
+		born.value = OCX_OBJ.Born;		//<-- 出生--!>
+		//bornl.value = OCX_OBJ.BornL;	//<-- 出生--!>
+		address.value = OCX_OBJ.Address;//<-- 地址--!>
+		cardno.value = OCX_OBJ.CardNo;	//<-- 卡号--!>
+		//police.value = OCX_OBJ.Police;//<-- 发证机关--!>
+		//activity.value = OCX_OBJ.Activity;				//<-- 有效期--!>
+		//activitylfrom.value = OCX_OBJ.ActivityLFrom;		//<-- 有效期--!>
+		//activitylto.value = OCX_OBJ.ActivityLTo;			//<-- 有效期--!>
+		//photo.value = OCX_OBJ.GetPhotoBuffer();
+		//jpgPhotoFace1.value = OCX_OBJ.GetFaceJpgBase64(0);//双面
+		//jpgPhotoFace1.value = OCX_OBJ.GetFaceJpgBase64(1);//正面
+		//jpgPhotoFace2.value = OCX_OBJ.GetFaceJpgBase64(2);//反面
+		<!--{if $empno_rule_type == 1}-->
+			empno.value = OCX_OBJ.CardNo;						//员工编号
+		<!--{/if}-->
+	}
+	
+	<!--{if $smarty.session.user.language == 'ZHT'}-->
+	// 简体转繁体		
+	$("input[type='text']").each(function(){
+		var _v = $(this).val();
+		//alert(_v.s2t());
+		if(_v){
+			$(this).val(_v.s2t());
+		}
+	});
+	<!--{/if}-->
+	var idcardno = $('#cardno').val();
+	$('#age').val(get_age(idcardno));
+	check_emp(idcardno);	
+}
+
+function clearData()//OCX读卡失败后的回调函数
+{
+	with(document.form1){
+		name.value = ""
+		sex.value = "";
+		nation.value = "";
+		born.value = "";
+		address.value = "";
+		cardno.value = "";
+		age.value = '';
+		//police.value = "";
+		//activity.value = "";
+		//activitylfrom.value = "";
+		//activitylto.value = "";
+		//photo.value = "";
+		//jpgPhotoFace1.value =  "";
+		//jpgPhotoFace2.value =  "";
+	}
+	$('#div_print_old_data').hide();
+}
+
+ /*
+    * Get 身份證讀卡器返回的消息,並轉換成可讀的 msg
+    * OCX_OBJ读卡消息回调函数，名稱必須 為  GetErrMsg
+    */
+    function getErrMsg()
+    {
+        var msg = OCX_OBJ.ErrMsg;
+        var type = 'info';
+        if (msg == '未检测到机具')
+        {
+            type = 'error';
+            msg = '未檢測到身份證閱讀設備連結到本電腦。<br>如果已連結，請檢查身份證閱讀器上的電源指示燈是否有亮，請檢查後<button onclick="document.location=document.location;">刷新本頁面</button>。';
+        }
+        if (msg == '发现机具' || msg == '请放卡')
+        {
+            msg = '身份證閱讀設備已連結就緒，請放身份證到閱讀區。';
+        }
+        if (msg == '找到卡，开始读卡...')
+        {
+            msg = '設備正在閱讀身份證...';
+        }
+        // Display the message to page
+        setMessage(type,msg);
+    }
+
+    function startRead()//开始读卡
+    {
+        if (typeof OCX_OBJ.start != 'undefined' &&
+            OCX_OBJ.GetState() == 0)
+        {
+            // Set IDCard Photo Path Local Path Only
+            //OCX_OBJ.PhotoPath = "C:";
+            OCX_OBJ.Start(); //循环读卡
+            //单次读卡(点击一次读一次)
+            //if (OCX_OBJ.GetState() == 0){
+                //OCX_OBJ.ReadCard()
+            //}
+        }
+    }
+
+	function print()//打印
+	{
+		OCX_OBJ.PrintFaceImage(0,30,10);//0 双面，1 正面，2 反面
+	}
+
+	/**
+    * Set Message to Page
+    * @param msg_type  string error, info, etc.
+    * @param msg_txt   string the message
+    * @return void
+    * @author Dennis
+    */
+    function setMessage(msg_type,msg_txt)
+    {
+        var msg_html = "<div class='";
+        msg_html += msg_type;
+        msg_html += "'><h3 style='margin:0px;padding:0px;'>";
+        msg_html += msg_txt;
+        msg_html += "</h3></div>";
+        $('#status').html(msg_html);
+    }
+	 /**
+    * Init ID Card Reader
+    * 初始化設備
+    */
+    function initDevice()
+    {
+        var msg = '';
+        OCX_OBJ = document.getElementById("ocx"); // 不能用 jquery 的 $('#ocx')
+        if (typeof OCX_OBJ.start != 'undefined')
+        {
+            startRead();
+        }else{
+            msg = '身份證閱讀器設備驅動未安裝成功.請先安裝驅動，連結好設備後<a href="#" onclick="document.location=document.location;">刷新本頁面</a>';
+        }
+        if (!$.browser.msie) {
+            msg = '身份證閱讀器只支持 IE 瀏覽器,您可以啟動人工輸入模式.';
+        }
+        if (msg != '') setMessage('error',"錯誤:"+msg);
+    }
+
+
+$(document).ready(function(){
+
+	OCX_OBJ = document.getElementById("ocx");
+	/**
+	* init idcard reader device
+	*/
+	initDevice();
+
+	$('#btn_preview').click(function(){
+		window.open('?scriptname=idcard_old_data_preview&idcardno='+$('#cardno').val(),'_blank');
+	});
+	
+	/**
+     * Switch to Key in mode
+     */
+     $('#keyin_swith').change(function(){
+    	 $cardno = $('#cardno');
+         if($(this).attr('checked')){
+             setMessage('info','請輸入身份證號');
+			 $cardno.attr('readonly',false);
+             $('#keyin_save_btn').show();
+             $cardno.css('background-color','#fff');
+             $('#date_tip').show();
+             $('.hide_when_input').hide();
+         }else{
+			 $cardno.val('');
+             $('#date_tip').hide();
+             $('.hide_when_input').show();
+             $cardno.css('background-color','#eee');
+             $cardno.attr('readonly',true);
+             $('#keyin_save_btn').hide();
+             if ($.browser.msie)
+                 getErrMsg();
+             else
+                 setMessage('error','身份證閱讀器只支持 IE 瀏覽器,您可以啟動人工輸入模式.');
+         }
+     });
+
+	 $('#btn_submit_form').click(function(){
+		$cardno = $('#cardno');
+		if ($cardno.val() != '')
+		{
+			check_emp($cardno.val());
+		}else{
+			alert('請先輸入身份證號碼');
+			$cardno.focus();
+		}
+	 });
+});
+
+/*
+* Add by Dennis  2011-11-14
+* remove body unload event, and add fowllowing code
+*/
+$(window).unload(function(){
+	if (typeof OCX_OBJ.start != 'undefined')
+		OCX_OBJ.stop();
+});
+</script>
+<script language="javascript" for="ocx" event="GetData">
+	getData();  //设置回调函数
+</script>
+<script language="javascript" for="ocx" event="GetErrMsg">
+	getErrMsg();  //设置回调函数
+</script>
+<script language="javascript" for="ocx" event="ClearData">
+	clearData();  //设置回调函数
+</script>
+
+<style type="text/css">
+	<!--
+		div#card_connect_notice .x-box-mc ul{margin-bottom:0;}
+	-->
+</style>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+<div id="card_connect_notice">
+<!--{include file="block_box_header.html"}-->
+	<span id="status"></span>
+<!--{include file="block_box_footer.html"}-->
+</div>
+<form name="form1">
+<table class="bordertable">
+	<tr class="hide_when_input">
+		<td class="column-label" width="15%">姓名</td>
+		<td>
+			<input type="text" name="name" id ="name" class="input-text" readonly="true"/>
+		</td>
+		<td rowspan="5">
+			<object name="ocx" width="102" height="126" id="ocx" 
+			classid="CLSID:220C3AD1-5E9D-4B06-870F-E34662E2DFEA" 
+			codebase="../ocx/IdrOCX_OBJ.cab#version=1,0,1,2"></object>
+		</td>
+	</tr>
+	<tr class="hide_when_input">
+		<td class="column-label">性别</td>
+		<td>
+			<input type="text" name="sex" class="input-text" readonly="true"/>
+		</td>
+	</tr>
+	<tr class="hide_when_input">
+		<td class="column-label">民族</td>
+		<td>
+			<input type="text" name="nation" class="input-text" readonly="true"/>
+		</td>
+	</tr>
+	<tr class="hide_when_input">
+		<td class="column-label">生日</td>
+		<td>
+			<input type="text" name="born" id="born" class="input-text" readonly="true">
+			<span id="date_tip" style="display:none;">輸入的日期格式:YYYYMMDD 如: 19880808</span>
+		</td>
+	</tr>
+	<tr  class="hide_when_input">
+		<td class="column-label">年齡</td>
+		<td>
+			<input type="text" name="age" id="age" class="input-text" readonly="true">
+		</td>
+	</tr>
+	<tr class="hide_when_input">
+		<td class="column-label">住址</td>
+		<td colspan="2">
+			<input type="text" name="address" class="input-text" style="width:300px;" readonly="true">
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label">身份證號</td>
+		<td colspan="2">
+			<input type="text" name="cardno" id="cardno" class="input-text" style="width:300px;" readonly="true"/>
+		</td>
+	</tr>
+	<tr>
+        <td class="column-label">人工錄入選項</td>
+        <td colspan="2">
+            <input type="checkbox" name="keyin" id="keyin_swith"/><label for="keyin_swith">啟用人工輸入</label>
+            <input type="checkbox" id="cls_data_switch"/><label for="cls_data_switch">檢核完畢清除畫面資料</label>
+        </td>
+    </tr>
+</table>
+<div align="center" id="div_print_old_data" style="display:none;">
+	<input type="button" id="btn_preview" value="預覽原人事資料">
+</div>
+</form>
+<div style="display:none; text-align:center;" id="keyin_save_btn">
+    <button id="btn_submit_form">檢核此人資料</button>
+</div>
+
+<!--{include file="block_box_footer.html"}-->

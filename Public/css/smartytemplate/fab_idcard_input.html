@@ -1,0 +1,145 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<style type="text/css">
+    <!--
+    select{width:90px;}
+    th{word-break:keep-all;word-wrap:normal;white-space:nowrap;}
+    .s-input {width:90px;}
+    fieldset{margin:0px;padding:5px 5px 0px 5px;}
+    -->
+</style>
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+    <fieldset>
+        <legend>查詢條件</legend>
+        <form name="form1" id="form1" method="post">
+            <input type="hidden" name="do_action" value="querydata"/>
+            <table class="bordertable">
+                 <tr>
+                    <td class="column-label" width="18%">工號起訖</td>
+                    <td>
+                        <input type="text" name="emp_id_start" id="emp_id_start" value="<!--{$smarty.post.emp_id_start}-->" class="s-input" />
+                        <input type="text" name="emp_id_end"   id="emp_id_end"   value="<!--{$smarty.post.emp_id_end}-->"   class="s-input" />
+                    </td>
+                    <td class="column-label" width="18%">到職日期起讫</td>
+                    <td>
+                        <input type="text" name="indate_begin" id="indate_begin" value="<!--{$smarty.post.indate_begin}-->" class="input-date s-input" />
+                        <input type="text" name="indate_end"   id="indate_end"   value="<!--{$smarty.post.indate_end}-->"   class="input-date s-input" />
+                    </td>
+                 </tr>
+                 <tr>
+                    <td class="column-label" width="18%">部門起訖</td>
+                    <td>
+                        <input type="text" name="dept_id_start" id="dept_id_start" value="<!--{$smarty.post.dept_id_start}-->" class="s-input" />
+                        <input type="text" name="dept_id_end"   id="dept_id_end"   value="<!--{$smarty.post.dept_id_end}-->"   class="s-input" />
+                    </td>
+                    <td class="column-label">僅查無卡號員工</td>
+                    <td><input type="checkbox" name="only_no_cardno" id="only_no_cardno" value="Y"/></td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align:center;">
+                        <input type="submit" name="queryall" value="查詢"/>
+                        <!--{if count($emp_list)>= 500 }-->
+                        <span class="ui-state-highlight">因效能考慮，每次最多顯示 500 筆記錄,請輸入更詳細的條件.</span>
+                        <!--{/if}-->
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </fieldset>
+	<!--{if isset($smarty.post.emp_id_start) }-->
+    <form name="form2" id="form2" action="" method="post">
+	<P class="ui-state-highlight">卡號儲存成功後，欄位背景會蠻成綠色，反之背景是紅色</p>
+        <input type="hidden" name="do_action" id="do_action" value="saveall"/>
+        <table class="bordertable">
+            <tr class="header-style">
+                <th>序</th>
+                <th>工號</th>
+                <th>姓名</th>
+                <th>到職日期</th>
+                <th>部門代碼</th>
+                <th>部门名稱</th>
+                <th>識別卡號</th>
+            </tr>
+            <!--{section name=i loop=$emp_list}-->
+            <tr>
+                <td><!--{$smarty.section.i.index+1}--></td>
+                <td><!--{$emp_list[i].EMP_ID}--></td>
+                <td nowrap><!--{$emp_list[i].EMP_NAME}--></td>
+                <td nowrap><!--{$emp_list[i].INDATE}--></td>
+                <td><!--{$emp_list[i].DEPT_ID}--></td>
+                <td><!--{$emp_list[i].DEPT_NAME}--></td>
+                <td><input type="text" size="40" 
+                name = "fab_idcard[<!--{$emp_list[i].EMP_SEQNO}-->]"
+				id = "<!--{$emp_list[i].EMP_SEQNO}-->"
+                value = "<!--{$emp_list[i].IDCARD_NO}-->" 
+				class = "idcard-no-input"
+				indate = "<!--{$emp_list[i].INDATE}-->"/>
+            </tr>
+            <!--{sectionelse}-->
+            <tr>
+                <td colspan="7" class="ui-state-highlight">無符合條件資料.</td>
+            </tr>
+            <!--{/section}-->
+        </table>
+    </form>
+	<!--{/if}-->
+    <!--{include file="block_box_footer.html"}-->
+    <script type="text/javascript">		
+        $().ready(function(){
+        	<!--{if $smarty.post.only_no_cardno == 'Y'}-->
+            $('#only_no_cardno').attr('checked',true);
+            <!--{/if}-->
+            // all clendar input
+            $('.input-date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+            $('.idcard-no-input:first').focus();
+			$("#form2 :input[type='text']").keypress(function(event){
+				if(event.which == 13) {
+					$this = $(this);
+					if($this.val() != '')
+					{
+						var rowdata = 'empseqno='+$this.attr('id')+
+						'&cardno='+$this.val()+'&indate='+$this.attr('indate');
+						var success = false;
+						$.ajax({
+							type:"post",
+							url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+							data:rowdata+'&ajaxcall=1&func=addFabIDCard',
+							async: false,
+							timeout:1000,
+							dataType:'json',
+							success: function(json){
+								if (json == '1')
+								{
+									$this.css('background-color','#33ff00'); // pass 綠色
+									success = true;
+								}else{
+									$this.css('background-color','#ff3300'); // error 紅色
+									alert(json);
+									$this.select();
+									success = false;
+								}
+							},// end function
+							error: function (json)
+							{
+							   alert('錄入錯誤，請檢查您輸入的資料後再重試.');
+							   $this.css('background-color','#ff3300'); // error 紅色
+							}// end function
+						});// end ajax
+					}
+					if (success == true)
+					{
+						if ($this.parent().parent().next().find('[type="text"]').length > 0){
+							$this.parent().parent().next().find('[type="text"]')[0].focus();
+							return false;
+						}else {
+							alert('已經是最後一筆記錄.');
+							return false;
+						}
+					}else{
+						return false;
+					}
+				}
+			});
+        });
+    </script>

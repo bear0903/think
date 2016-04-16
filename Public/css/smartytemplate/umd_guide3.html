@@ -1,0 +1,196 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'自定程式向导' showLine=1}-->
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<tr><td colspan=13 class="error"><b><!--{$STEP03_LABEL|default:'第三步：设定分组'}--></b> &nbsp;   [ <!--{$PROGRAM_NO_LABEL|default:'程序编号'}-->: <!--{$PROGRAM_NO}--> ]</td></tr>
+</table>
+<br>
+
+
+<!--{if $show=='List'}-->
+
+<table class="bordertable">
+	<thead>
+	<tr>
+		<th><!--{$PROGRAM_NO_LABEL|default:'程序编号'}--> </th>
+		<th><!--{$GROUP_ID_LABEL|default:'分组ID'}--> </th>
+		<th><!--{$GROUP_NAME_LABEL|default:'分组名称'}--> </th>
+		<th><!--{$GROUP_DESC_LABEL|default:'多语值'}--> </th>
+		<th><!--{$SORT_SEQ_LABEL|default:'排序'}--> </th>
+		<th><!--{$OPERATE|default:'操作'}--> </th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+
+	    <td><!--{$list[i].PROGRAM_NO}--></td>
+	    <td><!--{$list[i].GROUP_ID}--></td>
+		<td><!--{$list[i].GROUP_NAME}--></td>
+		<td><!--{$list[i].PROMPT_TEXT}--></td>
+		<td><!--{$list[i].SORT_SEQ}--></td>
+		<td>
+			<a target="_self" href="javascript:doNew('<!--{$list[i].PROGRAM_NO}-->');">
+		    	<!--{$NEW_BTN_LABEL|default:'新增'}-->
+		    </a>
+			<a target="_self" href="javascript:doEdit('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].GROUP_ID}-->');">
+		    	<!--{$EDIT_BTN_LABEL|default:'修改'}-->
+		    </a>
+			<a href="javascript:doDelete('<!--{$list[i].PROGRAM_NO}-->','<!--{$list[i].GROUP_ID}-->');">
+		    	<!--{$DELETE_BTN_LABEL|default:'删除'}-->
+		    </a>
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+    <tr> 
+        <td colspan="6">
+        <!--{include file="block_info.html" msg_txt=$NO_GROUP_DEFINE_LABEL|default:'没有设定任何分組!'}-->
+        	<a href="javascript:doNew('<!--{$PROGRAM_NO}-->');">
+		    	 &nbsp;&nbsp;&nbsp;  [<!--{$NEW_BTN_LABEL|default:'新增'}-->]
+		    </a>
+        </td>
+    </tr>
+    <!--{/section}-->
+	 
+  </tbody>
+</table>
+<form id="editForm" name="editForm" METHOD="POST">
+<br>
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$UP_STEP_BTN_LABEL|default:'上一步'}--> " id="up_step">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$NEXT_STEP_LABEL|default:'下一步'}--> " id="next_step">
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="PROGRAM_NO" id="PROGRAM_NO" value="<!--{$PROGRAM_NO}-->">
+<input type="hidden" name="GROUP_ID" id="GROUP_ID">
+</form>
+<!--{/if}-->
+
+<!--{if $show=='New' or $show=='Edit'}-->
+<form id="postForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+
+	<tr >
+		<td  width="30%"><!--{$PROGRAM_NO_LABEL|default:'程序編碼'}--> </td>
+		<td><input readonly id="PROGRAM_NO" NAME="PROGRAM_NO" class="input-text-display-only" TYPE="text" 
+			value="<!--{$row.PROGRAM_NO}-->" >
+		</td>
+	</tr>
+	<tr >
+		<td  width="30%"><!--{$GROUP_ID_LABEL|default:'分组ID'}--> </td>
+		<td><input readonly id="GROUP_ID" NAME="GROUP_ID" class="input-text-display-only" TYPE="text" 
+			value="<!--{$row.GROUP_ID}-->" >
+		</td>
+	</tr>
+
+	<tr>
+		<td nowrap><!--{$GROUP_NAME_LABEL|default:'分组名称'}-->* </td>
+		<td><input id="GROUP_NAME" NAME="GROUP_NAME" class="input-text" TYPE="text" 
+			REQUIRED=Y title='<!--{$INPUT_PLEASE_LABEL|default:'请输入'}--><!--{$GROUP_NAME_LABEL|default:'分组名称'}-->' 
+			value="<!--{$row.GROUP_NAME}-->" >
+		</td>
+	</tr>
+
+	<!--{section name="i" loop=$lang}-->
+	<input  TYPE="hidden" name="LANG_CODE[]" VALUE="<!--{$lang[i].ID}-->">
+	<tr>
+		<td nowrap><!--{$GROUP_DESC_LABEL|default:'多语值'}-->(<!--{$lang[i].TEXT}-->) </td>
+		<td > <input id="menu_name"  class="input-text" TYPE="text" name="GROUP_DESC_<!--{$lang[i].ID}-->" value="<!--{$lang[i].VALUE}-->"> </td>
+		 
+	</tr>
+	<!--{/section}-->
+	<tr >
+		<td nowrap><!--{$SORT_SEQ_LABEL|default:'排序'}--> </td>
+		<td><input id="SORT_SEQ" NAME="SORT_SEQ" class="input-text" TYPE="text" 
+			value="<!--{$row.SORT_SEQ}-->" 
+			required='Y' check_range=Y area_min=1 area_max=200  title='<!--{$INPUT_PLEASE_LABEL|default:'请输入'}--><!--{$MENU_INDEX_LABEL|default:'数值'}-->'>
+		</td>
+	</tr>
+    
+	<!-- 
+	<tr>
+		<td ><!--{$COMMENTS_LABEL|default:'备注'}--> </td>
+		<td >
+		   <input id="COMMENTS" NAME="COMMENTS" class="input-text" TYPE="text" 
+			value="<!--{$row.COMMENTS}-->" >
+		</td>
+	</tr>
+	-->
+
+</tbody>
+</table>
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SAVE_BTN_LABEL|default:'保存'}--> " id="doSave">
+<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$CANCEL_BTN_LABEL|default:'取消'}--> " id="doCancel">
+		
+<input type="hidden" name="do"  id="do">
+<input type="hidden" name="MUTI_LANG_PK" value="<!--{$row.MUTI_LANG_PK}-->" >
+</form>
+<!--{/if}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+/*
+function doSave(){
+	//var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	var indata=$("#editForm").serialize(); 
+	$.post(
+		'?scriptname=train_enter_for&do=Save',
+		indata,//{ SUBJECT_CLASS_ID: subject_class_id },
+		function(data){
+		      alert(data);
+			  
+		} 
+	);
+}
+*/
+function doDelete(program_no,group_id){
+	var confirm=window.confirm("<!--{$DELETE_CONFIRM_LABEL|default:'确认删除?'}-->"); 
+	if(confirm){
+		$("#do").val('DeleteGroup');
+		$("#PROGRAM_NO").val(program_no);
+		$("#GROUP_ID").val(group_id);
+		document.editForm.submit();
+	}
+}
+function doEdit(program_no,group_id){
+	//alert(program_no);alert(group_id);
+	$("#do").val('EditGroup');
+	$("#PROGRAM_NO").val(program_no);
+	$("#GROUP_ID").val(group_id);
+	document.editForm.submit();
+}
+
+function doNew(program_no){
+	//alert(program_no);alert(group_id);
+	$("#do").val('NewGroup');
+	$("#PROGRAM_NO").val(program_no);
+	//$("#GROUP_ID").val(group_id);
+	document.editForm.submit();
+}
+$("#doSave").click(function(){
+	if(!checkUserInputData('postForm')) return false;
+	$("#do").val('SaveGroup');
+	document.postForm.submit();
+});
+$("#doCancel").click(function(){
+	$("#do").val('ListGroup');
+	document.postForm.submit();
+});
+///  [上一步]，[下一步]按钮
+$("#up_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide2&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+$("#next_step").click(function(){
+	var program_no=$("#PROGRAM_NO").val();
+	var url="?scriptname=umd_guide4&PROGRAM_NO="+program_no+"&rand="+Math.random();
+	location.href=url;
+});
+</script>
+ 
+
+

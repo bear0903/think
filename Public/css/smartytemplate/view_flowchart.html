@@ -1,0 +1,154 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$VIEW_FLOWCHART_LABEL showLine = '0'}-->
+<!--{ if !empty($smarty.get.flow_seqno) }-->
+<table class="bordertable">
+	<tr>
+		<td width="100" class="column-label"><!--{$CREATE_DATE_LABEL}--></td>
+		<td><!--{$CREATE_DATE}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$EMP_ID_LABEL}--></td>
+		<td><!--{$EMP_ID}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$EMP_NAME_LABEL}--></td>
+		<td><!--{$EMP_NAME}--></td>
+	</tr>
+	<!--{if $smarty.get.apply_type == "absence" || $smarty.get.apply_type == "cancel_absence" }-->
+	<tr>
+		<td class="column-label"><!--{$ABSENCE_NAME_LABEL}--></td>
+		<td><!--{$ABSENCE_NAME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$BEGIN_TIME_LABEL}--></td>
+		<td><!--{$BEGIN_TIME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$END_TIME_LABEL}--></td>
+		<td><!--{$END_TIME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$HOURS_LABEL}--></td>
+		<td><!--{$HOURS|string_format:"%.3f"}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$WORK_DAYS_LABEL}--></td>
+		<td><!--{$DAYS|string_format:"%.3f"}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$LEAVE_REASON_LABEL}--></td>
+		<td><!--{$REASON}--></td>
+	</tr>
+	<!--{elseif $smarty.get.apply_type == "overtime"}-->
+	<tr>
+		<td class="column-label"><!--{$OVERTIME_DATE_LABEL}--></td>
+		<td><!--{$OVERTIME_DATE}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$BEGIN_TIME_LABEL}--></td>
+		<td><!--{$BEGIN_TIME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$END_TIME_LABEL}--></td>
+		<td><!--{$END_TIME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$HOURS_LABEL}--></td>
+		<td><!--{$HOURS|string_format:"%.3f"}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$OVERTIME_REASON_LABEL}--></td>
+		<td><!--{$REASON}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$OVERTIME_TYPE_LABEL}--></td>
+		<td><!--{$OVERTIME_TYPE_NAME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$OT_FEE_TYPE_LABEL}--></td>
+		<td><!--{$OVERTIME_FEE_NAME}--></td>
+	</tr>
+	<!--{elseif $smarty.get.apply_type == "trans"}-->
+	<tr>
+		<td class="column-label"><!--{$TRANS_DATE_LABEL}--></td>
+		<td><!--{$TRANS_DATE}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$TRANS_TYPE_LABEL}--></td>
+		<td><!--{$TRANS_TYPE}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$TRANS_NAME_LABEL}--></td>
+		<td><!--{$TRANS_NAME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$NEW_DEPT_LABEL}--></td>
+		<td><!--{$NEW_DEPT_NAME}--></td>
+	</tr>
+	<!--{elseif $smarty.get.apply_type == "nocard"}-->
+	<tr>
+		<td class="column-label"><!--{$NOCARD_DESC_LABEL|default:'班别/时间/原因'}--></td>
+		<td><!--{$NOCARD_DESC}--></td>
+	</tr>
+	<!--{elseif $smarty.get.apply_type == "resign"}-->
+	<tr>
+		<td class="column-label"><!--{$RESIGN_DATE_LABEL}--></td>
+		<td><!--{$RESIGN_DATE}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$RESIGN_REASON_LABEL}--></td>
+		<td><!--{$RESIGN_REASON}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$OUT_TYPE_LABEL}--></td>
+		<td><!--{$OUT_TYPE}--></td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$EMP_REMARK_LABEL|default:'员工备注'}--></td>
+		<td><!--{$EMP_REMARK}--></td>
+	</tr>
+	<!--{elseif isset($smarty.get.menu_code) && !empty($smarty.get.menu_code)}-->
+	<!--{$udwf_apply_form}-->
+	<!--{/if}-->
+	<tr>
+		<td class="column-label"><!--{$WORKFLOW_STATUS_LABEL}--></td>
+		<td><!--{$STATUS_NAME}--></td>
+	</tr>
+	<tr>
+		<td class="column-label">
+			<!--{if $smarty.get.apply_type == "resign" }-->
+				<!--{$MGR_COMMENT_LABEL}-->
+			<!--{else}-->
+				<!--{$EXCEPTION_DESC_LABEL}-->
+			<!--{/if}-->
+		</td>
+		<td><!--{$REJECT_COMMENT}--></td>
+	</tr>
+</table>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html"}-->
+<!--{$workflowchart}-->
+<!--{include file="block_box_footer.html"}-->
+<script>
+// add by dennis 2013/10/30 解决 Jqueryui dialog 不能Load Image, pdf 的Issue
+	// 依然回归原来开 windows 的方式 （有时间的话，可以用 lightbox 或是 fancybox）
+	$().ready(function(){
+		$('a').each(function () {
+			if ($(this).attr('type') == 'popupwin') {
+				$(this).click(function () {
+					var p_title = $.trim($(this).text());
+					event.preventDefault();
+					var p_title = $.trim($(this).text());
+					p_title =  p_title && p_title != '' ? $(this).text() : "流程图";
+					return openw($(this).attr('href'),p_title,700,600);
+					return false;
+				});
+			}
+		});
+	});
+	
+</script>

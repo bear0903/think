@@ -1,0 +1,36 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+
+<!--{if $show=='List'}-->
+<table class="bordertable">
+	<thead>
+	<tr>
+		<th > <!--{$SUBJECT_CLASS_NO_LABEL|default:'班别代码'}--></th>
+		<th > <!--{$SUBJECT_CLASS_NAME_LABEL|default:'班别名称'}--></th>
+		<th>  <!--{$SUBJECT_NO_LABEL|default:'课程代码'}--></th>
+		<th>  <!--{$SUBJECT_NAME_LABEL|default:'课程名称'}--></th>
+		<th>  <!--{$SUBJECT_DATE_BEGIN_LABEL|default:'起止日期'}--></th>
+		<th>  <!--{$SUBJECT_BEGIN_LABEL|default:'上课时间'}--></th>
+	</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+	   <td><!--{$list[i].SUBJECT_CLASS_NO}--></td>
+	   <td><!--{$list[i].SUBJECT_CLASS_NAME}--></td>
+		<td><!--{$list[i].SUBJECT_NO}--></td>
+		<td><!--{$list[i].SUBJECT_NAME}--></td>
+		<td><!--{$list[i].SUBJECT_DATE_BEGIN}--> ~ <br> <!--{$list[i].SUBJECT_DATE_END}--></td>
+		<td nowrap><!--{$list[i].SUBJECT_BEGIN}-->  ~ <!--{$list[i].SUBJECT_END}--></td>
+	</tr>
+	 <!--{/section}-->
+
+    <tr><td colspan=12><!--{$pageDownUp}--></td></tr>
+	 </tbody>
+</table>
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+
+

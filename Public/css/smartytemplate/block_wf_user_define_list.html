@@ -1,0 +1,43 @@
+
+
+<table class="bordertable">
+	<tr>
+		<th width="5%"><!--{$SEQ_LABEL|default:'序'}--></th>
+		<th width="10%"><!--{$APP_NO_LABEL|default:'程式代码'}--></th>
+		<th width="10%"><!--{$APP_DESC_LABEL|default:'程式名称'}--></th>
+		<th width="10%"><!--{$APPROVE_TYPE_LABEL|default:'签核类型'}--></th>
+		<th width="10%"><!--{$APPROVE_DESC_LABEL|default:'签核名称'}--></th>
+		<th width="10%"><!--{$LAYOUT_COL_LABEL|default:'布局栏式'}--></th>
+		<th width="10%"><!--{$ALLOW_TMP_SAVE_LABEL|default:'允许暂存'}--></th>
+		<th width="15%"><!--{$APPLY_RULE_LABEL|default:'规则说明'}--></th>
+		<th width="15%">
+			<a href="?scriptname=wf_user_define&doaction=add&block_title=Add User Defined">
+				<img src="<!--{$IMG_DIR}-->/add.png"/><!--{$ADD_LABEL|default:'新增'}--></a>
+		</th>
+	</tr>
+	<!--{section name="i" loop=$wf_define_list}-->
+	<tr>
+		<td><!--{$smarty.section.i.rownum}--></td>
+		<td>
+			<a href="?scriptname=wf_user_define&doaction=edit&menu_code=<!--{$wf_define_list[i].MENU_CODE}-->&flowtype_seqno=<!--{$wf_define_list[i].FLOW_TYPE_SEQNO}-->&flow_type_code=<!--{$wf_define_list[i].FLOW_TYPE_CODE}-->">
+				<!--{$wf_define_list[i].MENU_CODE}-->
+			</a>
+		</td>
+		<td><!--{$wf_define_list[i].MENU_DESC}--></td>
+		<td><!--{$wf_define_list[i].FLOW_TYPE_CODE}--></td>
+		<td><!--{$wf_define_list[i].FLOW_TYPE_DESC}--></td>
+		<td><!--{$wf_define_list[i].LAYOUT_COLS}--></td>
+		<td><!--{$wf_define_list[i].TMP_SAVE_ALLOWED}--></td>
+		<td><!--{$wf_define_list[i].APPLY_RULES_DESC}--></td>
+		<td>
+			<a href="?scriptname=wf_user_define_form&doaction=add&menu_code=<!--{$wf_define_list[i].MENU_CODE}-->&block_title=<!--{$wf_define_list[i].MENU_DESC|urlencode}--> - <!--{$PROPERTY_SETTING_LABEL|default:'屬性設置'|urlencode}-->"><!--{$PROPERTY_SETTING_LABEL|default:'屬性設置'}--></a>
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="9">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>

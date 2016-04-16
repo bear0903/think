@@ -1,0 +1,38 @@
+
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$smarty.get.appdesc showLine=1}-->
+<table>
+	<tr>
+		<th><!--{$ATT_DATE_LABEL|default:'日期'}--></th>
+		<th><!--{$HOLIDAY_LABEL|default:'假日别'}--></th>
+		<th><!--{$ABS_NAME_LABEL|default:'异常类别'}--></th>
+		<th><!--{$ABS_BEGIN_TIME_LABEL|default:'异常开始'}--></th>
+		<th><!--{$ABS_END_TIME_LABEL|default:'异常结束'}--></th>
+		<th><!--{$ABS_RECS_LABEL|default:'请假记录'}--></th>
+		<th><!--{$SHIFT_BEGIN_TIME_LABEL|default:'排班上班'}--></th>
+		<th><!--{$SHIFT_END_TIME_LABEL|default:'排班下班'}--></th>	
+		<th><!--{$ACT_INTIME_LABEL|default:'实际上班'}--></th>
+		<th><!--{$ACT_OUTTIME_LABEL|default:'实际下班'}--></th>		
+	</tr>
+	<!--{section name=i loop=$abs_list}-->
+	<tr>
+		<td><!--{$abs_list[i].ATT_DAY}--></td>
+		<td><!--{$abs_list[i].HOLIDAY}--></td>
+		<td><!--{$abs_list[i].ABS_NAME}--></td>
+		<td><!--{$abs_list[i].ABS_BEGIN_TIME}--></td>
+		<td><!--{$abs_list[i].ABS_END_TIME}--></td>
+		<td><!--{$abs_list[i].ABS_RECS}--></td>
+		<td><!--{$abs_list[i].SHIFT_BEGIN_TIME}--></td>
+		<td><!--{$abs_list[i].SHIFT_END_TIME}--></td>
+		<td><!--{$abs_list[i].ACT_INTIME}--></td>
+		<td><!--{$abs_list[i].ACT_OUTTIME}--></td>
+	</tr>
+	<!--{sectionelse}-->
+     <tr>
+         <td colspan="10" class="ui-state-highlight">
+         	<!--{$NO_DATA_FOUND_MSG|default:'无异常资料.'}-->
+         </td>
+     </tr>
+     <!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->

@@ -1,0 +1,706 @@
+<script type="text/javascript" src="<!--{$JS_DIR}-->/jquery.validate.min.js"></script>
+<script type="text/javascript" src="<!--{$JS_DIR}-->/jquery.layout.min-1.2.0.js"></script>
+<script type="text/javascript"> 
+$(document).ready(function () {
+	$('body').layout({ applyDefaultStyles:true});
+});
+</script>
+<style type="text/css">
+	.ui-layout-center table  { border:0;border-collapse:collapse;}
+	table td			     { font:normal 12px/17px Arial;padding:2px;}
+	table th			     { font:bold 12px/17px Arial;text-align:left;padding:4px;border-bottom:1px solid #333;}
+	table tr.odd		     { background:#FFFFFF;}
+	table tr.highlight       { background:#99FFCC;}
+	table tr.selected        { background:#FFF3BF;color:#6F4DFF;}
+	table tr.hide	         { display:none;}
+</style>
+</head>
+<body class="page-container">
+<div class="ui-layout-center">
+	<!--{include file="block_box_header.html" title= $BLOCK_TITLE|default:$smarty.get.block_title showLine=1}-->
+	<!--{if $warn_msg }-->
+	<div class="notice" id="warn_msg"><!--{$warn_msg}--></div>
+	<!--{/if}-->
+	<table class="bordertable" id="cols_list_tab">
+		<thead>
+		<tr>
+			<th></th>
+			<th><!--{$SEQ_LABEL|default:'序'}--></th>
+			<th><!--{$TYPE_LABEL|default:'类型'}--></th>
+			<th><!--{$NAME_LABEL|default:'名称'}--></th>
+			<th><!--{$DATA_TYPE_LABEL|default:'数据'}--></th>
+			<th><!--{$DATA_LENGTH_LABEL|default:'长度'}--></th>
+			<th nowrap><!--{$COL_LABEL_LABEL|default:'标签'}--></th>
+			<th><!--{$REQUIRED_LABEL|default:'必要'}--></th>
+			<th><!--{$VALIDATE_LABEL|default:'验证'}--></th>
+			<th><!--{$MIN_VAL_LABEL|default:'最小值'}--></th>
+			<th><!--{$MAX_VAL_LABEL|default:'最大值'}--></th>
+			<th><!--{$FORMAT_LABEL|default:'格式'}--></th>
+			<th><!--{$CHECKED_VAL_LABEL|default:'选中值'}--></th>
+			<th><!--{$SOURCE_TYPE_LABEL|default:'资料类型'}--></th>
+			<th nowrap><!--{$DATA_SOURCE_LABEL|default:'资料来源'}--></th>
+			<th></th>
+		</tr>
+		</thead> 
+		<tbody>
+		<!--{section name="i" loop=$cols_list}-->		
+		<tr>
+			<td><input type="radio" name="rowselect"/></td>
+			<td><!--{$cols_list[i].LAYOUT_ORDER}--></td>
+			<td><!--{$cols_list[i].COL_TYPE}--></td>
+			<td><!--{$cols_list[i].COL_NAME}--></td>
+			<td><!--{$cols_list[i].COL_DATA_TYPE}--></td>
+			<td><!--{$cols_list[i].COL_DATA_LENGTH}--></td>
+			<td><!--{$cols_list[i].COL_LABEL}--></td>
+			<td><!--{$cols_list[i].IS_REQUIRED}--></td>
+			<td><!--{$cols_list[i].VALIDATE_RULE}--></td>
+			<td><!--{$cols_list[i].MAX_VAL}--></td>
+			<td><!--{$cols_list[i].MIN_VAL}--></td>
+			<td><!--{$cols_list[i].DATE_FORMAT}--></td>
+			<td><!--{$cols_list[i].CHECKED_VAL}--></td>
+			<td><!--{$cols_list[i].SELECT_DATA_TYPE}--></td>
+			<td><!--{$cols_list[i].DATA_SOURCE}--></td>
+			<td><img src="<!--{$IMG_DIR}-->/del.png" class="delrow"/></td>
+		</tr>
+	<!--{/section}-->
+		</tbody>
+	</table>
+	<br clear="all"/>	
+	<div id="loadingDiv" class="hide" style="z-index:1000; poistion:absolute; left:300px; top:200px;">
+	<!--{include file="block_box_header.html" title= "Loading" showLine=1}-->
+		<img src="<!--{$IMG_DIR}-->/loading.gif" alt="loading"/> Please Waiting ...
+	<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{if $table_created != '1' }-->
+	<div align="center">		
+		<input type="hidden" name="build" value="buildschema"/>
+		<input type="button" value="<!--{$GEN_FORM_LABEL|default:'生成申请单'}-->"  
+			   id="gen_db_schema" class="button-submit"/>
+	</div>
+	<!--{/if}-->
+	<!--{include file="block_box_footer.html"}-->
+</div>
+<div class="ui-layout-east">
+	<!--{include file="block_box_header.html" title= $PROPERTIES_LABEL|default:'属性' showLine=1}-->
+<form name="ajax_form" method="post" action= "?scriptname=<!--{$smarty.get.scriptname}-->">
+	<input type="hidden" name="menu_code" value="<!--{$smarty.request.menu_code}-->"/>
+	<input type="hidden" name="doaction" value="<!--{$smarty.request.doaction}-->"/>
+	<table class="bordertable" >
+		<tr>
+			<td nowrap class="column-label"><!--{$TYPE_LABEL|default:'类型'}-->*</td>
+			<td>
+				<select name="col_type" id="col_type" style="width:80px;" title="表单栏位的呈现方式">
+					<option value="text"><!--{$INPUT_TEXT_LABEL|default:'输入框'}--></option>
+					<option value="select"><!--{$LIST_LABEL|default:'下拉列表'}--></option>
+					<option value="date"><!--{$CAL_LOV_LABEL|default:'日历框'}--></option>
+					<option value="checkbox"><!--{$CHECKBOX_LABEL|default:'多选框'}--></option>
+					<option value="textarea"><!--{$TEXTAREA_LABEL|default:'多行输入框'}--></option>
+					<option value="file"><!--{$FILE_LABEL|default:'附件上传'}--></option>
+				</select>
+			</td>
+		</tr>
+		<tr id="tr_col_name">
+			<td class="column-label"><!--{$NAME_LABEL|default:'名称'}-->*</td>
+			<td>
+				<input type="text" name="col_name" id="col_name" 
+					   class="input-text" style="width:80px;" 
+					   title="必须为英文，不可以有空格"/>
+			</td>
+		</tr>
+		<tr id="tr_col_data_type">
+			<td class="column-label"><!--{$DATA_TYPE_LABEL|default:'数据'}-->*</td>
+			<td>
+				<select name="col_data_type" id="col_data_type" style="width:80px;" title="资料的数据类型">
+					<option value="varchar2"><!--{$TEXT_LABEL|default:'文本'}--></option>
+					<option value="date"><!--{$DATE_LABEL|default:'日期'}--></option>
+					<option value="number"><!--{$NUMBER_LABEL|default:'数字'}--></option>
+				</select>
+			</td>
+		</tr>
+		<tr id="tr_col_data_length">
+			<td class="column-label"><!--{$DATA_LENGTH_LABEL|default:'长度'}-->*</td>
+			<td>
+				<input type="text" name="col_data_length" id="col_data_length"
+				       class="input-text" style="width:80px;" title="必须输入数字"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label" width="60"><!--{$COL_LABEL_LABEL|default:'标签'}-->*</td>
+			<td>
+				<input type="text" name="col_label" class="input-text" style="width:80px;" title="栏位标签"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$SEQ_LABEL|default:'序'}-->*</td>
+			<td>
+				<input type="text" name="layout_order" class="input-text" style="width:80px;" title="栏位在画面上显示的顺序"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$REQUIRED_LABEL|default:'必要'}--></td>
+			<td><input type="checkbox" name="is_required" id="is_required" value="0" title="是否为必须输入栏位"/></td>
+		</tr>
+		<!--{* 
+		<tr>
+			<td class="column-label">唯一</td>
+			<td><input type="checkbox" name="is_unique" id="is_unique" value="0"/></td>
+		</tr>
+		 *}-->
+		<tr id="tr_validate_rule">
+			<td class="column-label"><!--{$VALIDATE_LABEL|default:'验证'}--></td>
+			<td>
+				<select name="validate_rule" id="validate_rule" style="width:80px;" title="对用户输入的数据进行验证">
+					<option value=""> - </option>
+					<option value="digital"><!--{$NUMBER_LABEL|default:'数字'}--></option>
+					<option value="date"><!--{$DATE_LABEL|default:'日期'}--></option>
+					<option value="mail"><!--{$MAIL_LABEL|default:'邮件'}--></option>
+					<option value="range"><!--{$RANGE_LABEL|default:'区间'}--></option>
+				</select>
+			</td>
+		</tr>
+		
+		<tr id="tr_min_val" class="hide">
+			<td class="column-label"><!--{$MIN_VAL_LABEL|default:'最小值'}--></td>
+			<td>
+				<input type="text" name="min_val" class="input-text" id="min_val"
+					   style="width:80px;" 
+					   title="区间验证时，允许的最小值"/>
+			</td>
+		</tr>
+		<tr id="tr_max_val" class="hide">
+			<td class="column-label"><!--{$MAX_VAL_LABEL|default:'最大值'}--></td>
+			<td>
+				<input type="text" name="max_val" class="input-text" id="max_val"
+					   style="width:80px;" title="区间验证时，允许的最大值"/>
+			</td>
+		</tr>
+		
+		<tr id="tr_checked_val" class="hide">
+			<td class="column-label"><!--{$CHECKED_VAL_LABEL|default:'选中值'}-->*</td>
+			<td>
+				<input type="text" name="checked_val" id="checked_val"
+				       class="input-text" style="width:80px;" 
+					   title="多选框选中时的值"/>
+			</td>
+		</tr>
+		<tr id="tr_date_format" class="hide">
+			<td class="column-label"><!--{$FORMAT_LABEL|default:'格式'}--></td>
+			<td>
+				<select name="date_format" style="width:80px;" title="日期或时间格式" id="date_format">
+					<option value=""> - </option>
+					<option value="%Y-%m-%d">年月日</option>
+					<option value="%Y-%m">年月</option>
+					<option value="%Y-%m-%d %H:%M">年月日時分</option>
+					<option value="%Y-%m-%d %H:%M:%S">年月日時分秒</option>
+				</select>
+			</td>
+		</tr>		
+		<tr id="tr_select_data_type" class="hide">
+			<td class="column-label"><!--{$SOURCE_TYPE_LABEL|default:'类型'}-->*</td>
+			<td>
+				<select name="select_data_type" style="width:80px;" id="col_select_data_type"
+				        title="下拉清单栏位的值，静态格式为: key1:val1;key2:val2; 中间分别以冒号和分号隔开 /n 动态时需要写 sql 查询语句">
+					<option value=""> - </option>
+					<option value="s"><!--{$STATIC_LABEL|default:'静态'}--></option>
+					<option value="d"><!--{$DYNAMIC_LABEL|default:'动态 (SQL)'}--></option>
+				</select>
+			</td>
+		</tr>
+		<tr id="tr_data_source" class="hide">
+			<td class="column-label"><!--{$DATA_SOURCE_LABEL|default:'资料来源'}-->*</td>
+			<td>
+				<textarea name="data_source" style="width:100%;" id="col_data_source"
+				          title="请输入 sql 查询语句,可以使用的变量如下 公司代码 :company_id 部门代码 :dept_id 员工代码 :emp_id 使用者代码 :user_id 请注意必须是小写"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td><a href="#" id="new_col"><img src="<!--{$IMG_DIR}-->/add.png"/><!--{$ADD_LABEL}--></a></td>
+			<td>
+				<input type="submit" name="submit" id="submit" value="<!--{$SUBMIT_LABEL|default:'提交'}-->" class="button-submit"/>
+			</td>
+		</tr>
+	</table>
+</form>
+	<!--{include file="block_box_footer.html"}-->
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#loadingDiv').ajaxStart(function() {
+	        $(this).show();
+	    }).ajaxStop(function() {
+	        $(this).hide();
+	    });
+			
+		tb.defaultEvent();
+		// 必须输入 checkbox 值切换		
+		$('#is_required').click(function(){
+			if (this.checked) this.value = 1;
+			else this.value = 0;
+		});
+		// clear form for add new column
+		$('#new_col').click(function(){
+			$('form').clearForm();
+        	tb.enableKeyField();
+        	$('#col_type').change();
+        	return false;
+		});
+		
+		$('#col_type').change(function(){
+			switch($(this).val())
+			{
+				case 'text':
+					$('#tr_select_data_type').hide();
+					$('#tr_data_source').hide();
+					$('#tr_validate_rule').show();
+					$('#tr_min_val').hide();
+					$('#tr_max_val').hide();
+					$('#tr_checked_val').hide();
+					$('#tr_select_data_type').hide();
+					$('#tr_data_source').hide();
+					$('#tr_date_format').hide();
+					$('#tr_col_data_length').show();
+					//$('#col_data_type').val(''); // remark by dennis 20091216
+					$('#col_data_type').attr('disabled',false);
+					$('#tr_col_name').show();
+					$('#tr_col_data_type').show();
+					break;
+				case 'textarea':
+					$('#tr_select_data_type').hide();
+					$('#tr_data_source').hide();
+					$('#tr_min_val').hide();
+					$('#tr_max_val').hide();
+					$('#tr_checked_val').hide();
+					$('#tr_validate_rule').hide();
+					$('#tr_date_format').hide();
+					$('#tr_col_data_length').show();
+					$('#col_data_type').val('varchar2');
+					$('#col_data_type').attr('disabled',true);
+					$('#validate_rule').val('');
+					//$('#col_data_type').val('');
+					$('#tr_col_name').show();
+					$('#tr_col_data_type').show();
+					break;
+				case 'file':
+					// clear not need values
+					$('#validate_rule').val('');
+					$('#min_val').val('');
+					$('#max_val').val('');
+					$('#date_format').val('');
+					$('#checked_val').val('');
+					$('#col_select_data_type').val('');
+					$('#col_data_source').val('');
+					$('#tr_select_data_type').hide();
+					$('#tr_data_source').hide();
+					$('#tr_min_val').hide();
+					$('#tr_max_val').hide();
+					$('#tr_checked_val').hide();
+					$('#tr_validate_rule').hide();
+					$('#tr_date_format').hide();
+					$('#col_data_length').val('255');
+					$('#tr_col_data_length').hide();
+					$('#col_name').val('att_file_url');
+					$('#tr_col_name').hide();
+					$('#col_data_type').val('varchar2');
+					$('#tr_col_data_type').hide();
+					break;
+				case 'date':
+					$('#tr_date_format').show();
+					$('#tr_select_data_type').hide();
+					$('#tr_data_source').hide();					
+					$('#tr_min_val').hide();
+					$('#tr_max_val').hide();
+					$('#tr_checked_val').hide();
+					$('#tr_validate_rule').hide();
+					$('#tr_col_data_length').hide();
+					$('#col_data_type').val('date');
+					$('#validate_rule').val('');
+					$('#col_data_type').attr('disabled',true);
+					//$('#tr_col_name').show();
+					$('#tr_col_data_type').show();
+					break;
+				case 'select':
+					$('#tr_min_val').hide();
+					$('#tr_max_val').hide();
+					$('#tr_checked_val').hide();
+					$('#tr_validate_rule').hide();
+					$('#tr_select_data_type').show();
+					$('#tr_data_source').show();
+					$('#tr_date_format').hide();
+					$('#tr_col_data_length').show();
+					//$('#col_data_type').val('');
+					$('#col_data_type').attr('disabled',false);
+					$('#tr_col_name').show();
+					$('#tr_col_data_type').show();
+					/*
+					// only for select dynamic add validation rule
+					$("#col_select_data_type").rules("add", {
+					 	required:true,
+					 	message : {
+					 		required:'下拉清单必须选取资料来源类型'
+						}
+					});
+					$("#col_data_source").rules("add", {
+					 	required:true,
+					 	message : {
+					 		required:'下拉清单输入资料来源，静态或 SQL 语句'
+						}
+					});*/
+					break;
+				case 'checkbox':
+					$('#tr_checked_val').show();
+					$('#tr_select_data_type').hide();
+					$('#tr_data_source').hide();
+					$('#tr_min_val').hide();
+					$('#tr_max_val').hide();
+					$('#tr_validate_rule').hide();
+					$('#tr_date_format').hide();
+					//$('#col_data_type').val('');
+					$('#col_data_type').attr('disabled',false);
+					$('#tr_col_name').show();
+					$('#tr_col_data_type').show();
+					break;
+				default:break;
+			}
+			$('#col_data_type').change();
+			$('#validate_rule').change();
+		});
+
+		$('#col_data_type').change(function(){
+			if ('date' == $(this).val() ||$('#col_type').val() == 'file')
+			{
+				$('#tr_col_data_length').hide();
+				if ('date' == $(this).val()) $('#tr_date_format').show();
+			}else{
+				$('#tr_col_data_length').show();
+				$('#tr_date_format').hide();
+			}
+		});
+
+		$('#validate_rule').change(function(){
+			if('range' == $(this).val())
+			{
+				$('#tr_min_val').show();
+				$('#tr_max_val').show();
+			}else{
+				$('#tr_min_val').hide();
+				$('#tr_max_val').hide();
+			}
+		});
+
+		$('#gen_db_schema').click(function(){
+			var menu_code		 = $('input[name=menu_code]');
+		    var doaction		 = 'gen_db';
+		    var params = 'menu_code=' + menu_code.val() + 
+		    			 '&doaction=' + doaction;
+			$.ajax({  
+		        //this is the php file that processes the data and send mail  
+		        url: "?scriptname=<!--{$smarty.get.scriptname}-->",
+		        type: "POST",
+		        data: params,
+		        dataType:'html',
+		        //Do not cache the page  
+		        cache: false,  	          
+		        //success  
+		        success: function (html) {                
+		            //if  returned 1/true
+		            if (html == '1'){
+		            	$('#warn_msg').hide();
+		            	$(this).hide();
+		            	alert('<!--{$APPLY_FORM_GEN_Y_MSG|default:"申请单产生成功."}-->');
+		            }else{
+		            	alert('<!--{$APPLY_FORM_GEN_N_MSG|default:"申请单产生失败."}-->\n'+html);
+		            }
+		        },
+		        error:function(){
+			        alert('<!--{$APPLY_FORM_GEN_N_MSG|default:"申请单产生失败, 请稍候重试."}-->');
+		        }
+		    });
+		});
+
+		// submit insert/update 
+		$('#submit').click(function () {
+		    //Get the data from all the fields
+		    var menu_code		 = $('input[name=menu_code]');
+		    var doaction		 = $('input[name=doaction]');
+		    var col_type 		 = $('select[name=col_type]');  
+		    var col_name 		 = $('input[name=col_name]');
+		    var col_data_type 	 = $('select[name=col_data_type]');
+		    var col_data_length	 = $('input[name=col_data_length]');
+		    var col_label 		 = $('input[name=col_label]');
+		    var layout_order	 = $('input[name=layout_order]');
+		    var is_required		 = $('input[name=is_required]');   
+		    var validate_rule 	 = $('select[name=validate_rule]');
+		    var max_val 		 = $('input[name=max_val]');
+		    var min_val 		 = $('input[name=min_val]');
+		    var checked_val		 = $('input[name=checked_val]');
+		    var date_format 	 = $('select[name=date_format]');
+		    var select_data_type = $('select[name=select_data_type]');  
+		    var data_source 	 = $('textarea[name=data_source]');
+		    
+		    // build the url parameters 	
+		    var params = 'menu_code=' + menu_code.val() + 
+			    		 '&doaction=' + doaction.val() +
+			    		 '&layout_order=' + layout_order.val() +
+			    		 '&col_type=' + col_type.val() +
+			    		 '&col_name=' + col_name.val() +
+			    		 '&col_data_type=' + col_data_type.val() +
+			    		 '&col_data_length=' + col_data_length.val() +
+			    		 '&col_label=' + col_label.val() +
+			    		 '&is_required=' + is_required.val() +  
+			    		 '&validate_rule='+ validate_rule.val() + 
+			    		 '&min_val='+min_val.val() + 
+			    		 '&max_val='+max_val.val() +
+			    		 '&date_format='+date_format.val() +
+			    		 '&checked_val='+checked_val.val() +  
+			    		 '&select_data_type='+select_data_type.val() +      
+			    		 '&data_source='  + encodeURIComponent(data_source.val());
+	   		 /**
+	   		 *	Insert or Update Column Properties
+	   		 */
+	   		 $.ajax({  
+		        //this is the php file that processes the data and send mail  
+		        url: "?scriptname=<!--{$smarty.get.scriptname}-->",
+		        type: "POST",
+		        data: params,
+		        dataType:'html',
+		        //Do not cache the page  
+		        cache: false,  	          
+		        //success  
+		        success: function (html) { 
+		            //if process.php returned 1/true (send mail success)  
+		            if (html == 1) {
+			            if (doaction.val() == 'add')
+			            {
+				            // 前台画面上即时 add row
+				            tb.addRow('cols_list_tab',tb.buildRow(params));
+			            }
+			            if (doaction.val() == 'update')
+			            {
+				            // 前台 update row
+				            tb.updateRow($('#cols_list_tab input[type="radio"]:checked').parents('tr'));
+				            tb.enableKeyField();
+			            }
+			          	//submit success and clear the form
+			            $('form').clearForm();
+			            // 提交成功后复原到 text type 
+			            $('#col_type').change();
+			            alert("<!--{$SUBMIT_SUCCESS_MSG|default:'提交成功'}-->");
+			            //tb.defaultEvent();
+		            } else{
+			            //
+			            // ？？？？ 这里有问题，待查，出错误后不能 rollback, ehr_wf_user_define_detail 表里仍会被insert
+			            //
+			            // insert or update error , show error messages
+			            // ORA-01442: column to be modified to NOT NULL is already NOT NULL
+			            // ORA-01451: column to be modified to NULL cannot be modified to NULL
+		            	// ORA-02296: cannot enable (HCP.) - null values found
+		            	html = html.indexOf('ORA-01442') >= 0 || 
+		            	       html.indexOf('ORA-01451') >= 0 ||
+		            	       html.indexOf('ORA-02296') >= 0   ? '<!--{$ERR_MSG_01442|default:"申请单已经有资料,不可修改必须输入栏位为非必须输入"}-->' : html;
+			            // ORA-01758: table must be empty to add mandatory (NOT NULL) column
+			            
+			            html = html.indexOf('ORA-01758') >= 0 ? '<!--{$ERR_MSG_01758|default:"已经有申请单资料,不可新增必须输入栏位"}-->' : html;
+			            // ORA-00001: unique constraint (HCP.SYS_C0011231) violated
+			            html = html.indexOf('ORA-00001') >= 0 ? '<!--{$ERR_MSG_00001|default:"栏位名称重复，请检查栏位名称"}-->' : html;
+			            // ORA-02296: cannot enable (HCP.) - null values found
+			            
+			            alert("<!--{$SUBMIT_FAILED_MSG|default:'提交失败. \r\n 原因:'}-->\r\n"+html);
+		            }// end if
+		        },
+		        error:function(){
+			        alert('Application Error, Please Try Again Later');
+		        }
+		    });
+		    //cancel the submit button default behaviours  
+		    return false;
+		});
+	}); 
+
+	var tb = {};
+	tb.addRow = function(tabid,row){
+		$('#'+tabid+' tr:last').after(row);
+		tb.defaultEvent();
+	}
+
+	/**
+	* 显示row值到右边的属性面板
+	*/
+	tb.showDetail = function(row){
+		// set doaction to 'update'
+		$('input[name="doaction"]').val('update');
+		// get properties from current selected row (tr)
+		$('input[name="layout_order"]').val(row.children('td').eq(1).text());
+		$('select[name="col_type"]').val(row.children('td').eq(2).text());
+		$('select[name="col_type"]').attr('disabled',true);
+		$('input[name="col_name"]').val(row.children('td').eq(3).text());
+		$('input[name="col_name"]').attr('disabled',true);
+		$('select[name="col_data_type"]').val(row.children('td').eq(4).text());
+		$('input[name="col_data_length"]').val(row.children('td').eq(5).text());
+		$('input[name="col_label"]').val(row.children('td').eq(6).text());
+		$('input[name="is_required"]').attr('checked',(row.children('td').eq(7).text() == 1 ? 'checked' :''));
+		$('select[name="validate_rule"]').val(row.children('td').eq(8).text());
+		$('input[name="min_val"]').val(row.children('td').eq(9).text());
+		$('input[name="max_val"]').val(row.children('td').eq(10).text());
+		$('select[name="date_format"]').val(row.children('td').eq(11).text());
+		$('input[name="checked_val"]').val(row.children('td').eq(12).text());
+		$('select[name="select_data_type"]').val(row.children('td').eq(13).text());
+		$('textarea[name="data_source"]').val(row.children('td').eq(14).text());
+		// refresh property panel to default
+		$('#col_type').change();
+	}
+
+	/**
+	*	修改提交时即时更新画面(row)
+	*/
+	tb.updateRow = function(row){
+		// update back table row
+		row.children('td').eq(1).text($('input[name="layout_order"]').val());
+		row.children('td').eq(2).text($('select[name="col_type"]').val());
+		row.children('td').eq(3).text($('input[name="col_name"]').val());
+		row.children('td').eq(4).text($('select[name="col_data_type"]').val());
+		row.children('td').eq(5).text($('input[name="col_data_length"]').val());		
+		row.children('td').eq(6).text($('input[name="col_label"]').val());
+		row.children('td').eq(7).text($('input[name="is_required"]').attr('checked')? 1 : 0);
+		row.children('td').eq(8).text($('select[name="validate_rule"]').val());
+		row.children('td').eq(9).text($('input[name="min_val"]').val());
+		row.children('td').eq(10).text($('input[name="max_val"]').val());
+		row.children('td').eq(11).text($('select[name="date_format"]').val());
+		row.children('td').eq(12).text($('input[name="checked_val"]').val());
+		row.children('td').eq(13).text($('select[name="select_data_type"]').val());
+		row.children('td').eq(14).text($('textarea[name="data_source"]').val());
+	}
+
+	/**
+	* 删除指定的 row
+	*/
+	tb.deleteRow = function(row){
+		var params = 'menu_code='+$('input[name="menu_code"]').val()+
+					 '&col_name='+row.children('td').eq(3).text()+
+					 '&doaction=delete';
+		$.ajax({  
+	        //this is the php file that processes the data and send mail  
+	        url: "?scriptname=<!--{$smarty.get.scriptname}-->",
+	        type: "POST",
+	        data: params,
+	        dataType:'html',
+	        //Do not cache the page  
+	        cache: false,  	          
+	        //success  
+	        success: function (html) {                
+	            //if process.php returned 1/true (send mail success)  
+	            if (html == '1') {
+	            	row.remove();
+	            	$('form').clearForm();
+	            	$('#col_type').change(); // add by dennis 20091215
+	            	tb.enableKeyField();
+		            alert("<!--{$DEL_SUCCESS_MSG|default:'删除成功'}-->");
+	            } else{
+	            	alert("<!--{$DELETE_FAILED_MSG|default:'删除失败,请重试.\r\n原因:'}-->"+html);
+	            }// end if
+	        },
+	        error:function(){
+		        alert('<!--{$DELETE_FAILED_MSG}-->');
+	        }
+	    });
+	}
+
+	/**
+	*	根据table 栏位需要建立 1 row(tr)
+	*/
+	tb.buildRow = function(rowdata)
+	{
+		var cols_array = rowdata.split('&');
+		var row_html = '<tr><td><input type="radio" name="rowselect"></td>';
+		for(var i=0; i<cols_array.length;i++)
+		{
+			var col = cols_array[i].split('=');
+			// 略过不需要的
+			if (col[0] == 'menu_code' || 
+				col[0] == 'doaction') continue;
+			row_html += '<td>'+col[1]+'</td>';
+		}
+		//alert(row_html);
+		return row_html+'<td><img src="<!--{$IMG_DIR}-->/del.png" class="delrow"/></td></tr>';
+	}
+
+	/**
+	*	Set row default behavior
+	*/
+	tb.defaultEvent = function()
+	{
+		$('#cols_list_tab tbody tr:even').addClass('odd');
+		$('#cols_list_tab tbody tr').hover(
+			function() {$(this).addClass('highlight');},
+			function() {$(this).removeClass('highlight');}
+		);
+
+		// 如果单选框默认情况下是选择的，变色.
+		$('#cols_list_tab input[type="radio"]:checked').parents('tr').addClass('selected');
+		
+		// 单选
+		$('#cols_list_tab tbody tr').click(
+			function() {
+				$(this).siblings().removeClass('selected');
+				$(this).addClass('selected');
+				$(this).find('input[type="radio"]').attr('checked','checked');
+				tb.showDetail($(this));
+			}
+		);
+
+		$('#cols_list_tab tbody tr td img').click(
+			function(){
+				if(confirm("<!--{$CONFIRM_DEL_MSG|default:'确定要删除'}-->?"))
+				{
+					tb.deleteRow($(this).parent().parent());
+				}
+			}
+		)
+	};
+	/**
+	* enable key column after delete/update and set action to default 'Add'
+	*/
+	tb.enableKeyField = function(){
+		// 删除或修改时不能修改key, 新增时打开栏位可以新增
+    	$('input[name="col_name"]').attr('disabled',false);
+    	$('select[name="col_type"]').attr('disabled',false);
+		$('input[name="doaction"]').val('add');
+	};
+
+	/**
+	*	clear form
+	*/
+	$.fn.clearForm = function() { 
+	    return this.each(function() { 
+	      var type = this.type, tag = this.tagName.toLowerCase(); 
+	      if (tag == 'form') 
+	        return $(':input',this).clearForm(); 
+	      if (type == 'text' || type == 'password' || tag == 'textarea') 
+	        this.value = ''; 
+	      else if (type == 'checkbox' || type == 'radio') 
+	        this.checked = false; 
+	      else if (tag == 'select') 
+	        this.selectedIndex = 0; // 选中空白值(注:第一个 list item 是空白值) 
+	    }); 
+	};
+	  
+	// set form validation rule
+	$("form").validate({
+		  rules: {
+		    // no quoting necessary
+		    col_type:  "required",
+			col_name:  "required",
+			col_label: "required",
+			col_data_type: "required",
+			col_data_length: "number",
+			layout_order: { required:true,number:true}
+		  }
+	});
+	
+	// rewirte error message
+	$.extend(
+		$.validator.messages, {
+			required: "<!--{$FIELD_REQUIRED_MSG|default:'必须输入栏位'}-->",
+			number:   "<!--{$MUST_BE_NUMBER_MSG|default:'必须输入数字'}-->"
+	});
+</script> 

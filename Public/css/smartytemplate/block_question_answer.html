@@ -1,0 +1,77 @@
+
+<table class="bordertable">
+	<tr>
+		<th width="5%"><!--{$SEQ_LABEL}--></th>
+		<th width="35%"><!--{$QUESTION_ITEM_LABEL}--></th>
+		<th width="10%"><!--{$QUESTION_OWNER_LABEL}--></th>
+		<th width="55%"><!--{$ANSWER_LABEL}--></th>
+	</tr>
+	<!--{section name="j" loop=$pa_item_list}-->
+	<!--{* begin by dennis 2009-03-04 *}-->
+	<!--{if $smarty.section.j.rownum >0 && 
+	            $smarty.section.j.rownum < count($pa_item_list) &&
+	            $whoami != 'emp' && 
+	            $pa_item_list[j.index_prev].ITEM_OWNER != $pa_item_list[j].ITEM_OWNER }-->
+	<tr>
+		<th colspan="4">&nbsp;<!--{$pa_item_list[j].ITEM_OWNER_DESC}--></th>
+	</tr>
+	<!--{/if}-->
+	<!--{* end by dennis 2009-03-04 *}-->
+
+	<!--{if  ($whoami=='emp' && $pa_item_list[j].ITEM_OWNER == 1) ||
+	             ($whoami == 'emp' && 
+	              ($FORM_STATUS == 4 || $FORM_STATUS>=10) && 
+	              $pa_item_list[j].ITEM_OWNER == 2 &&
+	              $item_type == 'improve')||
+	            ($whoami=='mgr1' && ($pa_item_list[j].ITEM_OWNER == 2 || $pa_item_list[j].ITEM_OWNER == 1)) ||
+	            ($whoami=='mgr2' && ($pa_item_list[j].ITEM_OWNER == 3 ||$pa_item_list[j].ITEM_OWNER == 2 || $pa_item_list[j].ITEM_OWNER == 1)) ||
+	            $whoami=='mgr3' }-->
+	<tr>
+		<td><!--{$pa_item_list[j].ORDER_SEQNO}--></td>
+		<td><!--{$pa_item_list[j].ITEM_DESC}--></td>
+		<td><!--{$pa_item_list[j].ITEM_OWNER_DESC}--></td>
+		<td><!--{* ANSWER_TYPE: 1_单选             2_填空 (开放式问答) 
+	        	   ITEM_OWNER:  1_员工填写   2_初评主管填写(mgr1) 3_复评主管填写(mgr2)*}--> <!--{if $pa_item_list[j].ANSWER_TYPE == 2 }-->
+
+		<!--{if ($whoami == 'emp'  && ($FORM_STATUS <2 ||$FORM_STATUS==4 && $item_type=="interview") && $pa_item_list[j].ITEM_OWNER == 1) ||
+	        			($whoami == 'mgr1' && ($FORM_STATUS <4 || ($FORM_STATUS <=6 && $item_type=="interview" )) && $pa_item_list[j].ITEM_OWNER == 2) ||
+	        			($whoami == 'mgr2' && $FORM_STATUS >=7 && $FORM_STATUS <9 && $pa_item_list[j].ITEM_OWNER == 3) }-->
+		<textarea
+			name="<!--{$item_type}-->_item[<!--{$pa_item_list[j].PA_DETAIL_SEQNO}-->]" id="item_answer_emp"
+			style="width: 100%;" required="Y" title="请填写内容."
+			onblur="getanswercheck('<!--{$SLY_GRADE}-->','item_answer_emp');"
+			><!--{if $whoami == 'emp'}--><!--{$pa_item_list[j].EMP_ANSWER_VAL}--><!--{elseif $whoami == 'mgr1'}--><!--{$pa_item_list[j].MGR1_ANSWER_VAL}--><!--{elseif $whoami == 'mgr2'}--><!--{$pa_item_list[j].MGR2_ANSWER_VAL}--><!--{/if}--></textarea>
+		<!--{else}--> <!--{$pa_item_list[j].EMP_ANSWER_VAL}--> <!--{if $whoami == 'mgr1' ||
+	        		        $whoami == 'mgr3' ||
+	        		        ($whoami=='mgr2' && $FORM_STATUS >=7) ||
+	        		        ($whoami == 'emp'  && 
+				             ($FORM_STATUS == 4 || $FORM_STATUS >= 10)  && 
+				             $pa_item_list[j].ITEM_OWNER == 2 &&
+				             $item_type == 'improve')
+				     }--> <!--{if $pa_item_list[j].ITEM_OWNER == 2 }--> <!--{$pa_item_list[j].MGR1_ANSWER_VAL}-->
+		<!--{/if}--> <!--{if $pa_item_list[j].ITEM_OWNER == 3 }--> <!--{$pa_item_list[j].MGR2_ANSWER_VAL}-->
+		<!--{/if}--> <!--{/if}--> <!--{/if}--> <!--{elseif $pa_item_list[j].ANSWER_TYPE == 1}-->
+		<!--{section name="k" loop=$pa_item_list[j].KEYLIST}--> <input
+			type="radio" required="Y" title="请选取一个选项."
+			name="<!--{$item_type}-->_item[<!--{$pa_item_list[j].PA_DETAIL_SEQNO}-->]"
+			value="<!--{$pa_item_list[j].KEYLIST[k].ITEM_SEQNO}-->"<!--{if ($pa_item_list[j].EMP_ANSWER_VAL ==  $pa_item_list[j].KEYLIST[k].ITEM_SEQNO) ||
+	        			   		   ($pa_item_list[j].MGR1_ANSWER_VAL ==  $pa_item_list[j].KEYLIST[k].ITEM_SEQNO) ||
+	        			   		   ($pa_item_list[j].MGR2_ANSWER_VAL ==  $pa_item_list[j].KEYLIST[k].ITEM_SEQNO)}-->
+		checked <!--{/if}--> id="c_<!--{$pa_item_list[j].PA_DETAIL_SEQNO}-->_<!--{$pa_item_list[j].KEYLIST[k].ITEM_SEQNO}-->"
+		<!--{if ( $whoami == 'emp'  && 
+	        			             ($FORM_STATUS <2 || $FORM_STATUS==4 && $item_type == 'interview') && 
+	        			             $pa_item_list[j].ITEM_OWNER == 1) ||
+	        						 ($whoami == 'mgr1' && $FORM_STATUS <4 && $pa_item_list[j].ITEM_OWNER == 2) ||
+	        						 ($whoami == 'mgr2' && $FORM_STATUS >=4 && $FORM_STATUS <9 && $pa_item_list[j].ITEM_OWNER == 3)}--><!--{else}-->disabled<!--{/if}-->/>
+		<label
+			for="c_<!--{$pa_item_list[j].PA_DETAIL_SEQNO}-->_<!--{$pa_item_list[j].KEYLIST[k].ITEM_SEQNO}-->" />
+		<!--{$pa_item_list[j].KEYLIST[k].ITEM_DESC}--> </label><br />
+		<!--{/section}--> <!--{/if}--></td>
+	</tr>
+	<!--{/if}-->
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="4"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+	</tr>
+	<!--{/section}-->
+</table>

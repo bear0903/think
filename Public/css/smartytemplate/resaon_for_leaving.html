@@ -1,0 +1,260 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javaScript">
+	$().ready(function(){
+		$('#leaving_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+	});
+	function compareDate(DateOne,DateTwo)  
+	{
+		var OneMonth = DateOne.substring(5,DateOne.lastIndexOf ("-"));
+		var OneDay = DateOne.substring(DateOne.length,DateOne.lastIndexOf ("-")+1);
+		var OneYear = DateOne.substring(0,DateOne.indexOf ("-"));
+		var TwoMonth = DateTwo.substring(5,DateTwo.lastIndexOf ("-"));
+		var TwoDay = DateTwo.substring(DateTwo.length,DateTwo.lastIndexOf ("-")+1);
+		var TwoYear = DateTwo.substring(0,DateTwo.indexOf ("-"));
+		
+		if (Date.parse(OneMonth+"/"+OneDay+"/"+OneYear) >= Date.parse(TwoMonth+"/"+TwoDay+"/"+TwoYear))
+		{
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	function checkRequired()
+	{
+		if(checkUserInputData('form1') == false) return false;
+		if (!compareDate($("#leaving_date")[0].value, '<!--{$smarty.now|date_format:"%Y-%m-%d"}-->'))
+		{
+			//alert('預估離職日期不能小於當天.');
+			alert("<!--{$DATE_LESS_ERROR_MSG}-->");
+			return false;
+		}
+		if (!Date.isValid($("#leaving_date")[0].value,"yyyy-MM-dd"))
+		{
+			$("#leaving_date")[0].focus();
+			alert("<!--{$DATE_FORMAT_ERROR_MSG}-->");
+			return false;
+		}// end if
+		if ($("#other_type")[0].checked && $("#other_type_desc")[0].value == '' )
+		{
+			alert("<!--{$INPUT_LEAVING_TYPE_MSG}-->");
+			$("#other_type_desc")[0].focus();
+			return false;
+		}// end if
+		if ($('input[@type=checkbox][@checked]').length <3)
+		{
+			alert("<!--{$LEST_CHOOSE_MSG}-->");
+			return false;
+		}// end if
+		if (confirm('<!--{$CONFIRM_MSG}-->'))
+		{
+			return true;
+		}else{
+			return false;
+		}
+		return true;
+	}// end checkRequired()
+
+	function checkOtherType(leavetype)
+	{
+		if(leavetype == '0')
+		{
+			$("#other_type_desc").get(0).disabled = false;
+		}else{
+			$("#other_type_desc")[0].value = '';
+			$("#other_type_desc").get(0).disabled = true;
+		}// end if
+	}// end checkLestChecked()
+</script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+<!--{include file="block_box_header.html"}-->
+<!-- 
+     得知您將離開本公司,我們深感遺憾;但仍感謝您在本公司工作期間付出的努力,也感謝您對公司作出的貢獻!
+    在您離開本公司之前,為能了解您真實的離職原因,也為公司改善留任人才提供意見;我們將佔用您幾分鐘的時間.
+    請您本著誠信的原則認真填寫下面的表格. 感謝您的配合!
+-->
+<!--{$EXPLAIN_TXT01_MSG}-->;
+<!--{$EXPLAIN_TXT02_MSG}-->,
+<!--{$EXPLAIN_TXT03_MSG}-->!
+<!--{$EXPLAIN_TXT04_MSG}-->,
+<!--{$EXPLAIN_TXT05_MSG}-->.
+<!--{$EXPLAIN_TXT06_MSG}-->.
+<!--{$EXPLAIN_TXT07_MSG}-->!
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html"}-->
+<form name="form1" id="form1" method="post" onsubmit="return checkRequired();">
+<input type="hidden" name="master_seqno" value="<!--{$SEQNO}-->"/>
+<table class="bordertable">
+	<tr>
+		<td class="column-label" width="25%"><!--{$LEAVING_DATE_LABEL}-->(*)</td>
+		<td>
+			<!--{if $FORM_STATUS != 1}-->
+			<input type="text" 
+				   name="leaving_date" 
+				   id="leaving_date"
+				   isDate="Y" 
+				   required="Y" 
+				   title="<!--{$PLS_INPUT_LABEL}--><!--{$LEAVING_DATE_LABEL}-->  Date Format:YYYY-MM-DD"
+				   value="<!--{$LEAVING_DATE}-->" 
+				   class="input-date"
+				   style="width:83px;"/>
+            <!--{else}-->
+            <!--{$LEAVING_DATE}-->
+            <!--{/if}-->
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$AFTER_CON_ADDR_LABEL}-->(*)</td>
+		<td>
+			<!--{if $FORM_STATUS != 1}-->
+			<textarea required="Y" 
+					  name="after_leaving_addr"
+					   title="<!--{$PLS_INPUT_LABEL}--><!--{$AFTER_CON_ADDR_LABEL}-->"><!--{$AFTER_CON_ADDR}--></textarea>
+			<!--{else}-->
+            <!--{$AFTER_CON_ADDR}-->
+            <!--{/if}-->
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$AFTER_CON_TEL_LABEL}-->(*)</td>
+		<td>
+			<!--{if $FORM_STATUS != 1}-->
+			<input type="text" 
+			       name="after_leaving_tel" 
+				   class="input-text" 
+				   required="Y" 
+				   value="<!--{$AFTER_CON_TEL}-->"
+				   title="<!--{$PLS_INPUT_LABEL}--><!--{$AFTER_CON_TEL_LABEL}-->"/>
+			<!--{else}-->
+            <!--{$AFTER_CON_TEL}-->
+            <!--{/if}-->
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$LEAVING_TYPE_LABEL}-->(*)</td>
+		<td>
+			<input type="radio" 
+				   name="leaving_type" 
+				   id="self_apply" 
+				   value="1"
+				   <!--{if $LEAVING_TYPE == 1}-->checked<!--{/if}-->
+				   <!--{if $FORM_STATUS == 1}-->disabled<!--{/if}-->
+				   required="Y" 
+				   title   ="<!--{$PLS_INPUT_LABEL}--><!--{$LEAVING_TYPE_LABEL}-->"
+				   onclick="checkOtherType(this.value);"/>
+			<label for="self_apply"><!--{$SELF_APPLY_LABEL}--></label>
+			<input type="radio" 
+				   name="leaving_type" 
+				   id="out_of_line" 
+				   value="2" 
+				   <!--{if $LEAVING_TYPE == 2}-->checked<!--{/if}-->
+				   <!--{if $FORM_STATUS == 1}-->disabled<!--{/if}-->
+				   required="Y" 
+				   title="<!--{$PLS_INPUT_LABEL}--><!--{$LEAVING_TYPE_LABEL}-->"
+				   onclick="checkOtherType(this.value);"/>
+			<label for="out_of_line"><!--{$OUT_OF_LINE_LABEL}--></label>
+			<input type="radio" 
+				   name="leaving_type" 
+				   id="fail" 
+				   value="3" 
+				   <!--{if $LEAVING_TYPE == 3}-->checked<!--{/if}-->
+				   <!--{if $FORM_STATUS == 1}-->disabled<!--{/if}-->
+				   required="Y" 
+				   title="<!--{$PLS_INPUT_LABEL}--><!--{$LEAVING_TYPE_LABEL}-->"
+				   onclick="checkOtherType(this.value);"/>
+			<label for="fail"><!--{$FAIL_LABEL}--></label>
+			<input type="radio" 
+				   name="leaving_type" 
+				   id="other_type" 
+				   value="0" 
+				   <!--{if $LEAVING_TYPE == '0'}-->checked<!--{/if}-->
+				   <!--{if $FORM_STATUS == 1}-->disabled<!--{/if}-->
+				   required="Y"
+				   onclick="checkOtherType(this.value);"/>
+			<label for="other_type"><!--{$OTHER_TYPE_LABEL}--></label>
+			<!--{if $FORM_STATUS != 1}-->
+			<input type="text" 
+			       class="input-text" 
+			       name="other_type_desc"
+			       id="other_type_desc"
+			       <!--{if $LEAVING_TYPE != '0'}--> disabled=true<!--{/if}-->
+				   value="<!--{$OTHER_TYPE_DESC}-->"/>
+			<!--{else}-->
+				<!--{$OTHER_TYPE_DESC}-->
+			<!--{/if}-->
+		</td>
+	</tr>
+</table>
+<!--{include file="block_box_footer.html"}-->
+<!--{include file="block_box_header.html" showLine="1" title=$REASON_RESEACH_LABEL}-->
+<table class="bordertable">
+	<tr>
+		<th width="15%"><!--{$REASON_TYPE_LABEL}--></th>
+		<th width="50%"><!--{$REASON_LABEL}--></th>
+		<th width="35%"><!--{$REMARK_LABEL}--></th>
+	</tr>
+	<!--{section name="j" loop=$leaving_item_list}-->
+	<tr>
+		<td>
+			<input type="hidden" 
+				   name="ques_id" 
+				   value="<!--{$leaving_item_list[j].QUES_ID}-->"/>
+			<!--{$leaving_item_list[j].CATE_NO}-->/
+			<!--{$leaving_item_list[j].CATE_DESC}-->
+		</td>
+		<td colspan="2">
+			<table border="0" style="padding:0px; margin:0px;">
+			<!--{section name="k" loop=$leaving_item_list[j].REASON_ITEMS}-->
+			<tr>
+				<td width="80%">
+					<input type="hidden" name="cate_id[<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_SEQNO}-->]" 
+						  value="<!--{$leaving_item_list[j].CATE_ID}-->"/>
+					<input type="checkbox" 
+						   name="reason_item[<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_SEQNO}-->]" 
+						   id="<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_SEQNO}-->"
+						   value="<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_SEQNO}-->"
+						   <!--{$leaving_item_list[j].REASON_ITEMS[k].CHECKED}-->
+						   <!--{if $FORM_STATUS == 1}-->disabled<!--{/if}-->
+						   />
+					<!--{if $FORM_STATUS != 1}-->
+					<label for="<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_SEQNO}-->">
+						<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_DESC}-->
+					</label>
+					<!--{else}-->
+					<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_DESC}-->
+					<!--{/if}-->
+				</td>
+				<td width="20%">
+					<!--{if $FORM_STATUS != 1}-->
+					<textarea name="reason_comments[<!--{$leaving_item_list[j].REASON_ITEMS[k].ITEM_SEQNO}-->]"><!--{$leaving_item_list[j].REASON_ITEMS[k].REMARK}--></textarea>
+					<!--{else}-->
+					<!--{$leaving_item_list[j].REASON_ITEMS[k].REMARK}-->&nbsp;
+					<!--{/if}-->
+				</td>
+			</tr>
+			<!--{/section}-->
+			</table>
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->
+<!--{include file="block_box_header.html" showLine="1" title=$SUGGESTION_LABEL}-->
+<!--{if $FORM_STATUS != 1}-->
+<textarea name="emp_suggestion" style="width:97%;"><!--{$EMP_SUGGESTION}--></textarea>
+<!--{else}-->
+<!--{$EMP_SUGGESTION}-->
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{if $FORM_STATUS != 1}-->
+<div align="center">
+<input type="submit" name="tmpsubmit" class="button-submit" value="<!--{$TMP_SUBMIT_BTN_LABEL}-->"/>
+<input type="submit" name="relsubmit" class="button-submit" value="<!--{$SUBMIT_BTN_LABEL}-->"/>
+</div>
+<!--{/if}-->
+</form>
+<!--{include file="block_box_footer.html"}-->

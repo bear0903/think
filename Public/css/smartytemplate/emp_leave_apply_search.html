@@ -1,0 +1,94 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type="text/javascript"></script>
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+    <form id="form1" name="form1" method="post">
+        <table class="bordertable">
+            <tr>
+                <td class="column-label" ><!--{$ABSENCE_NAME_LABEL}--></td>
+                <td>
+                    <select name="absence_seq_no" id="absence_seq_no">
+                        <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                        <!--{html_options options=$leave_name_list selected=$smarty.post.absence_seq_no}-->
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="column-label"><!--{$BEGIN_TIME_LABEL}--></td>
+                <td>
+                    <input type="text"
+                           name="db_my_day1"
+                           id="db_my_day1"
+                           class="input-date"
+                           value="<!--{$smarty.post.db_my_day1}-->"
+                           title="Date Format:YYYY-MM-DD"/>
+                   
+                </td>
+            </tr>
+            <tr>
+                <td class="column-label"><!--{$END_TIME_LABEL}--></td>
+                <td>
+                    <input type="text"
+                           name="db_my_day2"
+                           id="db_my_day2"
+                           class="input-date"
+                           value="<!--{$smarty.post.db_my_day2}-->"
+                           title="Date Format:YYYY-MM-DD"/>
+                </td>
+            </tr>
+            <!--{* Assistand or Workflow Admin, advanced search*}-->
+            <!--{if $isassistant || $isadmin}-->
+            <!--{include file="block_dept_emp_cond.html"}-->
+            <!--{/if}-->
+            <tr>
+                <td class="column-label"><!--{$WORKFLOW_STATUS_LABEL}--></td>
+                <td>
+                    <select name="flow_status" id="flow_status">
+                        <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                        <!--{html_options options=$flow_status_list selected=$smarty.get.flowstatus|default:$smarty.post.flow_status}-->
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" name="submit" id="submit" value="<!--{$SUBMIT_QRY_BTN_LABEL}-->" class="button-submit"/>
+                    <input type="button" name="reset"  value="<!--{$RESET_LABEL}-->"  onClick="clear_form('form1');clearParam();" class="button-submit" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--{include file="block_box_footer.html"}-->
+    <!--{if count($smarty.post)>0 || $smarty.get.flowstatus }-->
+    <!--{include file="block_box_header.html"}-->
+    <!--{include file="block_leave_apply_list.html"}-->
+    <!--{$pagingbar}-->
+    <!--{include file="block_box_footer.html"}-->
+    <!--{/if}-->
+    <script type="text/javascript">
+	    $().ready(function(){
+			$('#db_my_day1').datepicker({dateFormat:'yy-mm-dd',changeYear:true});
+			$('#db_my_day2').datepicker({dateFormat:'yy-mm-dd',changeYear:true});
+			attachClickEvent();
+		});
+        
+        function clearParam()
+        {
+            var url = document.location.toString();
+            document.location = url.substring(0,url.indexOf('&',0));
+        }
+        // add by dennis 2006-04-29 15:39:43
+        function CancelWorkflow(obj)
+        {
+            var _cancel_comment = '';
+            _cancel_comment = prompt('<!--{$CONFIRM_CANCEL_MSG}-->','');
+            if (_cancel_comment!=null && _cancel_comment!='' )
+            {
+                obj.href += "&cancel_comment="+_cancel_comment;
+                return true;
+            }else{
+                return false;
+            }// end if
+        }// end
+    </script>

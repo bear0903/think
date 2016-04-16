@@ -1,0 +1,100 @@
+
+	<div id="step1" class="hide">
+			<div id="step1_tab">
+				<ul>
+					<li><a href="#step1-tab-1">基本设定</a></li>
+					<li><a href="#step1-tab-2">进阶设定</a></li>
+				</ul>
+				<div id="step1-tab-1">
+					<div>请根据图示选择报表的布局样式</div>
+					<br clear="all"/>
+					<table>
+						<tr>
+							<td>
+								<input type="radio" name="layout_type" value="2" checked="true" id="radio_layout_mrow"/>
+								<label for="radio_layout_mrow">表格报表</label>
+								<img src="<!--{$IMG_DIR}-->/tabular.png" width="229" height="110" id="img_layout_mrow"/>
+								<p>表格报表以较简单的表单列出数据。</p>
+							</td>
+							<td>
+								<input type="radio" name="layout_type" value="1"  id="radio_layout_srow"/>
+								<label for="layout_srow">单笔单栏报表</label>
+								<img src="<!--{$IMG_DIR}-->/srow.png" width="229" height="110" id="img_layout_srow"/>
+								<p>单笔单栏报表纵向显示一笔资料，允许资料分组</p>
+							</td>
+						</tr>
+						<!--<tr>
+							<td>
+								<input type="radio" name="layout_type" value="3" checked="true" id="layout_summarize"/>
+								<label for="layout_mrow">摘要报表</label>
+								<img src="<!--{$IMG_DIR}-->/summarize.gif" width="229" height="110" id="m1"/>
+								<p>摘要报表允许查看数据和小计、分组及其它摘要信息。</p>
+							</td>
+							<td>
+								<input type="radio" name="layout_type" value="4" checked="true" id="layout_matrix"/>
+								<label for="layout_mrow">矩阵报表</label>
+								<img src="<!--{$IMG_DIR}-->/matrix.gif" width="229" height="110" id="m1"/>
+								<p>矩阵报表允许针对横向和纵向列查看在窗格中汇总的数据。</p>
+							</td>
+						</tr>-->
+					</table>
+				</div>
+				<div id="step1-tab-2">
+					<div id="mrow_property">
+						<div>请设定多笔显示的相关属性</div>
+						<br clear="all"/>
+						<table>
+							<tr>
+								<td><label for="allow_paging">允许分页</label></td>
+								<td><input type="checkbox" id="allow_paging" name="allow_paging" value="1" checked="true"/></td>
+							</tr>
+							<tr>
+								<td><label>每页笔数</label></td>
+								<td><input type="text" name="numperpage" id="numperpage" value="20"/></td>
+							</tr>
+							<tr>
+								<td><label>分页位置</label></td>
+								<td>
+									<select name="pagerbarpos" id="pagerbarpos">
+										<option value="">请选择</option>
+										<option value="top">页顶</option>
+										<option value="bottom" selected="true">页底</option>
+										<option value="both">都显示</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td><label for="allow_sort">允许排序</label></td>
+								<td><input type="checkbox" id="allow_sort" name="allow_sort" checked="true" value="1"/></td>
+							</tr>
+							<tr>
+								<td><label for="allow_query">允许查询</label></td>
+								<td><input type="checkbox" id="allow_query" name="allow_query" checked="true" value="1"/></td>
+							</tr>
+							<tr>
+								<td><label for="allow_stts_group">允许统计分组</label></td>
+								<td><input type="checkbox" name="allow_stts_group" id="allow_stts_group" value="1"/></td>
+							</tr>
+							<tr>
+								<td><label for="allow_exp">允许导出</label></td>
+								<td><input type="checkbox" id="allow_exp" name="allow_exp" checked="true" value="1"/></td>
+							</tr>
+							<tr>
+								<td><label for="allow_print">允许打印</label></td>
+								<td><input type="checkbox" id="allow_print" name="allow_print" checked="true" value="1"/></td>
+							</tr>
+						</table>
+					</div>
+					<!-- 单笔资料属性 -->
+					<div id="srow_property" class="hide">
+						<div>请设定单笔资料是否需要把栏位分组</div>
+						<br clear="all"/>
+						<div>
+							<label for="allow_col_group">允许分组</label>
+							<input type="checkbox" id="allow_col_group" name="allow_grouping" checked="true" value="1">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+		

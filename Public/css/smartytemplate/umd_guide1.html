@@ -1,0 +1,81 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'自定程式向导' showLine=1}-->
+
+<!--{if $show=='Query' || $show=='List'}-->
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<tr><td colspan=13 class="error"><b><!--{$STEP01_LABEL|default:'第一步：设定菜单'}--></b></td></tr>
+</table>
+<br>
+<!--{include file="block_box_header.html"}-->
+<form id="QueryForm" name="QueryForm" METHOD="POST" ACTION="<!--{$next_url}-->">
+   
+<table >
+<tbody>
+	<tr >
+		<td  width="20%"><!--{$MENU_SELECT_LABEL|default:'请选择一个菜单'}-->*</td>
+		<td  width="80%">
+		   <select id="PROGRAM_NO" class="select-input"   NAME="PROGRAM_NO" REQUIRED=Y title='<!--{$INPUT_PLEASE_LABEL|default:'请输入'}--><!--{$PARENT_MENU_LABEL|default:'上层菜单'}-->'>
+		   <!--{$menuCascade}-->
+		   </select>
+		</td>
+	</tr>
+	<tr >
+		<td  width="20%"></td>
+		<td  width="80%">
+		   <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$NEXT_STEP_BTN_LABEL|default:'下一步'}--> " id="doNext">
+		</td>
+	</tr>
+	
+	<tr><td colspan=2><!--{$ErrorMsg}--></td></tr>
+</tbody>
+</table>
+<input type="hidden" name="do" value="EditBasic">
+</form>
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+$("#doNext").click(function(){	
+	  document.QueryForm.submit(); 
+});
+
+$("#doNew").click(function(){	LANG_CODE
+	var txt=document.getElementById('PROGRAM_NO');
+	var program_no = txt.options[txt.selectedIndex].value;
+	var txt=document.getElementById('LANG_CODE');
+	var LANG_CODE = txt.options[txt.selectedIndex].value;
+	location.href='?scriptname=umd_muti_lang&do=New&PROGRAM_NO='+program_no+'&LANG_CODE='+LANG_CODE;
+});
+$("#doCancel").click(function(){	
+	   document.NewForm.submit();
+});
+$("#doQuery").click(function(){	
+	  document.QueryForm.submit(); 
+});
+$("#doSave").click(function(){	
+	  if(!checkUserInputData('NewForm')) return false;
+	  $("#do").val('Save');
+	  document.NewForm.submit(); //doSave();
+});
+$("#function_id").change(function(){	
+	$("#menu_code").val(this.options[this.selectedIndex].value);
+});
+
+
+function doDelete(url){
+	var confirm=window.confirm("<!--{$ALERT_DELETE_CONFIRM|default:'确认删除?'}-->"); 
+	if(confirm)   location.href=url;
+}
+function doEdit(url){
+	location.href=url;
+}
+</script>
+ 
+
+

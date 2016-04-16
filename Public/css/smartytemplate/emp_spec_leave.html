@@ -1,0 +1,35 @@
+
+</head>
+<body class="page-container">
+	<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+	<table class="bordertable">
+		<thead>
+			<tr>
+				<th><!--{$ABS_ID_LABEL|default:'假别代码'}--></th>
+				<th><!--{$ABS_NAME_LABEL|default:'假别'}--></th>
+				<th><!--{$RULE_DAYS_LABEL|default:'给假天数'}--></th>
+				<th><!--{$REST_DAYS_LABEL|default:'休假天数'}--></th>
+				<th><!--{$LEFT_DAYS_LABEL|default:'剩余天数'}--></th>
+				<th><!--{$CREATE_DATE_LABEL|default:'建档日期'}--></th>
+			</tr>
+		</thead>
+		<tbody>
+			<!--{section name="i" loop=$spec_leave_list}-->
+			<tr>
+				<td><!--{$spec_leave_list[i].ABS_TYPE_ID}--></td>
+				<td><!--{$spec_leave_list[i].ABS_NAME}--></td>
+				<td><!--{$spec_leave_list[i].RULE_DAYS}--></td>
+				<td><!--{$spec_leave_list[i].REST_DAYS}--></td>
+				<td><!--{$spec_leave_list[i].RULE_DAYS - $spec_leave_list[i].REST_DAYS}--></td>
+				<td><!--{$spec_leave_list[i].CREATE_DATE}--></td>
+			</tr>
+			<!--{sectionelse}-->
+            <tr>
+                <td colspan="6">
+                	<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+                </td>
+            </tr>
+            <!--{/section}-->
+		</tbody>
+	</table>
+	<!--{include file="block_box_footer.html"}-->

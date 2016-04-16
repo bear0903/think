@@ -1,0 +1,229 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'基本设定' showLine=1}-->
+
+<form id="editForm" name="editForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+
+	<tr >
+		<td  width="30%"><!--{$PROGRAM_NO_LABEL|default:'程序編碼'}--> </td>
+		<td  width="70%">
+		   <input name='PROGRAM_NO' readonly VALUE="<!--{$row.PROGRAM_NO}-->" type='text' class="input-text" >
+		</td>
+	</tr>
+
+	<tr>
+		<td nowrap><!--{$APPLICATION_TYPE_LABEL|default:'單筆/多筆'}--> </td>
+		<td nowrap>
+		   <select  id="APPLICATION_TYPE" class="select-input"   NAME="APPLICATION_TYPE"  title='<!--{$LANG_LABEL|default:'语言别'}-->'>
+		      <!--{$appTypeCascade}-->
+		   </select>
+		</td>
+	</tr>
+
+	<tr >
+		<td nowrap><!--{$PAGE_SIZE_LABEL|default:'多筆每頁顯示筆數'}--> </td>
+		<td><input id="PAGE_SIZE" name="PAGE_SIZE" class="input-text" TYPE="text" 
+			value="<!--{$row.PAGE_SIZE}-->"  check_range=Y area_min=1 area_max=30 title='<!--{$INPUT_PLEASE|default:'请输入'}--><!--{$PAGE_SIZE_LABEL|default:'菜单代码'}-->'> </td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$DEFAULT_WHERE_LABEL|default:'表关联条件'}--></td>
+		<td ><textarea id="DEFAULT_WHERE" name="DEFAULT_WHERE"   class="input-textarea" TYPE="text" 
+			  ><!--{$row.DEFAULT_WHERE}--></textarea>
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$ALLOW_QUERYING_LABEL|default:'允许条件查询'}--> </td>
+		<td><input id="ALLOW_QUERYING" NAME="ALLOW_QUERYING" class="input-text" TYPE="text" 
+			value="<!--{$row.ALLOW_QUERYING}-->" >
+		</td>
+	</tr>
+
+
+	<tr>
+		<td nowrap><!--{$UI_STYLE_LABEL|default:'界面風格'}--> </td>
+		<td nowrap>
+		   <select id="UI_STYLE" class="select-input"   NAME="UI_STYLE" title='<!--{$LANG_LABEL|default:'语言别'}-->'>
+		    <!--{$UIstyleCascade}-->
+		   </select>
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$GRIDVIEW_STYLE_LABEL|default:'多笔的风格'}--> </td>
+		<td><input id="GRIDVIEW_STYLE" NAME="GRIDVIEW_STYLE" class="input-text" TYPE="text" 
+			value="<!--{$row.GRIDVIEW_STYLE}-->"  title='<!--{$INPUT_PLEASE|default:'请输入'}--><!--{$GRIDVIEW_STYLE_LABEL|default:'多笔的风格'}-->'>
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$SELECTED_ROW_STYLE_LABEL|default:'先中行风格'}--> </td>
+		<td><input id="SELECTED_ROW_STYLE" NAME="SELECTED_ROW_STYLE" class="input-text" TYPE="text" 
+			value="<!--{$row.SELECTED_ROW_STYLE}-->">
+		</td>
+	</tr>
+	 <tr >
+		<td nowrap><!--{$HEADER_STYLE_LABEL|default:'标题列风格'}--> </td>
+		<td><input id="HEADER_STYLE" NAME="HEADER_STYLE" class="input-text" TYPE="text" 
+			value="<!--{$row.HEADER_STYLE}-->" >
+		</td>
+	</tr>
+
+	 
+	<tr >
+		<td labelfor="DEFAULT_ORDER_BY"><!--{$DEFAULT_ORDER_BY_LABEL|default:'SQL排序'}--> </td>
+		<td><input id="DEFAULT_ORDER_BY" NAME="DEFAULT_ORDER_BY" class="input-text" TYPE="text" 
+			value="<!--{$row.DEFAULT_ORDER_BY}-->"  title='<!--{$INPUT_PLEASE|default:'请输入'}--><!--{$DEFAULT_ORDER_BY_LABEL|default:'SQL排序'}-->'>
+		</td>
+	</tr>
+	<tr >
+		<td labelfor='ALLOW_SORTING'><!--{$ALLOW_QUERYING_LABEL|default:'是否允许排序'}--> </td>
+		<td><input id="ALLOW_SORTING" NAME="ALLOW_SORTING" class="input-text" TYPE="text" 
+		value="<!--{$row.ALLOW_SORTING}-->"></td>
+	</tr>
+
+	 <tr >
+		<td labelfor='SORT_MODE'><!--{$SORT_MODE_LABEL|default:'排序方式'}--> </td>
+		<td>
+			<select id="SORT_MODE" NAME="SORT_MODE" class="select-input"  >
+			<!--{$SORT_MODE_Cascade}-->
+			</select>
+		</td>
+	</tr>
+
+	 <tr >
+		<td labelfor=''><!--{$HEIGHT_LABEL|default:'高度'}--> </td>
+		<td><input id="HEIGHT" NAME="HEIGHT" class="input-text" TYPE="text"
+		     value="<!--{$row.HEIGHT}-->" >
+		</td>
+	</tr>
+
+	  <tr >
+		<td labelfor='WIDTH'><!--{$WIDTH_LABEL|default:'宽度'}--> </td>
+		<td><input id="WIDTH" NAME="WIDTH" class="input-text" TYPE="text" 
+				value="<!--{$row.WIDTH}-->" >
+		</td>
+	</tr>
+
+	
+	 
+	 <tr >
+		<td nowrap><!--{$ALLOW_PAGING_LABEL|default:'是否允许分页'}--> </td>
+		<td><input id="ALLOW_PAGING" NAME="ALLOW_PAGING" class="input-text" TYPE="text" 
+			value="<!--{$row.ALLOW_PAGING}-->">
+		</td>
+	</tr>
+	 <tr >
+		<td nowrap><!--{$HEADER_PAGING_LABEL|default:'显示顶部分页'}--> </td>
+		<td><input id="HEADER_PAGING" NAME="HEADER_PAGING" class="input-text" TYPE="text" 
+			value="<!--{$row.HEADER_PAGING}-->" >
+		</td>
+	</tr>
+	 <tr >
+		<td nowrap><!--{$FOOTER_PAGING_LABEL|default:'显示底部分页'}--> </td>
+		<td><input id="FOOTER_PAGING" NAME="FOOTER_PAGING" class="input-text" TYPE="text" 
+			value="<!--{$row.FOOTER_PAGING}-->" >
+		</td>
+	</tr>
+	 <tr >
+		<td nowrap><!--{$PAGING_THEME_LABEL|default:'分页风格'}--> </td>
+		<td><input id="PAGING_THEME" NAME="PAGING_THEME" class="input-text" TYPE="text" 
+			value="<!--{$row.PAGING_THEME}-->" >
+		</td>
+	</tr>
+	 
+	
+	 
+	 <tr >
+		<td nowrap><!--{$MENU_INDEX_LABEL|default:'是否允许鼠标事件'}--> </td>
+		<td><input id="ALLOW_MOUSE_EVENT" NAME="ALLOW_MOUSE_EVENT" class="input-text" TYPE="text" 
+		     value="<!--{$row.ALLOW_MOUSE_EVENT}-->"></td>
+	</tr>
+	 <tr >
+		<td nowrap><!--{$MENU_INDEX_LABEL|default:'是否允许选取'}--> </td>
+		<td><input id="ALLOW_SELECTED" NAME="ALLOW_SELECTED" class="input-text" TYPE="text" 
+		     value="<!--{$row.ALLOW_SELECTED}-->"></td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$ALLOW_GROUPING_LABEL|default:'单笔栏位分组'}--> </td>
+		<td><input id="ALLOW_GROUPING" NAME="ALLOW_GROUPING" class="input-text" TYPE="text" value="<!--{$row.ALLOW_GROUPING}-->" ></td>
+	</tr>
+	 
+	 
+	 
+	 <tr>
+		<td nowrap><!--{$ALLOW_ALTERNATING_ROW_LABEL|default:'允许行交替显示颜色'}--> </td>
+		<td><input id="ALLOW_ALTERNATING_ROW" NAME="ALLOW_ALTERNATING_ROW" class="input-text" TYPE="text" 
+			value="<!--{$row.ALLOW_ALTERNATING_ROW}-->">
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$ALTERNATING_FONTCOLOR_LABEL|default:'交替显示字体颜色'}--> </td>
+		<td><input id="ALTERNATING_FONTCOLOR" NAME="ALTERNATING_FONTCOLOR" class="input-text" TYPE="text" 
+			value="<!--{$row.ALTERNATING_FONTCOLOR}-->" >
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$MENU_INDEX_LABEL|default:'交替显示背景颜色'}--> </td>
+		<td><input id="ALTERNATING_BGCOLOR" NAME="ALTERNATING_BGCOLOR" class="input-text" TYPE="text" 
+			value="<!--{$row.ALTERNATING_BGCOLOR}-->">
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$ALTERNATING_ROW_STYLE_LABEL|default:'交替显示风格'}--> </td>
+		<td><input id="ALTERNATING_ROW_STYLE" NAME="ALTERNATING_ROW_STYLE" class="input-text" TYPE="text" 
+			value="<!--{$row.ALTERNATING_ROW_STYLE}-->" >
+		</td>
+	</tr>
+
+	 
+	<tr>
+		<td nowrap><!--{$IS_SHOW_LABEL|default:'初始画面是否有默认资料显示'}--> </td>
+		<td><input id="IS_SHOW" NAME="IS_SHOW" class="input-text" TYPE="text" 
+			value="<!--{$row.IS_SHOW}-->" >
+		</td>
+	</tr>
+	 
+	<tr>
+		<td nowrap><!--{$SHOW_WHERE_LABEL|default:'初始默认资料查询条件'}--> </td>
+		<td><input id="SHOW_WHERE" NAME="SHOW_WHERE" class="input-text" TYPE="text" value="<!--{$row.SHOW_WHERE}-->" ></td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$COMMENTS_LABEL|default:'注解'}--> </td>
+		<td><input id="COMMENTS" NAME="COMMENTS" class="input-text" TYPE="text" value="<!--{$row.COMMENTS}-->" ></td>
+	</tr>
+	 
+	<tr>
+		<td ></td>
+		<td >
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SaveSearchButton.SAVE}--> " id="doSave">
+			<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$SaveSearchButton.CANCEL}--> " id="doCancel">
+		</td>
+	</tr>
+	<tr><td colspan=2><!--{$ErrorMsg}--></td></tr>
+</tbody>
+</table>
+<input type="hidden" name="do" value="SaveBasic">
+<input type="hidden" name="RESULT_SQL" value="<!--{$row.RESULT_SQL}-->">
+</form>
+<!--{include file="block_box_footer.html"}-->
+
+
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	document.title='<!--{$PARENT_MENU_LABEL|default:'自定程序'}-->';
+});
+
+$("#doCancel").click(function(){
+	window.close();
+});
+
+$("#doSave").click(function(){
+	document.editForm.submit();
+});
+</script>
+ 
+
+

@@ -1,0 +1,93 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'请假申請匯入' showLine=1}-->
+	<form id="postForm" name="form1" method="POST" ACTION="" enctype="multipart/form-data">
+		<table class="bordertable">
+			<tr>
+				<td width="20%" class="column-label"><!--{$IMP_NAME_LABEL|default:'请假申请匯入 Excel 模版'}--></td>
+				<td width="80%"> <!--{$download_url}--> </td>
+			</tr>
+			<tr>
+				<td width="20%" class="column-label"><!--{$BROWSE_EXCEL_FILE_LABEL|default:'浏览Excel文件'}-->*</td>
+				<td width="80%">
+					<input id="up_file" type="file" class="input-text" name="upload_excel" title="<!--{$FILE_IS_REQUIRED_MSG}-->"/>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<INPUT TYPE="button" class="button-submit" VALUE="<!--{$iIMP_BTN_LABEL|default:'匯入'}-->" id="do_save"/> 
+					<INPUT TYPE="reset" class="button-submit" VALUE="<!--{$RESET_BTN_LABEL|default:'重置'}-->" id="doClear"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+	<!--{if $display==true}-->
+	<div>
+		<!--{include file="block_info.html" msg_txt="共匯入 $total_num 筆,成功: $succ_num 筆,失敗: $fail_num 筆. $imp_result_msg"}-->
+		<br clear="all"/>
+		<!--{if $fail_num}-->
+		<table class="bordertable" id="empfail_data">
+			<thead>
+				<tr><th colspan="10">错误记录清单</th></tr>
+				<tr>
+					<th nowrap>序</th>
+					<th nowrap>员工编号</th>
+					<th nowrap>假别代码</th>	
+					<th nowrap>开始时间</th>
+					<th nowrap>结束时间</th>
+					<th>备注</th>
+					<th>错误原因</th>
+				</tr>
+			</thead>
+			<!--{section name="i" loop=$fail_data}-->
+			<tr class="error">
+				<td><!--{$smarty.section.i.rownum}--></td>
+			    <td><!--{$fail_data[i][0]}--></td>
+			    <td><!--{$fail_data[i][3]}--></td>
+			    <td><!--{$fail_data[i][1]}--></td>
+			    <td><!--{$fail_data[i][2]}--></td>
+				<td><!--{$fail_data[i][4]}--></td>
+				<td><!--{$fail_data[i].ERROR_CODE}-->:<!--{$fail_data[i].ERROR_TEXT}--></td> 
+			</tr>
+			<!--{/section}-->
+		</table>
+		<!--{/if}-->
+		<!--{if count($succ_data)>0}-->
+		<table class="bordertable" id="empsuccess_data">
+			<thead>
+				<tr><th colspan="9">成功记录清单</th></tr>
+				<tr>
+					<th nowrap>序</th>
+					<th nowrap>员工编号</th>
+					<th nowrap>假别代码</th>	
+					<th nowrap>开始时间</th>
+					<th nowrap>结束时间</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			<!--{section name="i" loop=$succ_data}-->
+			<tr class="success">
+				<td><!--{$smarty.section.i.rownum}--></td>
+			    <td><!--{$succ_data[i][0]}--></td>
+			    <td><!--{$succ_data[i][3]}--></td>
+			    <td><!--{$succ_data[i][1]}--></td>
+			    <td><!--{$succ_data[i][2]}--></td> 
+				<td><!--{$succ_data[i][4]}--></td>
+			</tr>
+			<!--{/section}-->
+		</table>
+		<!--{/if}-->
+	</div>
+	<!--{/if}-->
+	<script type="text/javascript">
+		$('#do_save').click(function(){
+			if($("#up_file").val()==''){
+				alert("请选择文件！");
+			}else{
+				document.form1.submit();
+			}
+		});
+	</script>
+<!--{include file="block_box_footer.html"}-->

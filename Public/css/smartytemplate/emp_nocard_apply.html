@@ -1,0 +1,257 @@
+<script type="text/javascript" src="<!--{$JS_DIR}-->/functions.js"></script>
+</head>
+<body class="page-container">
+    <form name="form1" method="post">
+        <!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+        <!--{include file="block_nocard_apply.html"}-->
+        <!--{include file="block_box_footer.html"}-->
+    </form>
+
+<script type="text/javascript">
+	$().ready(function(){
+		$('form').submit(function(){
+			var res = true;
+			var val = '';
+			var reasons = '';
+			var t_reason  = $('#nocard_reason').val();
+			var rck = $('input:checked').length;
+			if (rck == 0)
+			{
+				alert('至少要选取一个忘刷班次.')
+				return false;
+			}
+			// 至少要选一个原因
+			$(".reason-select").each(function(){
+				reasons += $(this).val();
+			});
+			$(":input").each(function(){
+				var tid = $(this).attr('id');
+				if (tid != '')
+				{
+					val = $(this).val();
+					//alert('this val is ->'+val);
+					switch(tid){
+						case 'nocard_date':
+							if (val == '')
+							{
+								alert('请选取忘刷日期');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_reason':
+							if (val == '' && reasons == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_reason_01':
+							if (val == '' && t_reason == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_01_hour':
+							if ($('#shift_type_01').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取小时');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_01_minute':
+							if ($('#shift_type_01').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取分钟');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_reason_02':
+							if ($('#shift_type_02').attr('checked') && val == '' && t_reason == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_02_hour':
+							if ($('#shift_type_02').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取小时');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_02_minute':
+							if ($('#shift_type_02').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取分钟');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_reason_03':
+							if ($('#shift_type_03').attr('checked') && val == '' && t_reason == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_03_hour':
+							if ($('#shift_type_03').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取小时');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_03_minute':
+							if ($('#shift_type_03').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取分钟');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_reason_04':
+							if ($('#shift_type_04').attr('checked') && val == '' && t_reason == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_04_hour':
+							if ($('#shift_type_04').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取小时');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_04_minute':
+							if ($('#shift_type_04').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取分钟');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_reason_05':
+							if ($('#shift_type_05').attr('checked') && val == '' && t_reason == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_05_hour':
+							if ($('#shift_type_05').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取小时');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_05_minute':
+							if ($('#shift_type_05').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取分钟');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_reason_06':
+							if ($('#shift_type_06').attr('checked') && val == '' && t_reason == '')
+							{
+								alert('请选取忘刷原因');
+								$(this).focus();
+								res = false;
+								return false;
+							}
+							break;
+						case 'nocard_06_hour':
+							if ($('#shift_type_06').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取小时');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						case 'nocard_06_minute':
+							if ($('#shift_type_06').attr('checked'))
+							{
+								if (val == '')
+								{
+									alert('请选取分钟');
+									$(this).focus();
+									res = false;
+									return false;
+								}
+							}
+							break;
+						default:break;
+					}
+				}
+			});
+			return res;
+		})
+	});
+</script>

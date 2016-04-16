@@ -1,0 +1,141 @@
+
+	<table class="bordertable">
+	    <tr>
+	        <th width="24"><!--{$SEQ_LABEL}--></th>
+	        <th width="30%" nowrap><!--{$PA_ITEM_LABEL}--></th>
+	        <th width="80"><!--{$SCORE_RANGE_LABEL|default:"分數"}--></th>
+	        <th width="80"><!--{$SELF_SCORE_LABEL}--></th>
+	        <th nowrap><!--{$SELF_COMMENT_LABEL}--></th>
+	    <!--{if $whoami !='emp' || ($whoami == 'emp' && ($FORM_STATUS == 4 || $FORM_STATUS>=10)) }-->
+	        <th nowrap><!--{$FIRST_SCORE_LABEL}--></th>
+	        <th nowrap><!--{$FIRST_COMMENT_LABEL}--></th>
+	        <!--{if $whoami == 'mgr2' || $whoami == 'mgr3'}-->
+	        <th nowrap><!--{$SECOND_SCORE_LABEL}--></th>
+	        <th nowrap><!--{$SECOND_COMMENT_LABEL}--></th>
+	        <!--{/if}-->
+	    <!--{/if}-->
+	    </tr>
+	    <!--{section name="i" loop=$pa_item_list}-->
+	    <tr>
+	        <td><!--{$smarty.section.i.rownum}--></td>
+	        <td>
+	        	<!--{$pa_item_list[i].PA_ITEM_DESC}-->
+	        	<!--{if $pa_item_list[i].PA_REF_COMMENT}-->
+	        	<hr height="1"/>
+	        	<!--{$pa_item_list[i].PA_REF_COMMENT|nl2br}-->
+	        	<!--{/if}-->
+	        </td>
+	        <td nowrap>
+	        	<!--{$pa_item_list[i].MIN_SCORE|string_format:"%.2f"}--> ~
+	        	<!--{$pa_item_list[i].MAX_SCORE|string_format:"%.2f"}-->
+	        </td>
+	        <!--{*员工自评项目*}-->
+	        <!--{if $whoami == 'emp' && $FORM_STATUS<2}-->
+	        <td>
+	        	<input type="text"
+	        		   class="input-text sum" 
+	        	       name="emp_score[<!--{$pa_item_list[i].PA_DETAIL_SEQNO}-->]" 
+	        	       value = "<!--{$pa_item_list[i].EMP_SCORE}-->" 
+	        	       style="width:40px;"
+	        	       is_number = "Y"
+	        	       required = "Y"
+	        	       <!--{if $pa_item_list[i].PA_ITEM_RANGE_SEQNO }-->
+	        	       check_range="Y"
+	        	       min_num="<!--{$pa_item_list[i].MIN_SCORE}-->"
+	        	       max_num="<!--{$pa_item_list[i].MAX_SCORE}-->"
+	        	       
+	        	       <!--{/if}-->
+	        	       title="<!--{$PLS_INPUT_SELF_SCORE_LABEL}--><!--{if $pa_item_list[i].PA_ITEM_RANGE_SEQNO }--> <!--{$MIN_VALUE_LABEL}-->  : <!--{$pa_item_list[i].MIN_SCORE}--> <!--{$MAX_VALUE_LABEL}--> : <!--{$pa_item_list[i].MAX_SCORE}--><!--{/if}-->"/>
+	       	</td>
+	        <td>
+	        	<textarea name="emp_comment[<!--{$pa_item_list[i].PA_DETAIL_SEQNO}-->]" colspan="5" style="height:96%; width:90%;"><!--{$pa_item_list[i].EMP_REMARK}--></textarea>
+	        </td>
+	        <!--{else}-->
+	        	<td><!--{$pa_item_list[i].EMP_SCORE}-->&nbsp;</td>
+	        	<td><!--{$pa_item_list[i].EMP_REMARK}-->&nbsp;</td>
+	        <!--{/if}-->
+		<!--{if $whoami != 'emp' || ($whoami == 'emp' && ($FORM_STATUS == 4 || $FORM_STATUS>=10))}-->
+	        <!--{if $whoami == 'mgr1' && $FORM_STATUS < 4}-->
+	        <td>
+	        	<input type="text" 
+	        	       class="input-text sum" 
+	        	       name="mgr1_score[<!--{$pa_item_list[i].PA_DETAIL_SEQNO}-->]" 
+	        	       value = "<!--{$pa_item_list[i].MGR1_SCORE|default:$pa_item_list[i].EMP_SCORE}-->" 
+	        	       style="width:40px;"
+	        	       is_number = "Y"
+	        	       required = "Y"
+	        	       <!--{if $pa_item_list[i].PA_ITEM_RANGE_SEQNO }-->
+	        	       check_range="Y"
+	        	       min_num="<!--{$pa_item_list[i].MIN_SCORE}-->"
+	        	       max_num="<!--{$pa_item_list[i].MAX_SCORE}-->"
+	        	       <!--{/if}-->
+	        	       title="<!--{$PLS_INPUT_MGR1_SCORE_LABEL}--><!--{if $pa_item_list[i].PA_ITEM_RANGE_SEQNO }--> <!--{$MIN_VALUE_LABEL}-->  : <!--{$pa_item_list[i].MIN_SCORE}--><!--{$MAX_VALUE_LABEL}--> : <!--{$pa_item_list[i].MAX_SCORE}--><!--{/if}-->"/>
+	       	</td>
+	        <td>
+	        	<textarea name="mgr1_comment[<!--{$pa_item_list[i].PA_DETAIL_SEQNO}-->]" 
+	        			  style="width:99%;"><!--{$pa_item_list[i].MGR1_REMARK}--></textarea>
+	        </td>
+	        <!--{else}-->
+	        	<td><!--{$pa_item_list[i].MGR1_SCORE}-->&nbsp;</td>
+	        	<td><!--{$pa_item_list[i].MGR1_REMARK}-->&nbsp;</td>
+	        <!--{/if}-->
+	        
+	     <!--{if $whoami == 'mgr2' || $whoami == 'mgr3'}-->
+	        <!--{if $whoami == 'mgr2' && $FORM_STATUS < 9 }-->
+	        <td>
+	        	<input type="text" 
+	        		   class="input-text sum" 
+	        	       name="mgr2_score[<!--{$pa_item_list[i].PA_DETAIL_SEQNO}-->]" 
+	        	       value = "<!--{if $pa_item_list[i].MGR2_SCORE != ''}--><!--{$pa_item_list[i].MGR2_SCORE}--><!--{elseif $pa_item_list[i].MGR1_SCORE != ''}--><!--{$pa_item_list[i].MGR1_SCORE}--><!--{elseif $pa_item_list[i].EMP_SCORE != ''}--><!--{$pa_item_list[i].EMP_SCORE}--><!--{/if}-->" 
+	        	       style="width:40px;"
+	        	       is_number = "Y"
+	        	       required = "Y"
+	        	       <!--{if $pa_item_list[i].PA_ITEM_RANGE_SEQNO }-->
+	        	       check_range="Y"
+	        	       min_num="<!--{$pa_item_list[i].MIN_SCORE}-->"
+	        	       max_num="<!--{$pa_item_list[i].MAX_SCORE}-->"
+	        	       <!--{/if}-->
+	        	       title="<!--{$PLS_INPUT_MGR2_SCORE_LABEL}--><!--{if $pa_item_list[i].PA_ITEM_RANGE_SEQNO }--> <!--{$MIN_VALUE_LABEL}-->  : <!--{$pa_item_list[i].MIN_SCORE}--> <!--{$MAX_VALUE_LABEL}--> : <!--{$pa_item_list[i].MAX_SCORE}--><!--{/if}-->"/>
+	       	</td>
+	        <td>
+	        	<textarea name="mgr2_comment[<!--{$pa_item_list[i].PA_DETAIL_SEQNO}-->]" 
+	        			  style="width:99%;"><!--{$pa_item_list[i].MGR2_REMARK}--></textarea>
+	        </td>
+	        <!--{else}-->
+	        	<td><!--{$pa_item_list[i].MGR2_SCORE}-->&nbsp;</td>
+	        	<td><!--{$pa_item_list[i].MGR2_REMARK}-->&nbsp;</td>
+	        <!--{/if}-->
+	      <!--{/if}-->
+	    <!--{/if}-->
+	    </tr>
+	    <!--{sectionelse}-->
+	    <tr>
+	        <td colspan="<!--{if $whoami == 'emp'}-->5<!--{else}-->11<!--{/if}-->">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+	    </tr>
+	    <!--{/section}-->
+	    <tr>
+	        <th colspan="2" class="column-label"><!--{$RANK_REMARK_LABEL}-->:<!--{$pa_std_comments}--></th>
+	        <th><!--{$TOTAL_LABEL}--></th>
+	        <td>
+	        	<!--{if $FORM_STATUS <2 || ($whoami!= 'emp' && in_array($FORM_STATUS,array(2,3,6,7,8))) }-->
+	        	 <span id="totalscore"></span>:<span id="leveldesc"></span>
+	       		<!--{else}-->
+	        	<!--{$emp_total_core}-->:<!--{$emp_rank}-->
+	        	<!--{/if}-->
+	        </td>
+	        <td></td>
+	    <!--{if $whoami != 'emp' || ($whoami == 'emp' && ($FORM_STATUS == 4 || $FORM_STATUS>=10))}-->
+	        <td colspan="2">
+	        	<!--{$mgr1_total_core}-->:<!--{$mgr1_rank}-->
+	        </td>
+	        <!--{if  $whoami == 'mgr2' || $whoami == 'mgr3' }-->
+	        <td colspan="2">
+	        	<!--{$mgr2_total_core}-->:<!--{$mgr2_rank}-->
+	        </td>
+	        <!--{/if}-->
+	    <!--{/if}-->
+	    </tr>
+	</table>
+	

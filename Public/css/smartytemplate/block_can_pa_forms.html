@@ -1,0 +1,49 @@
+
+<table class="bordertable">
+	<tr>
+		<td colspan="5" class="column-label"><!--{$WAIT_FOR_PA_LABEL|default:"待評核清單"}--></td>
+	</tr>
+	<tr>
+		<th><!--{$PA_PERIOD_LABEL}--></th>
+		<th><!--{$GROUP_LABEL}--></th>
+		<th><!--{$PA_STD_LABEL|default:'評核类型'}--></th>
+		<th><!--{$HEADCOUNT_LABEL}--></th>
+		<th width="180"><!--{$ACTION_LABEL|default:'操作'}--></th>
+	</tr>
+	<!--{section name="i" loop=$pa_forms_list}-->
+    <tr>
+        <td>
+        	<!--{if $pa_forms_list[i.index_prev].PA_PERIOD_ID neq $pa_forms_list[i].PA_PERIOD_ID}-->
+        	<a href="?scriptname=pa_emp_list&pa_period_seqno=<!--{$pa_forms_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_forms_list[i].PA_PERIOD_DESC|urlencode}-->">
+        		<!--{$pa_forms_list[i].PA_PERIOD_DESC}-->
+        	</a>
+        	<!--{/if}-->
+        </td>
+        <td>
+        	<!--{if $pa_forms_list[i.index_prev].GROUP_SEQNO neq $pa_forms_list[i].GROUP_SEQNO}-->
+        	<a href="?scriptname=pa_emp_list&pa_period_seqno=<!--{$pa_forms_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_forms_list[i].PA_PERIOD_DESC|urlencode}-->&group_seqno=<!--{$pa_forms_list[i].GROUP_SEQNO}-->&group_desc=<!--{$pa_forms_list[i].GROUP_DESC|urlencode}-->">
+        		<!--{$pa_forms_list[i].GROUP_DESC}-->
+        	</a>
+        	<!--{/if}-->
+        </td>
+        <td>
+        	<!--{*if $pa_forms_list[i.index_prev].GROUP_SEQNO neq $pa_forms_list[i].GROUP_SEQNO || 
+        	        $pa_forms_list[i.index_prev].STD_MASTER_SEQNO neq $pa_forms_list[i].STD_MASTER_SEQNO*}-->
+        	<a href="?scriptname=pa_emp_list&pa_period_seqno=<!--{$pa_forms_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_forms_list[i].PA_PERIOD_DESC|urlencode}-->&group_seqno=<!--{$pa_forms_list[i].GROUP_SEQNO}-->&group_desc=<!--{$pa_forms_list[i].GROUP_DESC|urlencode}-->&std_master_seqno=<!--{$pa_forms_list[i].STD_MASTER_SEQNO}-->&std_master_desc=<!--{$pa_forms_list[i].STD_MASTER_DESC|urlencode}-->">
+        		<!--{$pa_forms_list[i].STD_MASTER_DESC}-->
+        	</a>
+        	<!--{*/if*}-->
+        </td>
+        <td><!--{$pa_forms_list[i].HEADCOUNT}--></td>
+        <td>
+        	<a class="a-list-btn" href="?scriptname=pa_emp_list&pa_period_seqno=<!--{$pa_forms_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_forms_list[i].PA_PERIOD_DESC|urlencode}-->&group_seqno=<!--{$pa_forms_list[i].GROUP_SEQNO}-->&group_desc=<!--{$pa_forms_list[i].GROUP_DESC|urlencode}-->">
+        		<!--{$VIEW_EMPLIST_LABEL|default:'待评清单'}-->
+        	</a>
+        	<br/>
+        	<a class="a-zoom-btn" href="?scriptname=pa_summary_rpt&pa_period_seqno=<!--{$pa_forms_list[i].PA_PERIOD_SEQNO}-->&pa_period_desc=<!--{$pa_forms_list[i].PA_PERIOD_DESC|urlencode}-->&group_seqno=<!--{$pa_forms_list[i].GROUP_SEQNO}-->&group_desc=<!--{$pa_forms_list[i].GROUP_DESC|urlencode}-->&std_master_seqno=<!--{$pa_forms_list[i].STD_MASTER_SEQNO}-->&std_master_desc=<!--{$pa_forms_list[i].STD_MASTER_DESC|urlencode}-->">
+        		<!--{$PA_SUMMARY_LABEL|default:'查看汇总'}-->
+        	</a>
+        </td>
+    </tr>
+    <!--{/section}-->
+</table>

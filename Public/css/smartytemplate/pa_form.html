@@ -1,0 +1,432 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+   $(document).ready(function() {
+	   $('#tabpage').tabs({cache:true});
+	   // add if by Dennis for fixed when pa_std_json is null, js error
+	   <!--{if $pa_std_json != ''}-->
+	   var pa_std_arr = <!--{$pa_std_json}-->;
+	   <!--{/if}-->
+	   
+	   $suminput = $('input.sum');
+	   // 暂存打开时，自动加总之前的分数
+	   sumscore($suminput,pa_std_arr);
+	   
+	   $suminput.blur(function(){
+		   var $input = $(this);
+		   if($input.val() != ''){
+			   var ins_val = parseInt($input.val());
+			   if (isNaN(ins_val)){ //Todo 如果 jquery 升级到 1.7 之后的版本，请用isNumeric
+				   alert('必须输入数字');
+				   $input.focus();
+				   return false;
+			   }
+			  
+			   var max_val = parseInt($input.attr('max_num'));
+			   var min_val = parseInt($input.attr('min_num'));
+			   
+			   if (ins_val > max_val || ins_val < min_val) {
+				   alert('分值必须在 '+min_val+'～'+max_val+'之间');
+				   $input.focus();
+				   return false;
+			   }
+			   // sum the score when keyup
+			   sumscore($suminput,pa_std_arr);
+		   }
+	   });
+	   /* Added from this row by hunk at 20151201 for bothhand cust */
+	   /*$('#emp_achieve_goal').blur(function(){
+		   var $input = $(this);
+		    if($input.val().length == 0||$input.val().match(/^\s+$/g)){
+				alert("上期目标达成说明不能为空");
+				$input.focus();
+				return false;
+		    }
+	   });
+	   $('#emp_goal').blur(function(){
+		   var $input = $(this);
+		    if($input.val().length == 0||$input.val().match(/^\s+$/g)){
+				alert("本期目标及任务不能为空");
+				$input.focus();
+				return false;
+		    }
+	   });*/
+	   /* Added to this row by hunk at 20151201 for bothhand cust */
+	});
+   
+   function sumscore($suminput,pa_std_arr){
+	   var tscore = 0;
+	   $suminput.each(function(){
+		   var $inputext = $(this);
+		   if ($inputext.val()!='')
+		     tscore += parseInt($inputext.val());
+	   });
+	   $('#totalscore').text(tscore);
+	   $('#leveldesc').text(getLevelDesc(tscore,pa_std_arr));
+   }
+   	
+    /**
+    * Get Level Desc. by total score
+    */
+	function getLevelDesc(val,level_arr)
+	{
+	 	for(var i=0; i<level_arr.length;i++){
+	  		if (val >= level_arr[i].SCORE1 && val <= level_arr[i].SCORE2) 
+	  			return level_arr[i].LEVEL_DESC;
+	 	}
+	 	return 'N/A';
+	}
+
+   function setButtonAction(v)
+   {
+	   if(checkUserInputData('form1')==false) return false;
+	   $('#doaction')[0].value = v;
+	   if ('submitform' == v      || 
+		   'submitinterview' == v || 
+		   'submitform_interview_comment' == v)
+	   {
+		   return confirm('<!--{$confirm_submit_msg}-->');
+	   }// end if
+   }// end setFormStatus()
+
+   /**
+   *  Ajax 从 Server 上删除附件
+   *  @param number pa_form_seqno 考核单号
+   *  @param string fname 文件名称
+   *  @author Dennis
+   **/
+   function deleteFile(pa_form_seqno,fname)
+   {
+	   if(confirm("<!--{$REMOVE_FILE_MSG|default:'刪除附件?'}-->"))
+	   {
+		   $.post("?scriptname="+'<!--{$smarty.get.scriptname}-->',
+			      {doaction: "deletefile", filename: fname,formseqno:pa_form_seqno},
+		       	function(data){
+			       if(1 == data)
+			       {
+		          	 alert("<!--{$DELETE_SUCCESS_MSG|default:'附件刪除成功.'}-->");
+		          	 $("#att_filename").empty();
+		          	 $("#upload_file_input")[0].style.display = '';
+			       }else{
+			    	 alert(data);
+			       }// end if
+		       }// end function
+			); 
+	   }// end if
+   }// end deleteFile()
+
+    /**
+	* 检查栏位是否为空或由空格组成
+	* @param name 栏位说明
+    * @param stxt 栏位ID
+    * @author hunk.yuan 2015/12/02
+	**/
+	function getempcheck(name,stxt)
+    { //return true;
+	var str = document.getElementById(stxt);
+	if(str.value.length == 0||str.value.match(/^\s+$/g)){
+		alert(name.toString() + "不能为空");
+		if(stxt=='emp_achieve_goal'){/*$this.focus();*/$input.focus();}//document.getElementById(stxt).focus();
+		if(stxt=='emp_goal'){window.setTimeout (function(){ document.getElementById(stxt). select();},5);};
+		return false;
+	}
+	
+	/*function getempcheck()
+   {
+			var $this = $(this);
+			if ($this.val() == ""||$this.val.length==0){
+    //if (goal_value.value.length == 0){
+    //if(goal_value==""||goal_value.length==0){
+		//alert("<!--{$EMPTY_CHECK_MSG|default:'必须输入.'}-->");
+				alert($this.parent().prev().text() + '必須輸入');
+		//$('#emp_achieve_goal').focus();
+				$this.focus();
+				return false;
+    }*/
+   }
+	
+    /**
+	* 检查栏位是否为空或由空格组成
+	* @param name 栏位说明
+    * @param stxt 栏位ID
+    * @author hunk.yuan 2015/12/02
+	**/
+	function getanswercheck(grades,stxt)
+    {
+	if(grades >= '11' || grades <= '11'){
+	var str = document.getElementById(stxt);
+	if(str.value.length == 0||str.value.match(/^\s+$/g)){
+		alert("该栏位不允许为空，请填写内容！");
+		$this.focus();
+		//if(stxt=='item_answer_emp'){window.setTimeout (function(){ document.getElementById(stxt). select();},5);}
+		return false;
+	}
+	}
+	}
+   
+   function getLevelId(std_master_seqno,mgr3_score,emp_seqno)
+	{
+		if (std_master_seqno != '' && parseInt(mgr3_score)>0 ){			
+			$.ajax({
+				type:"GET",
+				url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+				data:"ajaxcall=1&std_master_seqno="+std_master_seqno+"&mgr3_score="+mgr3_score,
+				async: false, 
+				timeout:1000,
+				dataType:'json',
+				success: function(json){
+					if (json != 'null'){
+						document.getElementById('level_'+emp_seqno).value = json;
+					}else{
+						alert("<!--{$NO_MATCH_LEVEL_MSG|default:'無對應等第.'}-->");
+					}// end if
+		       },// end function
+		       error: function (json)
+		       {
+			       alert("<!--{$NO_MATCH_LEVEL_MSG|default:'無對應等第.'}-->");
+		       }// end function
+		    });
+	    }// end if
+	}// end loadMonth
+</script>
+</head>
+<body class="page-container">
+<!--{include file='block_box_header.html' title=$PA_FORM_TITLE_LABEL showLine=1}-->
+<form name="form1" id="form1" method="post" enctype="multipart/form-data">
+<input type="hidden" name="pa_period_seqno" value="<!--{$PA_PERIOD_SEQNO}-->"/>
+<input type="hidden" name="pa_emp_seqno"    value="<!--{$PA_EMP_SEQNO}-->"/>
+<input type="hidden" name="mgr1_emp_seqno"  value="<!--{$smarty.get.mgr1_emp_seqno}-->"/>
+<input type="hidden" name="mgr2_emp_seqno"  value="<!--{$smarty.get.mgr2_emp_seqno}-->"/>
+<input type="hidden" name="mgr3_emp_seqno"  value="<!--{$smarty.get.mgr3_emp_seqno}-->"/>
+<input type="hidden" name="form_status"  value="<!--{$smarty.get.form_status}-->"/>
+<input type="hidden" id="doaction" name="doaction" value="" />
+<input type="hidden" id="whoami" name="whoami" value="<!--{$smarty.get.whoami}-->" />
+<input type="hidden" name="pa_form_seqno" value="<!--{$smarty.get.pa_form_seqno}-->" />
+
+<!--{* 被考核人基本资料 *}-->
+<!--{include file='block_box_header.html' title=$PA_FORM_INFO_LABEL showLine=1}-->
+<!--{include file='block_pa_emp_info.html'}-->
+<!--{include file='block_box_footer.html'}-->
+<!--{if $whoami == 'mgr3'}-->
+	<!--{include file='block_box_header.html' title=$APPROVE_RANK_LABEL showLine=1}-->
+	<table class="bordertable">
+	    <tr>
+	        <td class="column-label"><!--{$APPROVE_LEVEL_LABEL}-->(*)</td>
+	        <td>
+	           <input type="text" 
+	                  class="input-text" 
+	                  name="approve_score" 
+	                  id  ="approve_score"
+	                  is_number="Y"
+	                  required="Y"
+	                  title="<!--{$SCORE_REQUIED_MSG|default:'請輸入分數.'}-->"
+	                  style="width:60px;"
+	                  value="<!--{$GM_SCORE}-->"
+	                  onblur="getLevelId('<!--{$smarty.get.std_master_seqno}-->',this.value,'<!--{$smarty.get.emp_seqno}-->');"/>
+	            <!--{if $GM_SCORE}-->/
+	            	<input type="text" style="width:25px;" readonly class="input-text" id="level_<!--{$smarty.get.emp_seqno}-->" value="<!--{$MGR3_RANK}-->"/>
+	            <!--{/if}-->
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label"><!--{$APPROVED_COMMENT_LABEL}--></td>
+	        <td>
+	        	<!--{if $FORM_STATUS == 9 || $mgr3_can_approve}-->
+	        	<textarea name="approve_rank_comment" cols="60"><!--{$APPROVE_RANK_REMARK}--></textarea>
+	        	<!--{else}-->
+	        	<!--{$APPROVE_RANK_REMARK}-->
+	        	<!--{/if}-->
+	        </td>
+	    </tr>
+	</table>
+	<!--{include file='block_box_footer.html'}-->
+<!--{/if}-->
+
+<!--{* 主管考核参考资料,奖惩记录/考勤记录/最后三次考核成绩*}-->
+<!--{include file='block_box_header.html' title=$REF_INFO_LABEL showLine=1}-->
+<!--{include file='block_pa_ref_info.html'}-->
+<!--{include file='block_box_footer.html'}-->
+
+<!--{include file='block_box_header.html' title=$PRE_GOAL_LABEL showLine=1}-->
+	<table class="bordertable">
+		<!--{if $SEG_SEGMENT_NO <> '3965'}-->  <!-- Added this row by hunk at 20160115 for bothhand tw cust -->
+		<tr>
+	    	<td class="column-label"><!--{$ARCHIVE_GOAL_LABEL}--></td>
+	        <td width="85%">
+	        	<!--{if $whoami == 'emp' && $FORM_STATUS <2}-->
+	            <textarea name="emp_achieve_goal" id="emp_achieve_goal" 
+	            		  rows="5" 
+	            		  required="Y"
+	                      title="<!--{$PLS_INPUT_LABEL}--><!--{$ARCHIVE_GOAL_LABEL}-->"
+	            		  style="width:99%;"
+						  onblur="getempcheck('<!--{$ARCHIVE_GOAL_LABEL}-->','emp_achieve_goal');"><!--{$EMP_ACHIEVE_GOAL}--></textarea>
+	            <!--{else}-->
+	            <!--{$EMP_ACHIEVE_GOAL|nl2br}-->
+	            <!--{/if}-->
+	        </td>
+	    </tr>
+	    <!--{/if}-->  <!-- Added this row by hunk at 20160115 for bothhand tw cust -->
+	    <tr>
+	    	<td class="column-label" ><!--{$GOAL_LABEL}--></td>
+	        <td width="85%">
+	        	<!--{if $whoami == 'emp' && $FORM_STATUS <2}-->
+	            <textarea name="emp_goal" id="emp_goal" 
+	            		  rows="5" 
+	            		  required="Y"
+	                      title="<!--{$PLS_INPUT_LABEL}--><!--{$GOAL_LABEL}-->"
+	            		  style="width:99%;"
+						  onblur="getempcheck('<!--{$GOAL_LABEL}-->','emp_goal');"><!--{$EMP_GOAL}--></textarea>
+	            <!--{else}-->
+	            <!--{$EMP_GOAL|nl2br}-->
+	            <!--{/if}-->
+	        </td>
+	    </tr>
+	    <tr>
+	        <td class="column-label" width="15%"><!--{$ATTACH_LABEL}--></td>
+	        <td id="att_filename">
+	        	<a href="<!--{$PA_ATT_FILEPATH}-->"><!--{$PA_ATT_FILENAME}--></a>
+	        	<!--{* 员工在暂存的状态才可以删除附件*}-->
+	        	<!--{if $whoami=='emp' && $FORM_STATUS < 2 && !empty($PA_ATT_FILEPATH) }-->
+	        	<img src="<!--{$IMG_DIR}-->/del.png" onclick="deleteFile('<!--{$smarty.get.pa_form_seqno}-->','<!--{$PA_ATT_FILEPATH}-->');"/>	        	
+	        	<!--{/if}-->
+	        </td>
+	    </tr>
+	    <!--{if $whoami=='emp' && $FORM_STATUS <2}-->
+	    <tr id="upload_file_input" style="display:<!--{if empty($PA_ATT_FILEPATH)}--><!--{else}-->none<!--{/if}-->">
+	        <td class="column-label"><!--{$ATTACH_UPLOAD_LABEL}--></td>
+	        <td>
+	        	<input type="file" name="pa_attach"/><br/> 
+	        	<!--{$SUPPORT_TYPE_LABEL}-->(.doc,docx,.ppt,.pptx,.xls,.xlsx),<!--{$MAX_ALLOWED_LABEL}-->: <!--{$upload_max_filesize}--> bytes
+	        </td>
+	    </tr>
+	     <!--{/if}-->
+	</table>
+	<!--{include file='block_box_footer.html'}-->
+	<!--{include file='block_box_header.html' title=$PA_ITEM_LABEL showLine=1}-->	
+	<!--{if count($pa_item_list)>0}-->
+		<!--{include file='block_pa_item_list.html'}-->	
+	<!--{/if}-->	
+	<!--{include file='block_box_footer.html'}-->
+	
+	<!-- {*增加目标考核模块*} -->
+	<!--{include file='block_box_header.html' title=$PA_ITEM_LABEL1|default:'目标考核' showLine=1}-->	
+	<!--{include file="block_goal_master_detail_readonly.html"}-->
+	<!--{include file='block_box_footer.html'}-->
+	
+	<!--{if count($pa_improve_item_list)>0}-->
+	<!--{include file='block_box_header.html' showLine=1 title=$CURR_IN_DEV_LABEL}-->
+	<!--{include file='block_question_answer.html' pa_item_list= $pa_improve_item_list item_type="improve"}-->
+	<!--{include file='block_box_footer.html'}-->
+	<!--{/if}-->
+		
+	<!--{if ($whoami == 'emp'  && $FORM_STATUS >=4) ||
+			($whoami == 'mgr1' && $FORM_STATUS >=5) ||
+			 $whoami == 'mgr2' || $whoami == 'mgr3' }-->
+		<!--{if count($pa_interview_item_list)>0}-->
+			<!--{include file='block_box_header.html' title=$INTERVIEW_CONFIRM_LABEL showLine=1}-->
+			<!--{include file='block_question_answer.html' pa_item_list = $pa_interview_item_list item_type="interview"}-->
+			<!--{include file='block_box_footer.html'}-->
+		<!--{/if}-->
+	<!--{/if}-->
+	
+	<!--{if $FORM_STATUS >1}-->
+	<!--{include file='block_box_header.html' showLine=1 title=$SIGNATURE_LABEL}-->
+	<table class="bordertable">
+		<tr>
+			<td class="column-label" width="18%"><!--{$SELF_PA_LABEL}--></td>
+			<td width="32%">
+				<!--{if $EMP_SUBMIT_DATE }-->
+				<!--{$PA_EMP_NAME}-->/<!--{$EMP_LEVEL}-->
+				<!--{/if}-->
+				<!--{$EMP_SUBMIT_DATE}-->
+			</td>
+			<td class="column-label" width="18%"><!--{$EMP_CONFIRM_LABEL|default:'員工面談確認'}--></td>
+			<td width="32%">
+				<!--{if $EMP_CONFIRM_DATE }-->
+				<!--{$PA_EMP_NAME}-->
+				<!--{/if}-->
+				<!--{$EMP_CONFIRM_DATE}-->
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$MGR1_PA_LABEL}--></td>
+			<td>
+				<!--{if $MGR1_SUBMIT_DATE }-->
+				<!--{$MGR1_EMP_NAME}-->/<!--{$MGR1_LEVEL}-->
+				<!--{/if}-->
+				<!--{$MGR1_SUBMIT_DATE}-->
+			</td>
+			<td class="column-label"><!--{$MGR1_CONFIRM_LABEL|default:'主管面談意見'}--></td>
+			<td>
+				<!--{if $MGR1_CONFIRM_DATE }-->
+				<!--{$MGR1_EMP_NAME}-->
+				<!--{/if}-->
+				<!--{$MGR1_CONFIRM_DATE}-->
+			</td>	
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$MGR2_PA_LABEL|default:'復評'}--></td>
+			<td>
+				<!--{if $MGR2_SUBMIT_DATE }-->
+				<!--{$MGR2_EMP_NAME}-->/<!--{$MGR2_LEVEL}-->
+				<!--{/if}-->
+				<!--{$MGR2_SUBMIT_DATE}-->
+			</td>	
+			<td class="column-label"><!--{$MGR3_PA_LABEL}--></td>
+			<td>
+				<!--{if $MGR3_SUBMIT_DATE }-->
+				<!--{$MGR3_EMP_NAME}-->/<!--{$MGR3_LEVEL}-->
+				<!--{/if}-->
+				<!--{$MGR3_SUBMIT_DATE}-->
+			</td>	
+		</tr>
+	</table>
+	<!--{include file='block_box_footer.html'}-->
+	<!--{/if}-->
+	
+	<div align="center">
+	<!--{* private $_formStatus = array('emp '=>array('tempsubmit'=>1,
+											   'submitform'=>2,
+											   'submitinterview'=>5),
+								 'mgr1'=>array('tempsubmit'=>3,
+											   'submitform'=>4,
+											   'tempsubmit_interview_comment'=>6,
+											   'submitform_interview_comment'=>7),
+								 'mgr2'=>array('tempsubmit'=>8,
+											   'submitform'=>9),
+								 'mgr3'=>array('submitform'=>10)); *}-->
+		<!--{if $whoami == 'emp' && $FORM_STATUS <2}-->								 
+	    <input type="submit" name="tempsubmit" value="<!--{$TEMP_SAVE_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>	   
+	    <input type="submit" name="submitform" value="<!--{$SUBMIT_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    <!--{/if}-->
+	    <!--{if $whoami == 'emp' && $FORM_STATUS == 4}-->
+	    <input type="submit" name="submitinterview" value="<!--{$SUBMIT_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    <!--{/if}-->
+	    
+	    <!--{if $whoami == 'mgr1'}-->
+	    	<!--{if ($FORM_STATUS >=2 && $FORM_STATUS <4)|| 
+	    	        ($mgr1_can_approve == true && $FORM_STATUS <5)}-->
+	    	<input type="submit" name="tempsubmit" value="<!--{$TEMP_SAVE_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<input type="submit" name="submitform" value="<!--{$SUBMIT_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<!--{elseif $FORM_STATUS >=5 && $FORM_STATUS <= 6}-->
+	    	<input type="submit" name="tempsubmit_interview_comment" value="<!--{$TEMP_SAVE_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<input type="submit" name="submitform_interview_comment" value="<!--{$SUBMIT_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<!--{/if}-->	    
+	    <!--{/if}-->
+	    <!--{if $whoami == 'mgr2'}-->
+	    	<!--{if ($FORM_STATUS >= 7 && $FORM_STATUS<9) ||
+	    	        $mgr2_can_approve == true }-->
+	    	<input type="submit" name="tempsubmit" value="<!--{$TEMP_SAVE_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<input type="submit" name="submitform" value="<!--{$SUBMIT_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<!--{/if}-->
+	    	
+	    <!--{/if}-->
+	    <!--{if $whoami == 'mgr3'}-->
+	    	<!--{if ($FORM_STATUS >= 8 && $FORM_STATUS <10) ||
+	    	        $mgr3_can_approve == true }-->
+	    		<input type="submit" name="submitform" value="<!--{$SUBMIT_LABEL}-->" class="button-submit" onclick="return setButtonAction(this.name);"/>
+	    	<!--{/if}-->    
+	    <!--{/if}-->
+	</div>
+</form>
+<!--{include file='block_box_footer.html'}-->

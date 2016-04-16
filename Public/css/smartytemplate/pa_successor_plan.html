@@ -1,0 +1,87 @@
+<!--{*
+ *  Create By: Dennis
+ *  Create Date: 2008-11-18 16:10
+ *
+ *  $HeadURL: https://192.168.0.101/svn/ehr/trunk/eHR/ess/smartytemplate/pa_successor_plan.html $
+ *  $Id: pa_successor_plan.html 3226 2011-10-21 02:52:54Z dennis $
+ *  $Rev: 3226 $
+ *  $Date: 2011-10-21 10:52:54 +0800 (周五, 21 十月 2011) $
+ *  $Author: dennis $
+ *  $LastChangedDate: 2011-10-21 10:52:54 +0800 (周五, 21 十月 2011) $
+*}-->
+
+<script language="javascript" type="text/javascript">
+	function cofirmDelete()
+	{
+		//if(confirm('確認刪除此筆記錄?'))
+		if(confirm('<!--{$CONFIRM_DELETE_MSG}-->'))
+		{
+			return true;
+		}// end if
+		return false;
+	}// end cofirmDelete()
+</script>
+</head>
+<body class="page-container">
+<!--{include file='block_box_header.html' showLine=1 title=$BLOCK_TITLE}-->
+    <!--{include file='block_box_header.html'}-->
+    <!--{include file='block_pa_period_where.html'}-->
+    <!--{include file='block_box_footer.html'}-->
+
+<!--{if $is_need_maintian == '1' }-->
+    <!--{include file='block_box_header.html'}-->
+    <!--{include file='block_pa_emp_info.html'}-->
+    <div>&nbsp;</div>
+    <table class="bordertable">
+        <tr>
+            <th><!--{$ORDER_SEQ_LABEL}--></th>
+            <th><!--{$EMP_ID_LABEL}--></th>
+            <th><!--{$EMP_NAME_LABEL}--></th>
+            <th><!--{$DEPT_ID_LABEL}--></th>
+            <th><!--{$DEPT_NAME_LABEL}--></th>
+            <th><!--{$WORK_YEAR_LABEL}--></th>
+            <th><!--{$TITLE_LABEL}--></th>
+            <th><!--{$POS_LEVEL_LABEL}--></th>
+            <th><!--{$POS_GRADE_LABEL}--></th>
+            <th>
+            	<!--{if $FORM_STATUS <10}-->
+            	<a href="?scriptname=pa_add_successor&appdesc=<!--{$smarty.session.sys_menu[$smarty.get.menu_offset].NODETEXT|urlencode}-->&pa_period_seqno=<!--{$pa_seqno|default:$smarty.post.pa_period_seqno}-->&pa_period_desc=<!--{$PA_PERIOD_DESC|urlencode}-->&doaction=insert">
+            		<img src="<!--{$IMG_DIR}-->/add.png" alt="<!--{$ADD_NEW_LABEL}-->>"/>
+            	</a>
+            	<!--{/if}-->
+            </th>
+        </tr>
+        <!--{section name="i" loop=$pa_successor_list}-->
+        <tr>
+        	<td><!--{$pa_successor_list[i].ORDER_SEQ}--></td>
+        	<td><!--{$pa_successor_list[i].S_EMP_ID}--></td>
+        	<td><!--{$pa_successor_list[i].S_EMP_NAME}--></td>
+        	<td><!--{$pa_successor_list[i].S_DEPT_ID}--></td>
+        	<td><!--{$pa_successor_list[i].S_DEPT_NAME}--></td>
+        	<td><!--{$pa_successor_list[i].YEARS|string_format:"%.2f"}--></td>
+        	<td><!--{$pa_successor_list[i].S_EMP_TITLE}--></td>
+        	<td><!--{$pa_successor_list[i].EMP_GRADE}--></td>
+        	<td><!--{$pa_successor_list[i].EMP_DEGREE}--></td>
+        	<td>
+        	<!--{if empty($pa_successor_list[i].FORM_STATUS) || !empty($pa_successor_list[i].FORM_STATUS) && $pa_successor_list[i].FORM_STATUS <2}-->
+       			<a href="?scriptname=pa_add_successor&pa_successor_seq=<!--{$pa_successor_list[i].INHERITANCE_PEOPLE_ID}-->&pa_period_seqno=<!--{$pa_successor_list[i].EVALUATION_PERIOD_ID}-->&doaction=update"><img src="<!--{$IMG_DIR}-->/edit.png"/></a>
+       		<!--{/if}-->
+
+       		<!--{if empty($pa_successor_list[i].FORM_STATUS) || !empty($pa_successor_list[i].FORM_STATUS) && $pa_successor_list[i].FORM_STATUS <2}-->
+       			<a href="?scriptname=pa_add_successor&pa_successor_seq=<!--{$pa_successor_list[i].INHERITANCE_PEOPLE_ID}-->&pa_period_seqno=<!--{$pa_successor_list[i].EVALUATION_PERIOD_ID}-->&doaction=delete""><img src="<!--{$IMG_DIR}-->/del.png" onclick="return cofirmDelete();"/></a>
+       		<!--{/if}-->
+        	</td>
+        </tr>
+        <!--{sectionelse}-->
+	    <tr>
+	        <td colspan="10">
+	        	<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+	    </tr>
+	    <!--{/section}-->
+    </table>
+    <!--{include file='block_box_footer.html'}-->
+    <!--{else}-->
+    <!--{include file="block_info.html" msg_txt=$NO_NEED_MANTAIN_MSG}-->
+    <!--{/if}-->
+<!--{include file='block_box_footer.html'}-->

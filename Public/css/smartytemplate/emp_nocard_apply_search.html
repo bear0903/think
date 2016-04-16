@@ -1,0 +1,93 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+<!--
+    // add by dennis 2006-04-29 15:39:43
+    function CancelWorkflow(obj)
+    {
+        var _cancel_comment = '';
+        _cancel_comment = prompt('<!--{$CONFIRM_CANCEL_MSG}-->','');
+        if (_cancel_comment!=null && _cancel_comment!='' )
+        {
+            obj.href += "&cancel_comment="+_cancel_comment;
+            return true;
+        }else{
+            return false;
+        }
+    }
+//-->
+</script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine = '1'}-->
+	<form name="form1" id="form1" method="post">
+		<table class="bordertable">
+		<!--{* Assistand or Workflow Admin, advanced search*}-->
+		<!--{if $isassistant || $isadmin}-->
+		<!--{include file="block_dept_emp_cond.html"}-->
+		<!--{/if}-->
+		 <tr>
+			<td class="column-label"><!--{$NOCARD_DATE_LABEL}--></td>
+			<td>
+				<input type="text"
+					   name="nocard_date"
+					   id="nocard_date"
+					   class="input-date"
+					   title="Date Format: YYYY-MM-DD"
+					   value="<!--{$smarty.post.nocard_date}-->"/>				
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NOCARD_REASON_LABEL}--></td>
+			<td>
+				<select name="nocard_reason"
+						id="nocard_reason">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$nocard_reason_list selected=$smarty.post.nocard_reason}-->
+				</select>
+			</td>
+		</tr>
+		<!-- 暂时拿掉，程式未对应到 db 的 shfit_type 1,2,3,4,5,6
+		<tr>
+			<td class="column-label"><!--{$SHIFTTYPE_LABEL}--></td>
+			<td>
+				<select name="shifttype" id="shifttype">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$shifttype_list selected=$smarty.post.shifttype}-->
+				</select>
+			</td>
+		</tr>
+		 -->
+		<tr>
+			<td class="column-label"><!--{$WORKFLOW_STATUS_LABEL}--></td>
+			<td>
+				<select name="db_flow_status" id="db_flow_status">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$flow_status_list selected=$smarty.get.flowstatus|default:$smarty.post.db_flow_status}-->
+				</select>
+			</td>
+	    </tr>
+		<tr>
+			<td></td>
+			<td>
+			    <input type="submit" name="submit" id="submit" value="<!--{$SUBMIT_QRY_BTN_LABEL}-->" class="button-submit"/>
+				<input type="button" name="reset"  value="<!--{$RESET_LABEL}-->"  onClick="clear_form('form1');" class="button-submit" />
+			</td>
+		</tr>
+	</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+<!--{if isset($smarty.post.submit) || isset($smarty.get.flowstatus)}-->
+
+<!--{include file="block_box_header.html"}-->
+<!--{include file="block_nocard_apply_list.html"}-->
+<div align="right" class="ui-widget-content"><!--{$pagingbar}--></div>
+<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+
+<script type="text/javascript">
+$().ready(function(){
+	$('#nocard_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+	attachClickEvent();
+});	
+</script>

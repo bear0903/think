@@ -1,0 +1,131 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE showLine=1}-->
+
+<form id="editForm" name="postForm" METHOD="POST" ACTION="#">
+<table >
+<tbody>
+	<tr >
+		<td nowrap><!--{$REQUIRE_TIME|default:'员工代码'}--> </td>
+		<td>
+		<!--{$row.EMP_ID}-->
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$REQUIRE_TIME|default:'员工名称'}--> </td>
+		<td nowrap>
+		  <!--{$row.EMP_NAME}-->
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$REQUIRE_TIME|default:'班別代號'}-->* </td>
+		<td nowrap>
+		  <INPUT required=Y title='請選擇班別代號' class="input-text-lov"   id="SUBJECT_CLASS_NO"  TYPE="text" NAME="SUBJECT_CLASS_NO"     value="<!--{$row.SUBJECT_CLASS_NO}-->" required='Y' title='<!--{$REQUIRE_TIME}-->'>
+		  <INPUT type="hidden" name="SUBJECT_CLASS_ID" id="SUBJECT_CLASS_ID">
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$REQUIRE_TIME|default:'班別名称'}--> </td>
+		<td nowrap>
+		  <INPUT readonly class="input-text-display-only"   id="SUBJECT_CLASS_NAME"  TYPE="text" NAME="SUBJECT_CLASS_NAME"    value="<!--{$row.SUBJECT_CLASS_NAME}-->" required='Y' title='<!--{$REQUIRE_TIME}-->'>
+		</td>
+	</tr>
+	
+	<tr >
+		<td nowrap><!--{$REQUIRE_TIME|default:'课程编号'}--> </td>
+		<td><input id="subject_no"  readonly class="input-text-display-only" TYPE="text" ></td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$REQUIRE_TIME|default:'课程名称'}--> </td>
+		<td > <INPUT id="subject_name" readonly class="input-text-display-only" TYPE="text" ></td>
+	</tr>
+	
+	<tr >
+		<td nowrap><!--{$REQUIRE_TIME|default:'日期起讫'}--> </td>
+		<td><input id="subject_date"  readonly class="input-text-display-only" TYPE="text" ></td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$REQUIRE_TIME|default:'上课时间'}--> </td>
+		<td > <INPUT id="subject_time" readonly class="input-text-display-only" TYPE="text" ></td>
+	</tr>
+
+	
+	<tr>
+		<td ></td>
+		<td >
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$BTN_SUBMIT_LABEL}-->" id="doSave">
+			<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$BTN_RESET_LABEL}-->" id="doCancel">
+		</td>
+	</tr>
+	<tr><td colspan=2><!--{$ErrorMsg}--></td></tr>
+</tbody>
+</table>
+<input type="hidden" name="do" value="Save">
+</form>
+<!--{include file="block_box_footer.html"}-->
+
+
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+
+$("#SUBJECT_CLASS_NO").click(function(){	
+	 var url="../mgr/redirect.php?scriptname=train_class_lov";
+	    var txt_id = document.getElementById("SUBJECT_CLASS_ID");
+	    var txt_no = document.getElementById("SUBJECT_CLASS_NO");
+	    var txt_name = document.getElementById("SUBJECT_CLASS_NAME");
+	    showLov(url,txt_id,txt_no,txt_name);
+	    getSubject();
+});
+
+$("#SUBJECT_CLASS_NO").blur(function(){	
+	 //alert('blur');
+});
+
+$("#doCancel").click(function(){	
+	clear_form('editForm');
+});
+$("#doSave").click(function(){	
+	  if(checkUserInputData('editForm'))  document.postForm.submit(); //doSave();
+});
+
+function getSubject(){
+	var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	//alert(subject_class_id);
+	$.post('?scriptname=train_enter_for&do=GetSubject',
+		   { SUBJECT_CLASS_ID: subject_class_id },
+		   function(data){
+		      //alert(data);
+			  var row = eval(data);
+			  //alert(row[0].SUBJECT_DATE_BEGIN);
+			  $('#subject_no').val(row[0].SUBJECT_NO);
+			  $('#subject_name').val(row[0].SUBJECT_NAME);
+			  
+			  var SUBJECT_DATE = (row[0].SUBJECT_DATE_BEGIN==null)?'':row[0].SUBJECT_DATE_BEGIN;
+			  SUBJECT_DATE += (row[0].SUBJECT_DATE_END==null)?'':'~'+row[0].SUBJECT_DATE_END;
+			  $('#subject_date').val(SUBJECT_DATE);
+
+			  var SUBJECT_TIME = (row[0].SUBJECT_BEGIN==null)?'':row[0].SUBJECT_BEGIN;
+			  SUBJECT_TIME += (row[0].SUBJECT_END==null)?'':'~'+row[0].SUBJECT_END;
+			  $('#subject_time').val(SUBJECT_TIME);
+		   } 
+	);
+}
+
+function doSave(){
+	//var subject_class_id = $('#SUBJECT_CLASS_ID').val();
+	var indata=$("#editForm").serialize(); 
+	$.post(
+		'?scriptname=train_enter_for&do=Save',
+		indata,//{ SUBJECT_CLASS_ID: subject_class_id },
+		function(data){
+		      alert(data);
+			  
+		} 
+	);
+}
+</script>
+ 
+
+

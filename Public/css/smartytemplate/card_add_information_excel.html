@@ -1,0 +1,55 @@
+
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" showLine=1 title=$BLOCK_TITLE}-->
+    <form name="form1" id="form1" method="post" action="" enctype="multipart/form-data">
+        <!--{include file="block_box_header.html"}-->
+        <table class="bordertable">
+            <tr>
+                <td>请浏览待补齐的新进人员人事资料Excel表</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="file" name="upload_excel" class="input-text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="<!--{$excel_template}-->">下载Excel模板</a>
+                    <span style="margin-left:50px;"></span>
+                    <input type="submit" name="excel_import" value="导入" class="button-submit" />
+                </td>
+            </tr>
+        </table>
+        <!--{include file="block_box_footer.html"}-->
+        <!--{if $total_num}-->
+        <!--{include file="block_info.html" msg_txt="共转档 {$total_num} 笔,成功 {$success_num}->笔,失败 {$fail_num} 笔."}-->
+        <!--{/if}-->
+        <table class="bordertable">
+            <tr class="header-style">
+                <th nowrap>员工编号</th>
+                <th nowrap>姓名</th>
+                <th nowrap>性别</th>
+                <th nowrap>职务</th>
+                <th nowrap>籍贯</th>
+                <th nowrap>身份证号</th>
+                <th nowrap>错误原因</th>
+            </tr>
+            <tr class="normal-row-style">
+                <td>xx111</td>
+                <td>某某人</td>
+                <td>male</td>
+                <td>manager</td>
+                <td>china jiangsu</td>
+                <td>34u3084038403840</td>
+                <td>E001</td>
+            </tr>
+            <tr>
+                <td colspan="7" style="text-align:center;">
+                    <input type="submit" name="excel_export" value="导出修改" class="button-submit">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--{include file="block_box_footer.html"}-->

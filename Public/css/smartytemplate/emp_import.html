@@ -1,0 +1,40 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript"></script>
+<SCRIPT type="text/javascript">
+<!--   
+	$(document).ready(function(){
+		var jsonArr=<!--{$jsonArr}-->;
+		var n=jsonArr.length;
+		if (n > 0){
+			var add_rows = 0;
+	        var diff = 0;
+	        var diff_msg = '';
+		    var emplist = new Array();
+		    for(j=0;j<n;j++){
+			    emplist[j] = new Array();
+			    emplist[j]["emp_seqno"]   = jsonArr[j]['EMP_SEQ_NO'];
+			    emplist[j]["emp_id"]	  = jsonArr[j]['EMP_ID'];
+			    emplist[j]["emp_name"]    = jsonArr[j]['EMP_NAME'];
+			    emplist[j]["dept_seqno"]  = jsonArr[j]['DEPT_SEQ_NO'];
+			    emplist[j]["dept_id"]     = jsonArr[j]['DEPT_ID'];
+			    emplist[j]["dept_name"]   = jsonArr[j]['DEPT_NAME'];
+				//added by Gracie at 20090624
+				emplist[j]["overtimetype"]= jsonArr[j]['OVERTIMETYPE_CODE'];
+				emplist[j]["overtimetype_name"] = jsonArr[j]['OVERTIME_FEE_NAME'];
+				//added end			
+			}
+			opener.hasLoaded = true;
+			$opener_tab = $("#emplist", window.opener.document);
+            add_rows = addRowsToTable($opener_tab,emplist);
+            if (add_rows < n) diff = n - add_rows;
+	        if (diff >0) diff_msg = '\r\n'+diff+'筆資料重複選取，未添加到員工列表.'; 
+	        alert(add_rows + '<!--{$EMP_ADDED_MSG|default:"筆資料導入成功."}-->'+diff_msg);
+	        if (add_rows>0) self.close();
+		}else{
+			alert('無任何資料導入');
+		}
+		self.close();
+	});
+//-->
+</script>
+</head>
+<body class="page-container">

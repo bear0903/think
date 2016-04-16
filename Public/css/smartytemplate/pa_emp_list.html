@@ -1,0 +1,128 @@
+<script src="<!--{$JS_DIR}-->/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script>
+	function checkRequired()
+	{
+		if(checkUserInputData('form1') == false) return false;
+		return true;
+	}
+	function getLevelId(std_master_seqno,mgr3_score,emp_seqno)
+	{
+		if (std_master_seqno != '' && parseInt(mgr3_score)>0 ){			
+			$.ajax({
+				type:"GET",
+				url:"?scriptname="+'<!--{$smarty.get.scriptname}-->',
+				data:"ajaxcall=1&std_master_seqno="+std_master_seqno+"&mgr3_score="+mgr3_score,
+				async: false, 
+				timeout:1000,
+				dataType:'text',
+				success: function(json){
+					if (json != 'null'){
+						document.getElementById('level_'+emp_seqno).value = json;
+					}else{
+						//alert('無對應等第.');
+						alert('<!--{$NO_MATCHD_LEVEL_MSG}-->');
+					}// end if
+		       },// end function
+		       error: function (json)
+		       {
+			       //alert('無對應等第.');
+			       alert('<!--{$NO_MATCHD_LEVEL_MSG}-->');
+		       }// end function
+		    });
+	    }// end if
+	}// end loadMonth
+</script>
+</head>
+<body class="page-container">
+<!--{include file='block_box_header.html' title=$smarty.get.pa_period_desc|default:'績效考核員工清單' showLine=1}-->
+<form name="form1" id="form1" method="post" onsubmit="return checkRequired();">
+<table class="bordertable" cellpadding="0">
+	<tr>
+		<th rowspan="2"><!--{$PA_GROUP_DESC_LABEL}--></th>
+		<th rowspan="2"><!--{$DEPT_ID_LABEL}--></th>
+		<th rowspan="2"><!--{$DEPT_NAME_LABEL}--></th>
+		<th rowspan="2"><!--{$EMP_ID_LABEL}--></th>
+		<th rowspan="2"><!--{$EMP_NAME_LABEL}--></th>		
+		<th colspan="3" style="text-align:center;"><!--{$PA_SCORE_RANK_LABEL}--></th>
+		<th rowspan="2"><!--{$RANK_LABEL}--></th>
+		<th rowspan="2"><!--{$COMMENTS_LABEL|default:"備註"}--></th>
+		<th rowspan="2"><!--{$FORM_STATUS_LABEL}--></th>
+	</tr>
+	<tr>
+		<th><!--{$SELF_PA_LABEL}--></th>
+		<th><!--{$MGR1_PA_LABEL}--></th>
+		<th><!--{$MGR2_PA_LABEL}--></th>
+	</tr>
+	<!--{section name="i" loop=$pa_emp_list}-->
+	<tr>
+		<td><!--{$pa_emp_list[i].GROUP_DESC}--></td>
+		<td><!--{$pa_emp_list[i].DEPT_ID}--></td>
+		<td><!--{$pa_emp_list[i].DEPT_NAME}--></td>
+		<td>
+		<!--{if $pa_emp_list[i].CAN_PA }-->
+			<a href="?scriptname=pa_form&pa_form_seqno=<!--{$pa_emp_list[i].PA_FORM_SEQNO}-->&form_status=<!--{$pa_emp_list[i].FORM_STATUS}-->&pa_period_seqno=<!--{$pa_emp_list[i].PA_PERIOD_SEQNO}-->&whoami=<!--{$pa_emp_list[i].WHOAMI}-->&mgr1_emp_seqno=<!--{$pa_emp_list[i].MGR1_EMP_SEQNO}-->&mgr2_emp_seqno=<!--{$pa_emp_list[i].MGR2_EMP_SEQNO}-->&mgr3_emp_seqno=<!--{$pa_emp_list[i].MGR3_EMP_SEQNO}-->&emp_seqno=<!--{$pa_emp_list[i].EMP_SEQNO}-->&std_master_seqno=<!--{$pa_emp_list[i].STD_MASTER_SEQNO}-->">
+				<!--{$pa_emp_list[i].EMP_ID}-->
+			</a>
+		<!--{else}-->
+			<!--{$pa_emp_list[i].EMP_ID}-->
+		<!--{/if}-->
+		</td>
+		<td><!--{$pa_emp_list[i].EMP_NAME}--></td>
+		<td><!--{$pa_emp_list[i].EMP_SCORE}-->/<!--{$pa_emp_list[i].EMP_RANK}--></td>
+		<td <!--{if $smarty.session.user.emp_seq_no == $pa_emp_list[i].MGR1_EMP_SEQNO && $pa_emp_list[i].MGR1}-->class="notice"<!--{/if}-->><!--{$pa_emp_list[i].MGR1_SCORE}-->/<!--{$pa_emp_list[i].MGR1_RANK}--></td>
+		<td <!--{if $smarty.session.user.emp_seq_no == $pa_emp_list[i].MGR2_EMP_SEQNO && $pa_emp_list[i].MGR2}-->class="notice"<!--{/if}-->><!--{$pa_emp_list[i].MGR2_SCORE}-->/<!--{$pa_emp_list[i].MGR2_RANK}--></td>
+		<td nowrap <!--{if $smarty.session.user.emp_seq_no == $pa_emp_list[i].MGR3_EMP_SEQNO && $pa_emp_list[i].MGR3}-->class="notice"<!--{/if}-->>
+			<!--{if $smarty.session.user.emp_seq_no == $pa_emp_list[i].MGR3_EMP_SEQNO && $pa_emp_list[i].MGR3}-->
+	           <input type="text" 
+	                  class="input-text" 
+	                  name="approve_score[<!--{$pa_emp_list[i].PA_FORM_SEQNO}-->]" 
+	                  id  ="approve_score"
+	                  is_number="Y"
+	                  title="<!--{$SCORE_IS_REQUIRED_MSG}-->"
+	                  style="width:25px;"
+	                  value="<!--{$pa_emp_list[i].GM_SCORE|default:$pa_emp_list[i].MGR3_DEF_SCORE}-->"
+	                  onblur="getLevelId('<!--{$pa_emp_list[i].STD_MASTER_SEQNO}-->',this.value,'<!--{$pa_emp_list[i].EMP_SEQNO}-->');"/>
+	                  <!--{if $pa_emp_list[i].GM_RANK || $pa_emp_list[i].MGR3_DEF_RANK}-->
+	                  	/<input type="text" class="input-text" style="width:15px;" 
+	                  	        id="level_<!--{$pa_emp_list[i].EMP_SEQNO}-->" 
+	                  	        value="<!--{$pa_emp_list[i].PA_RANK|default:$pa_emp_list[i].MGR3_DEF_RANK}-->" readonly/>
+	                  <!--{/if}-->
+	        <!--{else}-->
+	            <!--{$pa_emp_list[i].GM_SCORE}-->/<!--{$pa_emp_list[i].GM_RANK}-->
+	        <!--{/if}-->
+        <td>
+			<!--{if $smarty.session.user.emp_seq_no == $pa_emp_list[i].MGR3_EMP_SEQNO && $pa_emp_list[i].MGR3}-->
+					<textarea rows="3" cols="13" name="approve_comment[<!--{$pa_emp_list[i].PA_FORM_SEQNO}-->]"><!--{$pa_emp_list[i].PA_REMARK}--></textarea>
+			<!--{else}-->
+				<!--{$pa_emp_list[i].PA_REMARK}-->
+			<!--{/if}-->
+		</td>
+		<td><!--{$pa_emp_list[i].FORM_STATUS_DESC}--></td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="11">
+			<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>
+<br clear="all"/>
+<div><!--{$pager_toolbar}--></div>
+<!--{if $show_mgr3_submit_btn == true }-->
+<div align="center">
+	<input type="submit" value="<!--{$SUBMIT_FORM_LABEL}-->" name="submitform" class="button-submit"/>
+</div>
+<br/>
+<div class="ui-widget">
+    <div class="ui-state-highlight ui-corner-all">
+        <p style="padding: 5px;margin:0px;">
+            <span style="float:left; margin-right: .3em;" class="ui-icon ui-icon-info"></span>
+            <!--{$COMMENTS_MSG|default:"核定主管可在此核等,也可點擊員工代碼查看細項後再評分核等."}-->
+        </p>
+    </div>
+</div>
+<!--{/if}-->
+</form>
+<div align="center"><a href="?scriptname=ESNH000" class="button-submit"><!--{$BACK_LABEL|default:'返回首頁'}--></a></div>
+<!--{include file='block_box_footer.html'}-->

@@ -1,0 +1,82 @@
+[ 2016-04-17T00:28:15+08:00 ] 127.0.0.1 /think/index.php
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000025s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000240s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001302s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001421s ]
+NOTIC: [8] Constant APP_DEBUG already defined E:\work\think\Application\Home\Controller\IndexController.class.php 第 4 行.
+NOTIC: [8] Constant APP_PATH already defined E:\work\think\Application\Home\Controller\IndexController.class.php 第 5 行.
+NOTIC: [8] Undefined index: config E:\work\think\Application\Home\Controller\IndexController.class.php 第 12 行.
+SQL: select a.column_name,data_type,decode(nullable,'Y',0,1) notnull,data_default,decode(a.column_name,b.column_name,1,0) pk from user_tab_columns a,(select column_name from user_constraints c,user_cons_columns col where c.constraint_name=col.constraint_name and c.constraint_type='P'and c.table_name='GL_SEGMENT') b where table_name='GL_SEGMENT' and a.column_name=b.column_name(+) [ RunTime:0.0465s ]
+SQL: SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM gl_segment WHERE segment_type = 'COMPANY' AND segment_no_sz IN ('APLUS_SZ','ARES_SH','SiLanAz','SZCNHR')) thinkphp )  [ RunTime:0.0519s ]
+SQL: select a.column_name,data_type,decode(nullable,'Y',0,1) notnull,data_default,decode(a.column_name,b.column_name,1,0) pk from user_tab_columns a,(select column_name from user_constraints c,user_cons_columns col where c.constraint_name=col.constraint_name and c.constraint_type='P'and c.table_name='THINKPHP_MULTILANG_LIST') b where table_name='THINKPHP_MULTILANG_LIST' and a.column_name=b.column_name(+) [ RunTime:0.0522s ]
+SQL: SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM thinkphp_multilang_list) thinkphp )  [ RunTime:0.0409s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000142s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.000193s ]
+NOTIC: [8] Undefined variable: langlist E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 193 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 194 行.
+NOTIC: [8] Undefined variable: cpnlist E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 204 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined index: id E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Use of undefined constant id - assumed 'id' E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined variable: data E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 206 行.
+NOTIC: [8] Undefined variable: JS_DIR E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 384 行.
+NOTIC: [8] Undefined variable: IMG_DIR E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 393 行.
+NOTIC: [8] Undefined variable: CHECK_LOGON_MSG01 E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 409 行.
+NOTIC: [8] Undefined variable: CHECK_LOGON_MSG02 E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 415 行.
+NOTIC: [8] Undefined variable: CHECK_LOGON_MSG03 E:\work\think\Application\Runtime\Cache\Home\2a94b8bda04ff446dcedd42276fc99ee.php 第 422 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.086931s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.086990s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000586s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.000637s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.004336s ]
+INFO: [ app_end ] --END-- [ RunTime:0.004436s ]
+
+[ 2016-04-17T00:29:08+08:00 ] 127.0.0.1 /think/index.php/Home/Index/login
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000030s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000171s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001387s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001504s ]
+NOTIC: [8] Constant APP_DEBUG already defined E:\work\think\Application\Home\Controller\IndexController.class.php 第 4 行.
+NOTIC: [8] Constant APP_PATH already defined E:\work\think\Application\Home\Controller\IndexController.class.php 第 5 行.
+SQL: select a.column_name,data_type,decode(nullable,'Y',0,1) notnull,data_default,decode(a.column_name,b.column_name,1,0) pk from user_tab_columns a,(select column_name from user_constraints c,user_cons_columns col where c.constraint_name=col.constraint_name and c.constraint_type='P'and c.table_name='GL_SEGMENT') b where table_name='GL_SEGMENT' and a.column_name=b.column_name(+) [ RunTime:0.0451s ]
+SQL: SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   segment_no FROM gl_segment WHERE segment_no_sz = 'SZCNHR') thinkphp )  WHERE (numrow>0 AND numrow<=1) [ RunTime:0.0409s ]
+SQL: select a.column_name,data_type,decode(nullable,'Y',0,1) notnull,data_default,decode(a.column_name,b.column_name,1,0) pk from user_tab_columns a,(select column_name from user_constraints c,user_cons_columns col where c.constraint_name=col.constraint_name and c.constraint_type='P'and c.table_name='APP_USERS_BASE') b where table_name='APP_USERS_BASE' and a.column_name=b.column_name(+) [ RunTime:0.0481s ]
+SQL: SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM app_users_base) thinkphp )  WHERE (numrow>0 AND numrow<=1) [ RunTime:0.0434s ]
+SQL: select a.column_name,data_type,decode(nullable,'Y',0,1) notnull,data_default,decode(a.column_name,b.column_name,1,0) pk from user_tab_columns a,(select column_name from user_constraints c,user_cons_columns col where c.constraint_name=col.constraint_name and c.constraint_type='P'and c.table_name='APP_USERS') b where table_name='APP_USERS' and a.column_name=b.column_name(+) [ RunTime:0.0438s ]
+ERR: 20001:OCIStmtExecute: ORA-20001: System has not initialized. Relogon again.
+ORA-06512: at "HCP.PK_CRYPT_SZ", line 17
+ORA-06512: at "HCP.PK_CRYPT_SZ", line 109
+ORA-06512: at line 1
+ (ext\pdo_oci\oci_statement.c:148)
+ [ SQL语句 ] : SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM app_users WHERE username_no_sz = '375' AND username_password = '222') thinkphp )  WHERE (numrow>0 AND numrow<=1)
+ERR: 20001:OCIStmtExecute: ORA-20001: System has not initialized. Relogon again.
+ORA-06512: at "HCP.PK_CRYPT_SZ", line 17
+ORA-06512: at "HCP.PK_CRYPT_SZ", line 109
+ORA-06512: at line 1
+ (ext\pdo_oci\oci_statement.c:148)
+ [ SQL语句 ] : SELECT * FROM (SELECT thinkphp.*, rownum AS numrow FROM (SELECT   * FROM app_users WHERE username_no_sz = '375' AND username_password = '222') thinkphp )  WHERE (numrow>0 AND numrow<=1)
+

@@ -1,0 +1,33 @@
+
+</head>
+<body class="page-container">
+<!--{include file='block_box_header.html' title="$BLOCK_TITLE" showLine="1"}-->
+<!--{include file='block_pa_period_where.html'}-->
+<!--{include file='block_box_footer.html'}-->
+
+<!--{include file='block_box_header.html'}-->
+	<table class="bordertable">
+		<tr>
+			<th width="15%"><!--{$YEAR_LABEL}--></th>
+			<th width="70%"><!--{$PA_PERIOD_LABEL}--></th>
+			<th	width="10%"><!--{$RANK_LABEL}--></th>
+		</tr>
+		<!--{section name="i" loop=$pa_score_result}-->
+        <tr>
+        	<td><!--{$pa_score_result[i].PA_YEAR}--></td>
+        	<td>
+        		<!--{$pa_score_result[i].PA_PERIOD_ID}-->
+        	    <!--{$pa_score_result[i].PA_PERIOD_DESC}--></td>
+        	<td><!--{$pa_score_result[i].PA_SCORE}-->/
+        		<!--{$pa_score_result[i].PA_RANK}--></td>
+
+        </tr>
+        <!--{sectionelse}-->
+	    <tr>
+	        <td colspan="3">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+	    </tr>
+	    <!--{/section}-->
+	</table>
+<!--{include file='block_box_footer.html'}-->

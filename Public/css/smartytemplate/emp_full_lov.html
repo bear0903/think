@@ -1,0 +1,408 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript" charset = "utf-8"></script>
+<SCRIPT type="text/javascript">
+<!--	
+	function getCheckedRows(tableid)
+	{
+		var emplist_array = new Array();
+		var _table = $(tableid);
+		var j = 0;
+		var rowsHtml = '';
+		for (var i=1; i<_table.rows.length ; i++ )
+		{
+			// 因为 FF 和 IE 的不同
+			var xx = _table.rows[i].cells[0].childNodes[0].type == 'checkbox' ? 0 : 1;
+			if (_table.rows[i].cells[0].childNodes[xx].checked)
+			{
+				emplist_array[j] = new Array();
+				emplist_array[j]["emp_seqno"]  = _table.rows[i].cells[0].childNodes[0].value;
+				emplist_array[j]["emp_id"]	   = _table.rows[i].cells[1].innerText;
+				emplist_array[j]["emp_name"]   = _table.rows[i].cells[2].innerText;
+				emplist_array[j]["dept_seqno"] = _table.rows[i].cells[4].childNodes[0].value;
+				emplist_array[j]["dept_id"]    = _table.rows[i].cells[4].innerText;
+				emplist_array[j]["dept_name"]  = _table.rows[i].cells[5].innerText;
+				j++;
+			}// end if
+		}// end for loop
+		if(j>0)
+		{
+			opener.hasLoaded = true;
+			addRowsToTable(opener.document.getElementById('emplist'),emplist_array);
+		}// end if
+		self.close();
+	}// end getCheckedRows()
+
+	function addRowsToTable(tabObj,rows)
+	{
+		//var lastRow = tabObj.rows.length;
+		for (var i=0; i<rows.length; i++)
+		{
+			if(isExists(tabObj,rows[i]['emp_seqno']) == false)
+			{
+				var row = tabObj.insertRow();
+				
+				var cell = row.insertCell();
+				var el = opener.document.createElement('input');
+				el.name = 'emp_seqno';
+				el.type = 'checkbox';
+				cell.appendChild(el);
+				
+				el = opener.document.createElement('input');
+				el.name = 'emp_seqno[]';
+				el.type = 'hidden';
+				el.value = rows[i]['emp_seqno'];
+				cell.appendChild(el);
+				 					
+				cell = row.insertCell();					 
+				var textNode = opener.document.createTextNode(rows[i]['dept_id']);
+				cell.appendChild(textNode);
+				
+				el = opener.document.createElement('input');
+				el.name = 'dept_seqno[]';
+				el.type = 'hidden';
+				el.value = rows[i]['dept_seqno'];
+				cell.appendChild(el);
+				
+				el = opener.document.createElement('input');
+				el.name = 'dept_id[]';
+				el.type = 'hidden';
+				el.value = rows[i]['dept_id'];
+				cell.appendChild(el);
+				
+				cell = row.insertCell();					 
+				textNode = opener.document.createTextNode(rows[i]['dept_name']);
+				cell.appendChild(textNode);
+				
+				el = opener.document.createElement('input');
+				el.name = 'dept_name[]';
+				el.type = 'hidden';
+				el.value = rows[i]['dept_name'];
+				cell.appendChild(el);
+				
+				cell = row.insertCell();					 
+				textNode = opener.document.createTextNode(rows[i]['emp_id']);
+				cell.appendChild(textNode);
+				
+				el = opener.document.createElement('input');
+				el.name = 'emp_id[]';
+				el.type = 'hidden';
+				el.value = rows[i]['emp_id'];
+				cell.appendChild(el);
+				
+				cell = row.insertCell();					 
+				textNode = opener.document.createTextNode(rows[i]['emp_name']);
+				cell.appendChild(textNode);
+				
+				el = opener.document.createElement('input');
+				el.name = 'emp_name[]';
+				el.type = 'hidden';
+				el.value = rows[i]['emp_name'];
+				cell.appendChild(el);
+				
+				cell = row.insertCell();
+				el = opener.document.createElement('img');
+				el.id = rows[i]['emp_seqno'];
+				el.src = '<!--{$IMG_DIR}-->/close.gif';
+				el.alt = 'Delete Row';
+				//el.onclick = opener.deleteCurrentRow;
+				el.onclick = opener.deleteCurrentRow;
+				cell.appendChild(el);
+			}// end if
+		}// end for loop
+	}// end addRowsToTable()
+	
+	function isRowExists(tab,kval){
+		var rows = tab("tr:gt(0)"); 
+		rows.each(function(index) {
+            rows.children("td").each(function() {
+            	alert($("td:first input").val()+'----->'+kval)
+                if (kval = $("td:first input").val()) return true;
+            });
+        });
+		return false;
+	}
+	
+	function isExists(tabObj,val)
+	{
+		var r = tabObj.rows.length;
+		for (var i=0; i<r; i++)
+		{
+			if (val == tabObj.rows[i].cells[0].childNodes[0].value) return true;
+		}// end for loop
+		return false;
+	}// end isExists();
+
+	/**
+	*	单选型 LOV, 把值返回到单选的页面
+	* @param rowindex 当前所选的row index
+	**/
+	function returnLOVSelected(rowindex)
+	{
+		var oRow = document.getElementById('emplist').rows(rowindex);
+		var opr = opener.document;
+		opr.getElementById('emp_seq_no_<!--{$smarty.get.columnseq}-->').value = oRow.cells(0).firstChild.value;		
+		opr.getElementById('emp_id_<!--{$smarty.get.columnseq}-->').value = oRow.cells(1).innerText;
+		opr.getElementById('emp_name_<!--{$smarty.get.columnseq}-->').value = oRow.cells(2).innerText;
+		opr.getElementById('dept_name_<!--{$smarty.get.columnseq}-->').value = oRow.cells(5).innerText;
+		opr.getElementById('emp_title_<!--{$smarty.get.columnseq}-->').value = oRow.cells(6).innerText;
+		opr.getElementById('title_level_<!--{$smarty.get.columnseq}-->').value = oRow.cells(7).innerText;
+		//opener.loadLeast3PAScore(oRow.cells(0).firstChild.value,'<!--{$smarty.get.columnseq}-->');
+		self.close();
+	}// end returnLOVSelected()
+
+	/**
+	*	必须输入一个条件才能 submit
+	*/
+	function checkMustEntry()
+	{
+		//return false;
+		var eles = document.form1.elements;
+		var cnt = false;
+		for (var i=0; i<eles.length; i++)
+		{
+			//alert(eles[i].);
+			if (eles[i].type != 'submit' && eles[i].type != 'button' && eles[i].value != '') return true;
+		}// end for loop
+		alert('<!--{$LEAST_ONE_CON_MSG|default:"至少要輸入一個查詢條件"}-->');
+		return cnt;
+	}// end checkMustEntry()
+
+	function ok()
+	{
+		var t = document.getElementById('emplist');
+		//var radios = $(":radio");
+		var j;
+		var row_cnt = t.rows.length;
+		for (var i=0; i<row_cnt; i++)
+		{
+			try
+			{
+				if (t.rows(i).cells(0).firstChild.type == 'radio' && t.rows(i).cells(0).firstChild.checked)
+				{
+					j = i;
+					break;
+				}
+			}
+			catch (e)
+			{
+			}
+			
+		}
+		returnLOVSelected(j);
+	}
+
+	$(document).ready(function(){
+		 $('#ok').click(function(){ok();});
+	});
+//-->
+</script>
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html"}-->
+<form name="form1" id="form1" method="post" onsubmit="return checkMustEntry('form1');">
+<table class="bordertable" border="0" cellspacing="0">
+	<tr>
+		<td class="column-label"><!--{$FACTORY_LABEL|default:"廠區"}--></td>
+		<td>
+			<select name="factory_zone_id" id="factory_zone_id">
+				<option value="">-- <!--{$PLEASE_SELECT_LABEL|default:"請選擇"}--> -- </option>
+				<!--{html_options options=$factory_zone_list selected=$smarty.post.factory_zone_id}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label" nowrap><!--{$DEPT_ID_LABEL|default:"部門代碼"}--></td>
+		<td>
+			<select name="deptid_op" id="deptid_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+				<option value="like">like</option>
+			</select>
+			<input type="text" class="input-text" name="dept_id" 
+			       value="<!--{$smarty.post.dept_id}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$DEPT_NAME_LABEL|default:"部門名稱"}--></td>
+		<td>
+			<select name="deptname_op" id="deptname_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+				<option value="like">like</option>
+			</select>
+			<input type="text" class="input-text" name="dept_name" 
+			       value="<!--{$smarty.post.dept_name}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$TITLE_LEVEL_LABEL|default:"職等"}--></td>
+		<td>
+			<select name="titlelevel_op" id="titlelevel_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+			</select>
+			<select name="title_grade" id="title_grade">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>				
+				<!--{html_options options=$title_level_list selected=$smarty.post.title_grade}-->
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$TITLE_ID_LABEL|default:"職務代碼"}--></td>
+		<td>
+			<select name="titleid_op" id="titleid_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+				<option value="like">like</option>
+			</select>
+			<input type="text" class="input-text" name="title_id" 
+			       value="<!--{$smarty.post.title_id}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$TITLE_LABEL|default:"職務名稱"}--></td>
+		<td>
+			<select name="titlename_op" id="titlename_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+				<option value="like">like</option>
+			</select>
+			<input type="text" class="input-text" name="title_name" 
+			       value="<!--{$smarty.post.title_name}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$EMP_ID_LABEL|default:"員工代碼"}--></td>
+		<td>
+			<select name="empid_op" id="empid_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+				<option value="like">like</option>
+			</select>
+			<input type="text" class="input-text" name="emp_id" 
+			       value="<!--{$smarty.post.emp_id}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$EMP_NAME_LABEL|default:"員工姓名"}--></td>
+		<td>
+			<select name="empname_op" id="empname_op" style="width:40px;">
+				<option value=""></option>
+				<option value="=">=</option>
+				<option value=">">&gt;</option>
+				<option value="<">&lt;</option>
+				<option value=">=">&gt;=</option>
+				<option value="<=">&lt;=</option>
+				<option value="like">like</option>
+			</select>
+			<input type="text" class="input-text" name="emp_name" 
+			       value="<!--{$smarty.post.emp_name}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<input type="submit" 
+				   name="submit"
+				   id="submit"
+				   value="<!--{$SUBMIT_QRY_BTN_LABEL}-->"
+				   class="button-submit"/>
+		    <input type="button" 
+				   name="reset" 
+				   value="<!--{$RESET_BTN_LABEL}-->"
+				   class="button-submit" 
+				   onClick="clear_form('form1');"/>
+		</td>
+	</tr>
+</table>
+</form>
+<!--{include file="block_box_footer.html"}-->
+
+<!--{if (isset($smarty.post.submit))}-->
+	<!--{include file="block_box_header.html"}-->
+	<form name="form2" method="post" onsubmit = "return CheckMustBeEntry(this);">
+	<table cellpadding="0" cellspacing="0" class="bordertable" id="emplist">
+		<tr>
+			<th nowrap>
+				<!--{if $smarty.get.select_type !== 'single'}-->
+				<input type="checkbox" name="chkall" onclick="CheckAll(document.form2,this.checked)" title="<!--{$CHECK_ALL_LABEL}-->"/>
+				<!--{/if}-->
+			</th>
+			<th nowrap><!--{$EMP_ID_LABEL}--></th>
+			<th nowrap><!--{$EMP_NAME_LABEL}--></th>
+			<th nowrap><!--{$GENDER_LABEL}--></th>
+			<th nowrap><!--{$DEPT_ID_LABEL}--></th>
+			<th nowrap><!--{$DEPT_NAME_LABEL}--></th>
+			<th nowrap><!--{$TITLE_LABEL}--></th>
+			<th nowrap><!--{$TITLE_LEVEL_LABEL|default:"職等"}--></th>
+		</tr>
+		<!--{section name="i" loop=$employee_list}-->
+		<tr>
+			<td align="center">
+				<!--{if $smarty.get.select_type == 'single'}-->
+				<input type="radio" name="empseqno" value="<!--{$employee_list[i].EMP_SEQ_NO}-->" ondblclick="returnLOVSelected(<!--{$smarty.section.i.rownum}-->)"/>
+				<!--{else}-->
+				<input type="checkbox" value="<!--{$employee_list[i].EMP_SEQ_NO}-->"/>
+				<!--{/if}-->
+			</td>
+			<td><!--{$employee_list[i].EMP_ID}--></td>
+			<td><!--{$employee_list[i].EMP_NAME}--></td>
+			<td><!--{$employee_list[i].SEX}--></td>
+			<td><input type="hidden" name="dept_seqno" value="<!--{$employee_list[i].DEPT_SEQ_NO}-->"/><!--{$employee_list[i].DEPT_ID}--></td>
+			<td><!--{$employee_list[i].DEPT_NAME}--></td>
+			<td><!--{$employee_list[i].TITLE_NAME}--></td>
+			<td><!--{$employee_list[i].TITLE_GRADE}--></td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="8"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+		</tr>
+		<!--{/section}-->
+	</table>
+	<br clear="all"/>
+	<div align="center">
+	<input type="button"
+		   value="<!--{$OK_BTN_LABEL}-->"
+		   name="ok" 
+		   id="ok"
+		   class="button-submit"/>
+	   <input type="button"
+		   value="<!--{$CLOSE_BTN_LABEL}-->"
+		   onclick="self.close();"
+		   class="button-submit"/>
+	</div>
+<!--{include file="block_box_footer.html"}-->	
+<!--{/if}-->
+
+<script type="text/javascript">
+	$('#deptid_op').val('<!--{$smarty.post.deptid_op}-->');
+	$('#deptname_op').val('<!--{$smarty.post.deptname_op}-->');
+	$('#titlelevel_op').val('<!--{$smarty.post.titlelevel_op}-->');
+	$('#titleid_op').val('<!--{$smarty.post.titleid_op}-->');
+	$('#titlename_op').val('<!--{$smarty.post.titlename_op}-->');
+	$('#empid_op').val('<!--{$smarty.post.empid_op}-->');
+	$('#empname_op').val('<!--{$smarty.post.empname_op}-->');
+</script>

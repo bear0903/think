@@ -11,6 +11,8 @@
  *  $LastChangedBy: dennis $
  *  $LastChangedRevision: 3857 $
  ****************************************************************************/
+define('APP_PATH','./Application/');
+
 if (!defined ('DOCROOT'))die( 'Attack Error.');
 
 define('DS','/');
@@ -125,12 +127,12 @@ if (!defined('ADODB_DIR')) define('ADODB_DIR', $config['lib_dir'].DS.'adodb');
 // only this, !!! don't forget the last back slash !!! because smarty class use this constant
 define('SMARTY_DIR', $config['lib_dir'].DS. 'smarty'.DS.'libs'.DS);
 
-require_once 'functions.php';			// public functions
-require_once 'db_config.inc.php'; 		// Database Configuration File
-require_once 'AresSmarty.class.php'; 	// Smarty Template Engine
-require_once 'AresDB.inc.php'; 			// AdoDB
-require_once 'AresParser.class.php'; 	// Page Compiler Class
-require_once 'AresSys.class.php';		// eHR System Setting class add by dennis 2012-03-05
+require_once './ThinkPHP/Library/Org/Util/libs/functions.php';			// public functions
+require_once APP_PATH.'Home/Conf/db_config.inc.php'; 		// Database Configuration File
+require_once './ThinkPHP/Library/Org/Util/libs/AresSmarty.class.php'; 	// Smarty Template Engine
+//require_once './ThinkPHP/Library/Org/Util/libs/AresDB.inc.php'; 			// AdoDB
+require_once './ThinkPHP/Library/Org/Util/libs/AresParser.class.php'; 	// Page Compiler Class
+require_once './ThinkPHP/Library/Org/Util/libs/AresSys.class.php';		// eHR System Setting class add by dennis 2012-03-05
 
 // get default user os primary language
 // added by dennis 2008-03-21
@@ -507,9 +509,9 @@ $sys = new AresSys();
 $config['is_wf_installed'] = $sys->isWorkflowInstalled();
 // add by dennis 20091104
 // 自定义 workflow 程式定义
-$config['ud_wf_app'] = $sys->getAppsListByType('workflow');
+//$config['ud_wf_app'] = $sys->getAppsListByType('workflow');
 // add by dennis 20091229
-$config['no_multi_lang_app'] = $sys->getAppsListByType('query');
+//$config['no_multi_lang_app'] = $sys->getAppsListByType('query');
 
 // include public library file
 $g_tpl = new AresSmarty($config['curr_home']);

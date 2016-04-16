@@ -1,0 +1,270 @@
+<table class="bordertable">
+    <tr>
+        <td width="120" class="column-label"><!--{$ABSENCE_NAME_LABEL}--> *</td>
+        <td>
+            <select name="absence_id"
+                    id  ="absence_id"
+                    style="width:188px;">
+                <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+                <!--{html_options options=$leave_name_list selected=$s_leave_id}-->
+            </select>
+        </td>
+    </tr>
+    <!-- Ajax Get 当前所选的假别的已休时数 (天数)，可休时数 (天数) #todo-->
+    <tr id="leave_type_info" style="display:none;">
+    	<td class="column-label"><!--{$LEAVE_TYPE_INFO_LABEL|default:'假况'}--></td>
+    	<td>
+    		<!--{$CAN_REST_LABEL|default:'可休'}--><span id="can_rest"></span><span id="rest_unit"></span>
+	        <!--{$HAD_REST_LABEL|default:'已休'}--><a href=""></a><span id="had_rest"></span><span id="rest_unit"></span>
+    	</td>
+    </tr>
+    <!--特別假 親屬類別 -->
+    <tr id="Layer_funeral" style="display:none;">
+        <td class="column-label"><!--{$FUNERAIL_LABEL|default:'名称'}--> *</td>
+        <td>
+            <select name="funeral_id" id="funeral_id">
+                <option value="-1"></option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label"><!--{$BEGIN_TIME_LABEL}--> *</td>
+        <td>
+            <input type="text"
+                   name="begin_date"
+                   id="begin_date"
+                   title="Date Format:YYYY-MM-DD"
+                   style="width:80px;"
+                   value="<!--{$smarty.now|date_format:"%Y-%m-%d"}-->"/>
+                   <a href="#" style="width:20px;height:20px;margin-bottom:-6px;background:url(../img/date.png) no-repeat center;" id="btn_begin_date"></a>
+                   <input type="text" name="begin_time" 
+                   		  id="begin_time" title="Time Format: HH24:MI"
+                   		   class="input-time"
+                   		   style="width:45px;"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label"><!--{$END_TIME_LABEL}--> *</td>
+        <td>
+            <input type="text"
+                   name="end_date"
+                   id="end_date"
+                   title="Date Format: YYYY-MM-DD HH24:MI"
+                   style="width:80px;"
+                   value="<!--{$smarty.now|date_format:"%Y-%m-%d"}-->"/>
+                   <a href="#" style="width:20px;height:20px;margin-bottom:-6px;background:url(../img/date.png) no-repeat center;" id="btn_end_date"></a>
+                   <input type="text" name="end_time" 
+                   		  id="end_time" title="Time Format: HH24:MI"
+                   		  class="input-time"
+                   		  style="width:45px;"/>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label"><!--{$LEAVE_HOURS_LABEL|default:'时数'}--></td>
+        <td id="leave_hours">test</td>
+    </tr>
+    <tr>
+        <td class="column-label"><!--{$LEAVE_REASON_LABEL}--> *</td>
+        <td>
+            <textarea name="leave_reason" id="leave_reason"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label"><!--{$UPLOAD_FILE_LABEL}--></td>
+        <td>
+            <input type="file" name="doc_paper" size="26" id="doc_paper" title="support file type: gif,jpg,jpeg,png,bmp"/>
+            .gif,.jpg,.jpeg,.png,.bmp,.pdf
+        </td>
+    </tr>
+    <!--{if empty($isassistant)}-->
+    <!-- 代理类型: 1:全权代理; 2: 受限代理 这一栏位为必输入 boll 2009-12-28-->
+    <tr>
+        <td class="column-label"><!--{$AGENT_TYPE_LBEL}--> *</td>
+        <td>
+            <input type="radio"  name="assign_type" id="assign_type_0" value='0' checked><!--{$NO_AGENT_LABEL|default:'不授權'}-->
+            <input type="radio"  name="assign_type" id="assign_type_1" value='1'><!--{$FULL_AGENT_LABEL}-->
+            <input type="radio"  name="assign_type" id="assign_type_2" value='2'><!--{$CONDITION_AGENT_LABEL}-->
+
+        </td>
+    </tr>
+    <tr>
+        <td class="column-label"><!--{$AGENT_LABEL}--> *</td>
+        <td>
+            <input type="text" name="agent" id="agent" value='无' readonly class="input-lov" style="width:84px;"/>
+            <input type="hidden" name="agent_id" id="agent_id">
+            <input type="hidden" name="agent_code" id="agent_code">
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <!-- remark by dennis 去掉暫存功能  <input type="submit" name="save"   value="<!--{$TMP_SUBMIT_BTN_LABEL}-->" class="button-submit" title="Save Data Only"/> -->
+            <input type="button" id="doPost"  value="<!--{$SUBMIT_BTN_LABEL}-->" class="button-submit" title="Submit Apply to Workflow"/>
+        </td>
+    </tr>
+    <!--{else}-->
+    <tr>
+        <td colspan="2">
+            <!--{include file="block_batch_apply_detail.html"}-->
+        </td>
+    </tr>
+    <!--{/if}-->
+</table>
+<input type="submit" name="submit" id="submitEditForm" style="display:none;">
+<script type="text/javascript">
+	
+    /* add by boll 2009-04-20
+     **  檢驗開始間、結束時間是不是在排程時間內
+     */
+
+    $("#doPost").click(function(){
+        return postData();
+    });
+    function postData(){
+        var ok=CheckMustBeEntry(document.editForm);
+        if(!ok) return false;
+
+        var action=$("#action").val(); // 批量申請不檢驗
+        if(action=='batch_apply') return $("#submitEditForm").click();
+
+        var begin_time = $("#begin_date").val() +' '+ $("#begin_time").val();// + ':' + $("#begin_minute").val();
+        var end_time   = $("#end_date").val() +' '+ $("#end_time").val();//   + ':' + $("#end_minute").val();
+        //alert(begin_time);alert(end_time);
+
+        $.post('?scriptname=ajax_overtime&do=CheckLeaveApplyTimeArea',
+        		{ 
+        			begin_time: begin_time,
+        			end_time: end_time 
+        		},
+		        function(data){
+		            //alert(data);
+		            if(data =='1'){
+		                //alert('開始時間非排程時間, 請重新輸入!');
+		                alert('<!--{$BEGIN_TIME_ERROR_MSG}-->');
+		                return false;
+		            }
+		            if(data =='2'){
+		                //alert('結束時間非排程時間, 請重新輸入!');
+		                alert('<!--{$END_TIME_ERROR_MSG}-->');
+		                return false;
+		            }
+		            //alert(111);
+		            if(confirm('<!--{$CONFIRM_SUBMIT_MSG}-->')){
+		                $("#submitEditForm").click();
+		            }
+		        }
+		    );
+    	}
+
+    /*
+     *  代理人通过lov选取
+     */
+
+    $("#agent").click(function(){
+        if($("#assign_type_0").attr('checked')) return false;
+        var url="../mgr/redirect.php?scriptname=employee_lov";
+        var txt_id = document.getElementById("agent_id");
+        var txt_no = document.getElementById("agent_code");
+        var txt_name = document.getElementById("agent");
+        showLov(url,txt_id,txt_no,txt_name,400,500);
+    });
+    //added by Gracie at 20090612
+    $("#agent1").click(function(){
+        var url="../mgr/redirect.php?scriptname=employee_lov";
+        var txt_id = document.getElementById("agent_id1");
+        var txt_no = document.getElementById("agent_code1");
+        var txt_name = document.getElementById("agent1");
+        showLov(url,txt_id,txt_no,txt_name,400,500);
+    });
+    //added end;
+    
+    /**
+     * 把 ajax 返回的 json data 装载到 Select List 中
+     * @param string list
+     * @param array data
+     * @param string month
+     * @author Dennis
+     */
+    function addOptionToList(list,data)
+    {
+        // Clear list before add options
+        $('#'+list).html('');
+        // append options via jquery 
+		var html = '';
+		for (var j=0; j<data.length; j++)
+        {
+            //s = (data[j][0] == month ? 'selected' : '');
+           html += '<option value='+data[j][0]+'>'+data[j][1]+'</option>';
+        }// end for loop
+		$('#'+list).append(html);
+    }// end addOptionToList()
+    /**
+     *  特別假處理
+     * last modify by dennis 2013-10-22
+     * 有特别假设定才去 bind 这个事件
+     */
+    <!--{if ($spec_abs) }-->
+    $("#absence_id").change(function(){
+        var spec_abs = [];
+        // 先挑出特别假 id
+        if ('<!--{$spec_abs}-->' != '' &&  '<!--{$isassistant}-->' != '1')
+        {
+            spec_abs = <!--{$spec_abs}-->;
+            var is_spec = false;
+            $("#Layer_funeral").hide();
+            $('#funeral_id').val(-1);
+            for (var i=0; i<spec_abs.length; i++)
+            {
+                // 是特别假的 show select
+                if ($(this).val() == spec_abs[i])
+                {
+                    $("#Layer_funeral").show();
+                    is_spec = true;
+                    break;
+                }
+            }
+           
+            if(is_spec)
+            {
+            	$.ajax({
+                    type:"get",
+                    url:"<!--{$smarty.server.REQUEST_URI}-->&ajaxcall=1&func=GetFamilyType&abs_type_id="+$(this).val(),
+                    async: false, 
+                    timeout:1000,
+                    dataType:'json',
+                    success: function(json){
+                    	addOptionToList('funeral_id',json);
+                    },
+    				error:function(d){
+    					alert('error->'+d.responseText);
+    				}// end function
+                });
+            }
+        }
+    });
+    <!--{/if}-->
+
+    //代理人不受權
+    $("#assign_type_0").click(function(){
+        $("#agent").val('無');
+    });
+    $("#assign_type_1").click(function(){
+        $("#agent").val('');
+    });
+    $("#assign_type_2").click(function(){
+        $("#agent").val('');
+    });
+    
+    $().ready(function(){
+    	$('#begin_date,#end_date').datepicker({
+			dateFormat:'yy-mm-dd',
+			changeMonth:true,
+			changeYear:true,
+		 	showOn: "button",
+		 	buttonImage: "../img/date.png",
+		 	buttonImageOnly: true
+		});
+    	
+    	$('.ui-datepicker-trigger').attr('style','margin-left:2px;margin-bottom:-4px;');
+    });
+</script>

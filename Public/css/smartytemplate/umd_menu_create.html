@@ -1,0 +1,100 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'新建菜單' showLine=1}-->
+
+<form id="editForm" name="postForm" METHOD="POST" ACTION="#">
+<table>
+	<tr>
+		<td  width="30%"><!--{$PARENT_MENU_LABEL|default:'上层菜单'}-->* </td>
+		<td  width="70%">
+		   <select <!--{$disableUpdate}--> id="function_id" class="select-input"   NAME="FUNCTION_ID" REQUIRED=Y title='<!--{$MSG_INPUT_PLEASE|default:'请输入'}--><!--{$PARENT_MENU_LABEL|default:'上层菜单'}-->'>
+		   <!--{$menuCascade}-->
+		   </select>
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$CHILD_TYPE_LABEL|default:'类别'}-->* </td>
+		<td nowrap>
+		   <select <!--{$disableUpdate}--> id="id_child_type" class="select-input"   NAME="CHILD_TYPE" title='<!--{$LANG_LABEL|default:'语言别'}-->'>
+		   <!--{$childtype}-->
+		   </select>
+		</td>
+	</tr>
+	<tr>
+		<td nowrap><!--{$CHILD_SUB_TYPE_LABEL|default:'子类别'}-->* </td>
+		<td nowrap>
+		   <select <!--{$disableUpdate}--> id="id_SUB_CHILD_TYPE" class="select-input"   NAME="SUB_CHILD_TYPE" title='<!--{$CHILD_SUB_TYPE_LABEL|default:'子类别'}-->'>
+		   <!--{$subchildtype}-->
+		   </select>
+		</td>
+	</tr>
+	<tr >
+		<td nowrap><!--{$CHILD_ID_LABEL|default:'菜单代码'}-->* </td>
+		<td><input <!--{$disableUpdate}--> id="menu_code" name="CHILD_ID" class="input-text" TYPE="text" value="<!--{$row.CHILD_ID}-->"  required='Y' title='<!--{$MSG_INPUT_PLEASE|default:'请输入'}--><!--{$MENU_CODE_LABEL|default:'菜单代码'}-->'></td>
+	</tr>
+	
+	<!--{section name="i" loop=$lang}-->
+	<tr>
+		<td nowrap><!--{$MENU_CODE_NAME|default:'菜单名称'}-->(<!--{$lang[i].TEXT}-->) </td>
+		<td > <input id="menu_name"  class="input-text" TYPE="text" name="MENU_NAME_<!--{$lang[i].ID}-->" value="<!--{$lang[i].VALUE}-->"> </td>
+		 <input  TYPE="hidden" name="MENU_LANG[]" VALUE="<!--{$lang[i].ID}-->">
+	</tr>
+	<!--{/section}-->
+	
+
+	<tr >
+		<td nowrap><!--{$MENU_INDEX_LABEL|default:'排序'}--> </td>
+		<td><input id="P_PRIOR" NAME="P_PRIOR" class="input-text" TYPE="text" value="<!--{$row.P_PRIOR}-->" required='Y' check_range=Y area_min=1 area_max=200  title='<!--{$MSG_INPUT_PLEASE|default:'请输入'}--><!--{$MENU_INDEX_LABEL|default:'数值'}-->'></td>
+	</tr>
+	 
+	<tr>
+		<td ></td>
+		<td >
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$BTN_SAVE_LABEL|default:'保存'}--> " id="doSave">
+		    <!--{if $action=='Update'}-->
+		    <INPUT TYPE="button" class="button-submit" VALUE=" <!--{$BTN_CANCEL_LABEL|default:'取消'}--> " id="doCancel">
+		    <!--{else}-->
+			<INPUT TYPE="button" class="button-submit" VALUE=" <!--{$BTN_RESET_LABEL|default:'重填'}--> " id="doReset">
+			<!--{/if}-->
+		</td>
+	</tr>
+	<tr><td colspan="2"><!--{$ErrorMsg}--></td></tr>
+</table>
+<input type="hidden" name="do" value="<!--{$action|default:'Save'}-->">
+</form>
+<form id="cancelForm" name="cancelForm" METHOD="POST" ACTION="?scriptname=umd_menu_list&do=MenuList&FUNCTION_ID=<!--{$row.FUNCTION_ID}-->">
+</form>
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+
+	var msg001= '<!--{$CHILD_ID_LABEL|default:"菜单代码"}--><!--{$MSG_INPUT_ERROR|default:"输入有误!"}-->';
+	
+	$("#doReset").click(function(){	
+		   clearForm('editForm');
+	});
+	$("#doCancel").click(function(){	
+		document.cancelForm.submit(); //doSave();
+	});
+	$("#doSave").click(function(){	
+		  if(!checkUserInputData('editForm')) return false;
+		  var txt=document.getElementById('function_id');
+		  var p_menu_code = txt.options[txt.selectedIndex].value;
+		  var menu_code = $("#menu_code").val();
+		  if('<!--{$action}-->'!='Update'){
+			  if(menu_code.indexOf(p_menu_code)==-1){
+				  alert(msg001);$("#menu_code").focus();return false;}
+		  }
+	      if(menu_code==p_menu_code){ 
+	    	  alert(msg001);$("#menu_code").focus();return false;}
+		  //alert(txt.options[txt.selectedIndex].text)
+		  //alert(txt.indexOf('ds'));
+		  document.postForm.submit(); //doSave();
+	});
+	$("#function_id").change(function(){	
+		if('<!--{$action}-->'!='Update')  
+			$("#menu_code").val(this.options[this.selectedIndex].value);
+	});
+</script>

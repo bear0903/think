@@ -1,0 +1,35 @@
+
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title='期初目标设定' showLine = '1'}-->
+
+<!--{include file="block_box_header.html" title='基本信息' showLine = '1'}-->
+	<!--{include file="block_pa_emp_info.html"}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html" title='目标设定' showLine = '1'}-->
+<!--{if !empty($MGR_COMMENT)}-->
+	<table class="bordertable">
+	<tr>
+		<th width="100">主管批注</th>
+		<td><!--{$MGR_COMMENT}--></td>
+	</tr>
+	</table>
+<!--{/if}-->
+<!--{if $smarty.get.mode != 'viewonly'}-->
+<form name="form1" action="?scriptname=pa_goal_setting" method="post">
+	<input type="hidden" name="pa_form_seqno" value="<!--{$smarty.get.pa_seqno}-->"/>
+	<input type="hidden" name="doaction" id="doaction" value="update"/>
+	<!--{include file="block_goal_master_detail.html"}-->
+	<div align="center">
+		<hr size="1"/>
+		<!-- <button id="tmp_save_btn">暂存</button> -->
+		<button class="save_form_btn">提交</button>
+	</div>
+</form>
+<!--{else}-->
+<!--{include file="block_goal_master_detail_readonly.html"}-->
+<!--{/if}-->
+<!--{include file="block_box_footer.html"}-->
+<!--{include file="block_box_footer.html"}-->

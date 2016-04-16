@@ -1,0 +1,70 @@
+	<table class="bordertable">
+		<tr>
+			<td width="100" class="column-label"><!--{$RESIGN_DATE_LABEL}--> *</td>
+			<td>
+				<input type="text" 
+					   name="resign_date" 
+					   id="resign_date"
+					   title="Date Format: YYYY-MM-DD"
+					   value="<!--{$smarty.post.resign_date}-->"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$RESIGN_REASON_LABEL}--> *</td>
+			<td>
+				<select name="resign_reason" 
+						id="resign_reason">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$resign_reason_list selected=$s_resign_reason_id}-->
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$OUT_TYPE_LABEL}--> *</td>
+			<td>
+				<select name="out_type" id="out_type">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$out_type_list selected=$s_out_type}-->
+				</select>
+			</td>
+		</tr>
+		
+	    <tr>
+			<td valign="top" class="column-label"><!--{$REMARK_LABEL}--></td>
+			<td><textarea name="remark" id="remark" ></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" name="submit" value="<!--{$SUBMIT_BTN_LABEL}-->" class="button-submit"/>
+			    <input type="submit" name="save"   value="<!--{$TMP_SUBMIT_BTN_LABEL}-->" class="button-submit" title="Save Data Only"/>
+			</td>
+		</tr>
+	</table>
+	<script src="<!--{$JS_DIR}-->/date.js" type = "text/javascript"></script>
+	<script src="<!--{$JS_DIR}-->/jquery.maskedinput.min.js" type = "text/javascript"></script>
+	<script type="text/javascript">
+		$().ready(function(){
+			var _dateFormat = "yyyy-MM-dd";
+			$("#resign_date").mask("9999-99-99").blur(function(){
+				if ($(this).val() != ''){
+					if(!Date.isValid($(this).val(),_dateFormat)) {
+						alert('日期输入有误');
+						$(this).focus();
+						return false;
+					}
+				}
+			});
+			$('#resign_date').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeMonth:true,
+				changeYear:true,
+			 	showOn: "button",
+			 	buttonImage: "../img/date.png",
+			 	buttonImageOnly: true
+			});
+	    	
+	    	$('.ui-datepicker-trigger').attr('style','margin-left:2px;margin-bottom:-4px;');
+		});
+	</script>

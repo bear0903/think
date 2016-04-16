@@ -1,0 +1,80 @@
+
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title='期初目标设定' showLine = '1'}-->
+
+<!--{include file="block_box_header.html" title='基本信息' showLine = '1'}-->
+	<!--{include file="block_pa_emp_info.html"}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html" title='目标设定' showLine = '1'}-->
+<form name="form1" action="?scriptname=pa_goal_setting_view" method="post">
+	<input type="hidden" name="pa_form_seqno" value="<!--{$smarty.get.pa_seqno}-->"/>
+	<input type="hidden" name="doaction" id="doaction" value="save"/>
+	<input type="hidden" name="is_changed" id="is_changed" value=""/>
+	
+	<!--{include file="block_goal_master_detail_readonly.html"}-->
+	<table class="bordertable">
+		<tr>
+			<th width="80">主管意见</th>
+			<td>
+				<textarea rows="4" style="width:98%;" name="mgr_comment" id="mgr_comment"><!--{*$MGR_COMMENT*}--></textarea>
+			</td>
+		</tr>
+	</table>
+	<div align="center">
+		<hr size="1"/>
+		<button id="btn_back">返回</button>
+		<button id="btn_reject">驳回</button>
+		<button id="btn_approve">提交</button>
+	</div>
+</form>
+<!--{include file="block_box_footer.html"}-->
+<!--{include file="block_box_footer.html"}-->
+
+<script type="text/javascript">
+	$().ready(function(){
+		
+		$('#btn_back').button({
+			icons: {
+		        primary: "ui-icon-arrowreturnthick-1-w"
+		    }
+		}).click(function(){
+			history.back(1);
+			return false;
+		});
+		
+		$('#btn_reject').button({
+			icons: {
+		        primary: "ui-icon-transferthick-e-w"
+		    }
+		}).click(function(){
+			if ($('#mgr_comment').val()=='')
+			{
+				alert('驳回时必须要输入备注');
+				$('#mgr_comment').focus();
+				return false;
+			}else{
+				$('#doaction').val('reject');
+				$('form').submit();
+			}
+		});
+		
+		$('#btn_approve').button({
+			icons: {
+		        primary: "ui-icon-disk"
+		    }
+		}).click(function(){
+			if ($("form :input[id!='mgr_comment']").serialize() != form_original_data)
+			{
+				$('#is_changed').val('Y');
+			}
+			//$("form").validate(); 
+			$('form').submit();
+		});
+		// store the form init data (except the mgr_comment) for compare when submit data
+		var form_original_data = $("form :input[id!='mgr_comment']").serialize(); 
+		
+	});
+</script>

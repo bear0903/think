@@ -1,0 +1,29 @@
+
+<table cellpadding="0" cellspacing="0" class="bordertable">
+	<thead>
+		<tr>
+			<th><!--{$SEQ_LABEL}--></th>
+			<th><!--{$DATE_LABEL}--></th>
+			<th><!--{$LEAVE_NAME_LABEL}--></th>
+			<th><!--{$HOURS_LABEL}--></th>
+			<th><!--{$DAYS_LABEL}--></th>
+		</tr>
+	</thead>
+	<tbody>
+		<!--{section name="i" loop=$leave_summary}-->
+		<tr>
+			<td><!--{$smarty.section.i.rownum}--></td>
+			<td><!--{$leave_summary[i].YM}--></td>
+			<td><!--{$leave_summary[i].ABSENCE_NAME}--></td>
+			<td class="lable-rigth"><!--{$leave_summary[i].HOURS|string_format:'%.2f'}--></td>
+			<td class="lable-rigth"><!--{$leave_summary[i].DAYS|string_format:'%.4f'}--></td>
+		</tr>
+		<!--{sectionelse}-->
+		<tr>
+			<td colspan="5">
+				<!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}-->
+			</td>
+		</tr>
+		<!--{/section}-->
+	</tbody>
+</table>

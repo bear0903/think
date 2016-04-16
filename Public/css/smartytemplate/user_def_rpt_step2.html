@@ -1,0 +1,71 @@
+
+		<div id="step2" class="hide">
+			<div id="step2_tab">
+				<ul>
+					<li><a href="#step2-tab-1">基本设定</a></li>
+					<li><a href="#step2-tab-2">进阶设定</a></li>
+				</ul>
+				<div id="step2-tab-1">
+					<p>请选取报表的数据来源,可以多选，最多可以关联三个相关数据来源</p>
+					<br clear="all"/>
+					<table class="bordertable" id="datasource_list">
+						<tr>
+							<th width="10%">选择</th>
+							<th width="45%">名称</th>
+							<th width="43%">说明</th>
+						</tr>
+					</table>
+				</div>
+				
+				<div id="step2-tab-2">
+					<div>请设定多笔显示数据预设查询条件</div>
+					<br clear="all"/>
+					<div class="ui-button">
+						<a id="open_def_where_dlg" href="#" class="dialog_link">
+							<span class="ui-icon ui-icon-newwin"></span>预设查询条件
+						</a>
+						<a id="clear_query_where" href="#" class="dialog_link">
+							<span class="ui-icon ui-icon-trash"></span>清除预设条件
+						</a>
+					</div>
+					<div>
+						<textarea rows="8" style="width:95%;" id="default_where_dis" readonly></textarea>
+						<input type="hidden" name="default_where" id="default_where"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Step2 -->
+		
+		<!-- Default Where Condition Setting Dialog -->
+		<div id="dialog_def_where" title="预设查询条件设定" class="hide">
+			<table id="where_tab">
+				<tr>
+					<td width="100">
+						<select id="select_cols" style="width:100px;" class="combox">
+							<option value="">请选择</option>
+						</select>
+					</td>
+					<td width="70">
+						<select id="select_operator" style="width:60px;">
+							<option value="=">等于</option>
+							<option value=">">大于</option>
+							<option value=">=">大于等于</option>
+							<option value="<">小于</option>
+							<option value="<=">小于等于</option>
+							<option value="like">包含</option>
+							<option value="like_b">以..开头</option>
+							<option value="like_e">以..结尾</option>
+							<option value="between">在..之间</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" id="col_value1" class="sysvars"      size="10" title="输入 . 显示可用系统变量"/>
+						<input type="text" id="col_value2" class="sysvars hide" size="10" title="输入 . 显示可用系统变量"/>
+						<button id="btn_add"    class="ui-state-default ui-corner-all">新增条件</button>
+						<button id="btn_remove" class="ui-state-default ui-corner-all">移除条件</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!-- End Dialog -->

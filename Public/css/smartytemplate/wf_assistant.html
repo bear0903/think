@@ -1,0 +1,15 @@
+<script src="<!--{$JS_DIR}-->/functions.js" type = "text/javascript" charset = "utf-8"></script>
+</head>
+<body class="page-container">
+<!--{if count($leave_workflow_list)>0}-->
+	<!--{* leave apply on processing *}-->
+	<!--{include file="block_box_header.html" title="$WAIT_APPROVE_LEAVE_LABEL" showLine=1}-->
+	<!--{include file="block_onprocess_apply_list.html" list=$leave_workflow_list applytype="leave" whoami="assistant"}-->
+	<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->
+<!--{if count($overtime_workflow_list)>0}-->
+	<!--{* overtime apply on processing *}-->
+	<!--{include file="block_box_header.html" title="$WAIT_APPROVE_OVERTIME_LABEL" showLine=1 whoami="assistant"}-->
+	<!--{include file="block_onprocess_apply_list.html" list=$overtime_workflow_list applytype="overtime"}-->	
+	<!--{include file="block_box_footer.html"}-->
+<!--{/if}-->

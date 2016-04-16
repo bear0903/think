@@ -1,0 +1,23 @@
+
+		<table class="bordertable">
+            <tr>
+                <th width="10%"><!--{$YEAR_LABEL}--></th>
+                <th width="30%"><!--{$PA_TYPE_LABEL}--></th>
+                <th width="35%"><!--{$PA_PERIOD_LABEL}--></th>
+                <th width="25%"><!--{$SCORE_LABEL}--></th>
+            </tr>            
+            <!--{section name="i" loop=$pa_his_list}-->
+            <tr>
+                <td><!--{$pa_his_list[i].PA_YEAR}--></td>
+                <td><!--{$pa_his_list[i].PA_TYPE_DESC}--></td>
+                <td><!--{$pa_his_list[i].PA_PERIOD_DESC}--></td>
+                <td><!--{$pa_his_list[i].PA_SCORE}-->/<!--{$pa_his_list[i].PA_RANK}--></td>
+            </tr>
+            <!--{sectionelse}-->
+            <tr>
+                <td colspan="4">
+                  <!--{include file="block_info.html" msg_txt=$NO_PA_REC_TXT}-->
+                </td>
+            </tr>
+            <!--{/section}-->
+        </table>

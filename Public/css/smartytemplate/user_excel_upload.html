@@ -1,0 +1,79 @@
+
+</head>
+<body class="page-container">
+    <!--{include file="block_box_header.html" title=$import_desc_lable showLine=1}-->
+    <form name="form1" METHOD="POST" ACTION="#"	enctype="multipart/form-data">
+        <input type="hidden" name="ORG_PIC_SEQ" value="<!--{$row.ORG_PIC_SEQ}-->"/>
+        <table class="bordertable">
+            <tr>
+                <td width="20%" class="column-label"><!--{$IMP_NAME_LABEL}--></td>
+                <td width="80%">
+                    <input type="hidden" name="SETUP_ID" value="<!--{$setupid}-->"/>
+                    <!--{$download_link}-->(*建議單個文件不超過50條記錄）
+                </td>
+            </tr>
+            <tr>
+                <td width="20%" class="column-label"><!--{$BROWSE_FILE_LABEL}-->*</td>
+                <td width="80%">
+                    <input id="id_up_file"
+                           type="file"
+                           class="input-text"
+                           name="userfile"
+                           required="Y"
+                           title="<!--{$FILE_IS_REQUIRED_MSG}-->"/>
+                    <input type="hidden" id="id_img_url" name="hidden_file_name" value="<!--{$row.URL}-->">
+                </td>
+            </tr>
+            <!--{if $showRunType=='Y'}-->
+            <tr>
+                <td width="20%"><!--{$RUN_TYPE_LABEL}--></td>
+                <td width="80%">
+                    <select
+                        <!--{$disableUpdate}-->
+                        class="select-input" NAME="RUN_TYPE">
+                        <option value="Normal">Normal</option>
+                        <option value="Debug">Debug</option>
+                    </select>
+                </td>
+            </tr>
+            <!--{/if}-->
+            <tr>
+                <td></td>
+                <td>
+                    <INPUT TYPE="button"
+                           class="button-submit"
+                           VALUE="<!--{$OK_BTN_LABEL}-->"
+                           id="doSave"/>
+                    <INPUT TYPE="reset"
+                           class="button-submit"
+                           value="<!--{$RESET_BTN_LABEL|default:'重置'}-->"
+                           id="doClear"/>
+                    <input type="hidden" value="Save" name="do"
+                           id="id_action">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <!--{$search_condition_alert}-->
+    <!--{include file="block_box_footer.html"}-->
+    <script type="text/javascript">
+        $("#deleteSearch").click(function(){
+            $("#id_action").val("DeleteSearch");
+            document.form1.submit();
+        });
+        $("#doSave").click(function(){
+            var txt_url=$("#id_img_url").val();
+            var txt=$("#id_up_file").val();
+            if(txt_url=='' && txt==''){
+                alert('<!--{$FILE_IS_REQUIRED_MSG}-->');
+                return false;
+            }
+            document.form1.submit();
+        });
+         $("#doClear").click(function(){
+             self.close();
+         });
+         $(document).attr('title','<!--{$import_desc_lable}-->');
+    </script>
+
+

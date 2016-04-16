@@ -1,0 +1,102 @@
+<script src="<!--{$JS_DIR}-->/jquery.validate.min.js" type="text/javascript"></script>
+<script src="<!--{$JS_DIR}-->/functions.js" type="text/javascript"></script>
+<form name="form1" id="form1" method="post">
+<table class="bordertable">
+	<!--{if $whoami !== 'myself'}-->
+	<tr>
+		<td class="column-label">申请类型</td>
+		<td>
+			<select name="menu_code" id="menu_code" <!--{if $smarty.get.doaction == 'applylist'}-->disabled<!--{/if}-->>
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$menu_code_list selected=$smarty.post.menu_code|default:$smarty.get.scriptname}-->
+			</select>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<!--{if $whoami !== 'myself' || ($whoami == 'myself' && $smarty.get.approved_his == '1')}-->
+	<tr>
+		<td class="column-label">部门起</td>
+		<td>
+			<input type="text" name="dept_id_s" value="<!--{$smarty.post.dept_id_s}-->" class="input-text"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label">部门讫</td>
+		<td>
+			<input type="text" name="dept_id_e" value="<!--{$smarty.post.dept_id_e}-->" class="input-text"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label">员工起</td>
+		<td>
+			<input type="text" name="emp_s" value="<!--{$smarty.post.emp_s}-->" class="input-text"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label">员工讫</td>
+		<td>
+			<input type="text" name="emp_e" value="<!--{$smarty.post.emp_e}-->" class="input-text"/>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<tr>
+		<td class="column-label"><!--{$APPLY_BDATE_LABEL|default:'申请日期起'}--></td>
+		<td>
+			<input type="text" 
+				   name="apply_b_date" 
+				   id="apply_b_date" 
+				   class="input-date"
+				   value="<!--{$smarty.post.apply_b_date}-->"
+				   title="Date Format:YYYY-MM-DD"/> 
+        </td>
+	</tr>
+	<tr>
+		<td class="column-label"><!--{$APPLY_BDATE_LABEL|default:'申请日期讫'}--></td>
+		<td>
+			<input type="text" 
+				   name="apply_e_date" 
+				   id="apply_e_date" 
+				   class="input-date"
+				   value="<!--{$smarty.post.apply_e_date}-->"
+				   title="Date Format:YYYY-MM-DD"/> 
+        </td>
+	</tr>
+	<!--{if $whoami !== 'myself'}-->
+	<tr>
+		<td class="column-label">流程状态</td>
+		<td>
+			<select name="flow_status" id="flow_status">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$flow_status_list selected=$smarty.post.flow_status}-->
+			</select>
+		</td>
+	</tr>
+	<!--{/if}-->
+	<tr>
+		<td></td>
+		<td>
+			<input type="hidden" name="doaction" value="applylist"/>
+			<input type="hidden" name="menucode" value="<!--{$smarty.get.scriptname}-->"/>
+			<input type="submit" name="submit_query" id="submit_query" value="查询" class="button-submit"/>
+			<input type="button" name="reset_form"   value="重置"      onclick="clear_form('form1');" class="button-submit"/>
+		</td>
+	</tr>
+</table>
+</form>
+<script language="javascript">
+$().ready(function(){
+	$('#apply_b_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+	$('#apply_e_date').datepicker({dateFormat:'yy-mm-dd',changeMonth:true,changeYear:true});
+});
+<!--{if $smarty.get.doaction !== 'applylist'}-->
+
+	$("form").validate({
+		rules: {menu_code:{required:true}}
+	});
+	$.extend(
+		$.validator.messages, {
+		  required: "必须输入栏位"
+	});
+
+<!--{/if}-->
+</script>

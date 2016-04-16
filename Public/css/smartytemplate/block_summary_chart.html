@@ -1,0 +1,97 @@
+<!--{include file="block_box_header.html" title='绘图条件' showLine = '1'}-->
+<!--{$qFormtemplate}-->
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html" title='图表' showLine = '1'}-->
+<table id="id_select_chart_table" border="0" cellpadding="0" cellspacing="0" class="bordertable">
+<tr>
+	<td>图表种类</td>
+	<td>
+		<select disabled name="_op_KPI_COL_COMPANY_ID" id="" class="select-operateor" >
+			<option value="=" selected >=</option>
+		</select><select name="chart_type" id="id_chart_type" class="select-operateor" >
+	         
+			<option value="bar" <!--{if $chart_type=='bar'}-->selected<!--{/if}-->>条形图</option>
+			<option value="pie" <!--{if $chart_type=='pie'}-->selected<!--{/if}-->>饼状图</option>
+			<option value="line" <!--{if $chart_type=='line'}-->selected<!--{/if}-->>折线图</option>
+			 
+		</select>
+	</td>
+</tr>
+<tr>
+	<td>KPI栏位</td>
+	<td>
+		<select disabled name="_op_KPI_COL_COMPANY_ID" id="" class="select-operateor" >
+			<option value="=" selected >=</option>
+		</select><select name="kpi_column" id="id_kpi_column" class="select-operateor" >
+			<!--
+			<option value="KPI_COL_KPI_A01" >本月新进人数</option>
+			<option value="KPI_COL_KPI_A02" >本月离职人数</option>
+			<option value="KPI_COL_KPI_A18"  >本月平均人数</option>
+			-->
+			<!--{$kpi_option}-->
+		</select>
+	</td>
+</tr>
+</table>
+
+<br><img id="id_summary_char" src="<!--{$IMG_DIR}-->/loading.gif">
+<input type="hidden" id="id_menu_code" name="menu_code" value="<!--{$menu_code}-->">
+<!--{include file="block_box_footer.html"}-->
+
+<script type="text/javascript">
+$("#id_kpi_column").change(function(){
+	doRefresh();
+});
+
+$("#id_chart_type").change(function(){
+	doRefresh();
+});
+
+$("#id_summary_char").error(function(){
+	//this.src='<!--{$IMG_DIR}-->/loading.gif';
+	//setTimeout('doRefresh()', 1000*1);
+});
+
+function doRefresh(){
+	var url='SummaryChart.php?';
+	var imgWidth=(checkVer()<7)?684:document.body.clientWidth;
+	url += '&chart_type='+$("#id_chart_type").val();
+	url += '&kpi_column='+$("#id_kpi_column").val();
+	url += '&menu_code='+$("#id_menu_code").val();
+	url += '&clientWidth='+imgWidth;
+	url += '&rand='+Math.random();
+	$.get(url, function(data){ document.getElementById('id_summary_char').src=url; }); 
+}
+function checkVer(){
+  var   X,V,N; 
+  V=navigator.appVersion;   
+  N=navigator.appName;   
+  if (N=="Microsoft Internet Explorer") {  
+	  X=parseFloat(V.substring(V.indexOf("MSIE")+5,V.indexOf("Windows")));
+	  return X;
+  }else{
+	  return 0;
+  }
+}
+
+///
+$('document').ready(function(){
+	addTbRow();
+	doRefresh();
+});
+$("#id_select_chart_table").resize( function() { doRefresh(); } );
+
+//绘图条件
+function addTbRow()
+{
+   var root=$("table > tbody", document.forms[0]);
+   var allRows = root.children();//.length;
+   var offset=allRows.length - 1;
+   var trobj=allRows[offset];
+   $("#id_select_chart_table").children('tbody').children().insertBefore(allRows[offset]);
+   //root.append('<tr><td>asfasfs</td></tr>');
+   $("input[name='submit_button']").val('确定');
+}
+
+</script>

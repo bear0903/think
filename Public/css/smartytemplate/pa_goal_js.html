@@ -1,0 +1,339 @@
+<div id="goal_type_opts" style="display:none;">
+	<!--{* 此段应该写在 js 里，但是写在 JS 里会报错，php out 出来的内容有转行  *}-->
+	<!--{html_options options=$goal_type_list selected=$s_goal_type_id}-->
+</div>
+
+<script src="<!--{$JS_DIR}-->/jquery.validate.min.js"></script>
+<!-- load the error message file according to the user lang -->
+<script src="<!--{$JS_DIR}-->/i18n/jquery.validate.lang-<!--{$smarty.session.user.language}-->.js"></script>
+
+<script type="text/javascript">
+	$().ready(function(){
+		var rCntMaster = 1000; // row 的计数器
+		var rCntDetail = 2000; // detail row counter
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//	Some Private Help Functions Here
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		function genUUID() {
+		    var d = new Date().getTime();
+		    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		        var r = (d + Math.random()*16)%16 | 0;
+		        d = Math.floor(d/16);
+		        return (c=='x' ? r : (r&0x7|0x8)).toString(16);
+		    });
+		    return uuid;
+		}
+		*/
+		/**
+		* Rebind the click event to all remove button after add row
+		*/
+		function _rebindEvt2RemoveBtn()
+		{
+			$('.del_detail_row').button({
+				icons: {
+			    	primary: "ui-icon-closethick"
+			    },
+			    text:false
+			}).unbind('click').bind('click',function(){
+				return removeDetailRow($(this));
+			});
+		}
+		/**
+		* Rebind the click event to all add button after add row
+		*/
+		function _rebindEvt2AddBtn()
+		{
+			$('.add-detail-row').button({
+				icons: {
+			    	primary: "ui-icon-plusthick"
+			    },
+			    text:false
+			}).unbind('click').bind('click',function(){
+				addDetailRow($(this));
+				return false;
+			});
+		}
+		/**
+		* Get the master row seqno according the master row class name
+		*/
+		function _getMasterRowSeq(master_row_class)
+		{
+			return master_row_class.substr(master_row_class.lastIndexOf('_')+1)
+		}
+		
+		/**
+		* Rewrite the Form Element Name for store the data
+		*/
+		function _rewriteElementName(new_row_html,master_row_key,detail_row_seq_class)
+		{
+			//var detail_row_seq = 'detail_seqno'+master_row_seqno;
+			
+			new_row_html = new_row_html.replace(/detail_seqno0/g,detail_row_seq_class);
+			// master 
+			new_row_html = new_row_html.replace('goal_type[]','goal_type['+master_row_key+']');
+			new_row_html = new_row_html.replace('work_goal[]','work_goal['+master_row_key+']');
+			new_row_html = new_row_html.replace('wgoal_weight[]','wgoal_weight['+master_row_key+']');
+			// detail
+			new_row_html = new_row_html.replace('work_plan[0]','work_plan['+master_row_key+']');
+			new_row_html = new_row_html.replace('plan_weight[0]','plan_weight['+master_row_key+']');
+			new_row_html = new_row_html.replace('archive_date[0]','archive_date['+master_row_key+']');
+			new_row_html = new_row_html.replace('work_owner[0]','work_owner['+master_row_key+']');
+			new_row_html = new_row_html.replace('remark[0]','remark['+master_row_key+']');
+			
+			return new_row_html;
+		}
+		
+		function initDatePicker()
+		{
+			$('.input-date').datepicker({dateFormat:'yy/mm/dd',changeMonth:true,changeYear:true});
+		}
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// End Private Help Functions
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/**
+		* change the td's rowspan after add row or remove row
+		*/
+		function modifyRowspan(master_row_class)
+		{
+			var rowcnt = $('.'+master_row_class).length;
+			var i = 0;
+			//alert('master row class->'+master_row_class)
+			//alert('cnt ->'+rowcnt)
+			
+			$('.'+master_row_class+':first').children().each(function(){
+				if (i<5) { // only 1 - 5  td need to change rowspan attribute
+					$(this).attr('rowspan',rowcnt);
+					i++;
+				}
+			});
+		}
+		
+		/**
+		* rewrite the seq no, just for show on page
+		*/
+		function rewriteSeq(seq_td_class)
+		{
+			//alert('当前 seq class->'+seq_td_class);
+			var i = 1;
+			$('.'+seq_td_class).each(function(){
+				$(this).text(i);
+				i++;
+			});
+		}
+		
+		/**
+		* Add Detail Row (Work Plan)
+		*/
+		function addDetailRow(evt_obj)
+		{
+			rCntDetail += 1;
+			var master_row_class = evt_obj.parent().parent().attr('class');
+			var master_row_seqno = _getMasterRowSeq(master_row_class);
+			var detail_row_seq_class = 'detail_seqno'+master_row_seqno;
+			//alert('detail row seqno '+detail_row_seq_class);
+			old_detail_row_html = old_detail_row_html.replace(/yyzz/g,master_row_seqno);
+			var detail_row_html = '<tr class="'+master_row_class+'">'+
+			old_detail_row_html.replace(/xxoo/g,rCntDetail)+'</tr>';
+			
+			//alert("添加时 detail row seqno class"+detail_row_seq);
+			// repalce the element name for save data
+			detail_row_html = _rewriteElementName(detail_row_html,master_row_seqno,detail_row_seq_class);
+			
+			//alert(detail_row_html)
+			
+			$('.'+master_row_class+':last').after(detail_row_html);
+			// rewrite the seqno //
+			rewriteSeq(detail_row_seq_class);
+			// rebind the remove event after add new row
+			_rebindEvt2RemoveBtn();
+			modifyRowspan(master_row_class);
+			// rebind the date picker 
+			initDatePicker();
+			// auto assign id to form elements, for validate required
+			//_setElementID();
+		}
+		
+		/**
+		* Add Master Row (Goal Type)
+		*/
+		function addMasterRow()
+		{
+			//var master_rows_cnt = $('.master_seqno').length;
+			
+			var master_rows_cnt = rCntMaster+1;
+			rCntMaster = master_rows_cnt;
+			rCntDetail += 1; 
+			//alert('master row count ->'+master_rows_cnt);
+			var detail_row_seq_class = 'detail_seqno'+master_rows_cnt;
+			old_master_row_html = old_master_row_html.replace(/rowspan="2"/g,'');
+			var master_row_html = '<tr class="master_row_'+master_rows_cnt+'">'+
+			old_master_row_html.replace(/xxoo/g, rCntDetail)+'</tr>';
+				
+			master_row_html = _rewriteElementName(master_row_html,master_rows_cnt,detail_row_seq_class);
+			//alert(master_row_html);
+			$('#goal_set_tab tr:last').after(master_row_html);
+			rewriteSeq('master_seqno');
+			
+			//alert(master_row_html);
+			// rebind the remove event after add new row
+			_rebindEvt2RemoveBtn();
+			
+			// rebind the remove event after add new row
+			_rebindEvt2AddBtn();
+			
+			// rebind the date picker 
+			initDatePicker();
+			
+			// auto assign id to form elements, for validate required
+			//_setElementID();
+		}
+		
+		function removeMasterRow()
+		{
+			if ($(':checkbox:checked').length>0){
+				if (confirm('确认删除选中的记录?')) {
+					var $masterRows = $('.master_chk');
+					$masterRows.each(function(){
+						if ($(this).attr('checked')){
+							var master_row_class = $(this).parent().parent().attr('class');
+							$('.'+master_row_class).remove();
+						}
+					});
+					rewriteSeq('master_seqno');
+				}
+			}else{
+				alert('未选中任何记录.');
+			}
+		}
+		
+		/**
+		* Remove the work plan row
+		*/
+		function removeDetailRow(e)
+		{
+			if (confirm('确认删除当前记录?')){
+				$row = e.parent().parent();
+				var master_row_class = $row.attr('class');
+				//alert('移除子项时得到的 Master row class'+master_row_class);
+				$row.remove();
+				modifyRowspan(master_row_class);
+				//alert('移除子项时得到的 Master seqno'+_getMasterRowSeq(master_row_class));
+				rewriteSeq('detail_seqno'+_getMasterRowSeq(master_row_class));
+			}
+			return false;
+		}
+		
+		/*
+		* Binding Events to Element when Page Init
+		*/
+		
+		
+		// rebind the date picker all clendar input
+		
+		initDatePicker();
+		
+		$('.save_form_btn').button({
+			icons: {
+		        primary: "ui-icon-disk"
+		    }
+		}).click(function(){
+			//$("form").validate(); 
+			$('form').submit();
+		});
+		
+		$('#tmp_save_btn').button({
+			icons: {
+		        //primary: "ui-icon-s"
+		    }
+		}).click(function(){
+			//$("form").validate(); 
+			$('#doaction').val('tmpsave');
+			$('form').submit();
+		});
+		
+		$('#add_row_btn').button({
+			icons: {
+		    	primary: "ui-icon-plusthick"
+		    }
+		}).click(function(){
+			addMasterRow();
+			return false;
+		});
+		
+		$('#del_row_btn').button({
+			icons: {
+		    	primary: "ui-icon-closethick"
+		    }
+		}).click(function(){
+			removeMasterRow();
+			return false;
+		});
+		
+		$('.add-detail-row').button({
+			icons: {
+		        primary: "ui-icon-plus"
+		    },
+		    text:false
+		}).click(function(){
+			addDetailRow($(this));
+			return false;
+		});
+		
+		$('.del_detail_row').button({
+			icons: {
+		        primary: "ui-icon-closethick"
+		    },
+		    text:false
+		}).click(function(){
+			removeDetailRow($(this));
+			return false;
+		});
+		// 给表单里没有id element assign 一个 unique id
+		/*
+		function _setElementID(){
+			$('form input, form select,form textarea').each(function() {
+				if ($(this).attr('id') == ''){
+			    	$(this).attr('id',genUUID());
+				}
+			});
+		}*/
+		// add form validate by dennis 2013/10/08
+		//_setElementID();
+		$("form").validate(); // use meta data validate form element
+		
+		// Global Vars
+		// put this after remove btn init
+		var old_detail_row_html = '<td class="detail_seqnoyyzz">2</td>'+
+			'<td><textarea name="work_plan[yyzz][xxoo]" rows="2" cols="10" class="work-plan required"></textarea></td>'+
+			'<td><input type="text" size="5" class="required number" name="plan_weight[yyzz][xxoo]" /></td>'+
+			'<td><input type="text" class="input-date required date" name="archive_date[yyzz][xxoo]"/></td>'+
+			'<td><input type="text" size="5" name="work_owner[yyzz][xxoo]" class="required"/></td>'+
+			'<td><textarea name="remark[yyzz][xxoo]" cols="10" rows="2"></textarea></td>'+
+			'<td><button class="del_detail_row">删除工作计划</button></td>';
+		// Store it for clone when document ready
+		var old_master_row_html = //'<tr class="master_row_0">'+
+			'<td rowspan="2"><input type="checkbox" class="master_chk"/></td>'+
+			'<td rowspan="2" class="master_seqno">1</td>'+
+			'<td rowspan="2">'+
+				'<select class="goal_type required" name="goal_type[]">'+
+					'<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>'+
+					$('#goal_type_opts').html()+
+				'</select>'+
+			'</td>'+
+			'<td rowspan="2">'+
+				'<textarea name="work_goal[]" cols="10" rows="2" class="work-goal required"></textarea>'+
+			'</td>'+
+			'<td rowspan="2"><input type="text" size="5" name="wgoal_weight[]" class="required number" value=""/></td>'+
+			
+			'<td class="detail_seqno0">1</td>'+
+			'<td><textarea name="work_plan[0][xxoo]" rows="2" cols="10" class="work-plan required"></textarea></td>'+
+			'<td><input type="text" size="5" class="required number" name="plan_weight[0][xxoo]"/></td>'+
+			'<td><input type="text" class="input-date required date" name="archive_date[0][xxoo]"/></td>'+
+			'<td><input type="text" size="5" name="work_owner[0][xxoo]" class="required"/></td>'+
+			'<td><textarea name="remark[0][xxoo]" cols="10" rows="2"></textarea></td>'+
+			'<td><button class="add-detail-row">添加工作计划</button></td>';
+			// Store the master row(contain the detail)
+	});
+</script>

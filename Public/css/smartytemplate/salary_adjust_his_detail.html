@@ -1,0 +1,98 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$smarty.get.appdesc|default:$SALARY_ADJ_HIST_DETAIL_LABEL showLine = '1'}-->
+	<table>
+		<tr>
+			<td width="50%" valign="top">
+				<table border="0" cellpadding="0" cellspacing="1" class="bordertable">
+					<tr height="20">
+						<td colspan="5" class="column-label">
+							<!--{$VALID_DATE_LABEL|default:'本次生效日'}-->:
+							<!--{$smarty.get.vdate}-->
+						</td>
+					</tr>
+					<tr >
+						<th><!--{$LINENO_LABEL}--></th>
+						<th><!--{$MAPID_NO_SZ_LABEL}--></th>
+						<th><!--{$MAPNAME_LABEL}--></th>
+						<th><!--{$AMOUNT_LABEL}--></th>
+						<th><!--{$DIFF_AMOUNT_LABEL}--></th>
+					</tr>
+					<!--{section name="sec1" loop=$promotion_detail_list}-->
+					<tr>
+						<td nowrap><!--{$promotion_detail_list[sec1].LINENO}--></td>
+						<td nowrap><!--{$promotion_detail_list[sec1].MAPID_NO_SZ}--></td>
+						<td nowrap><!--{$promotion_detail_list[sec1].MAPNAME}--></td>
+						<td nowrap><!--{$promotion_detail_list[sec1].AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+						<!-- 計算相同薪資代碼的差異金額 -->
+						<!--{section name="sec0" loop=$pre_promotion_detail_list}-->
+							<!--{if $promotion_detail_list[sec1].MAPID_NO_SZ == $pre_promotion_detail_list[sec0].MAPID_NO_SZ}-->
+							<td nowrap style="<!--{if $promotion_detail_list[sec1].AMOUNT-$pre_promotion_detail_list[sec0].AMOUNT >0}-->color:red;<!--{else}-->color:green;<!--{/if}-->">
+								<!--{$promotion_detail_list[sec1].AMOUNT-$pre_promotion_detail_list[sec0].AMOUNT|string_format:"%.2f"|number_format:2}-->
+								<!--{php}-->break;<!--{/php}-->
+							</td>
+							<!--{/if}-->
+							
+							<!--{if empty($pre_promotion_detail_list[sec1].MAPID_NO_SZ) }-->
+								<td nowrap style="color:red;">
+									<!--{$promotion_detail_list[sec1].AMOUNT|string_format:"%.2f"|number_format:2}-->
+								</td>
+								<!--{php}-->break;<!--{/php}-->
+							<!--{/if}-->
+						<!--{/section}-->
+					</tr>
+					<!--{sectionelse}-->
+					<tr>
+						<td colspan="5"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+					</tr>
+					<!--{/section}-->
+					<!--{if $total_amount> 0}-->
+						<tr>
+							<th colspan="3"><!--{$TOTAL_LABEL|default:"加總"}--></th>
+							<td colspan="2"><strong><!--{$total_amount|string_format:"%.2f"|number_format:2}--></strong></td>
+						</tr>
+					<!--{/if}-->
+				</table>
+			</td>
+			<!--{if $smarty.get.nvdate}-->
+			<td width="50%" valign="top">
+				<table border="0" cellpadding="0" cellspacing="1" class="bordertable">
+					<tr>
+						<td colspan="4" class="column-label">
+							<!--{$PRE_VALID_DATE_LABEL}-->:
+							<!--{$smarty.get.nvdate}-->
+						</td>
+					</tr>
+					<tr>
+						<th><!--{$LINENO_LABEL}--></th>
+						<th><!--{$MAPID_NO_SZ_LABEL}--></th>
+						<th><!--{$MAPNAME_LABEL}--></th>
+						<th><!--{$AMOUNT_LABEL}--></th>
+					</tr>
+					<!--{section name="sec2" loop=$pre_promotion_detail_list}-->
+					<tr>
+						<td nowrap><!--{$pre_promotion_detail_list[sec2].LINENO}--></td>
+						<td nowrap><!--{$pre_promotion_detail_list[sec2].MAPID_NO_SZ}--></td>
+						<td nowrap><!--{$pre_promotion_detail_list[sec2].MAPNAME}--></td>
+						<td nowrap><!--{$pre_promotion_detail_list[sec2].AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+					</tr>
+					<!--{sectionelse}-->
+					<tr>
+						<td colspan="4"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+					</tr>
+					<!--{/section}-->
+					<!--{if $total_amount1>0 }-->
+						<tr>
+							<th colspan="3"><!--{$TOTAL_LABEL|default:"加總"}--></th>
+							<td><strong><!--{$total_amount1|string_format:"%.2f"|number_format:2}--></strong></td>
+						</tr>
+					<!--{/if}-->
+				</table>
+			</td>
+		<!--{/if}-->			
+		</tr>
+	</table>
+	<hr size="1"/>
+	<p align="center"><a href="javascript:history.back(1);">&lt;&lt;<!--{$BACK_LINK_LABEL}--></a></p>
+<!--{include file="block_box_footer.html"}-->

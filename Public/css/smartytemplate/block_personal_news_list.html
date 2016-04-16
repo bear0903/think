@@ -1,0 +1,25 @@
+		
+	<table class="bordertable">
+		<tr>
+			<!--{section name="news" loop=$personal_news_list}-->
+			<td width="50%">
+				<strong><!--{$PERSONAL_NOTICE_LABEL|default:'通知'}-->:</strong>
+				<a type="popup" href="?scriptname=news&action=personal&newsid=<!--{$personal_news_list[news].SEQ_NO}-->">
+				<strong><!--{$personal_news_list[news].SUBJECT}--></strong><!--{$personal_news_list[news].IS_NEW}--></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;<!--{$personal_news_list[news].CREATE_DATE}-->
+				<a href="?scriptname=ESNH002&appdesc=<!--{$PERSONAL_NOTICE_LABEL|default:'通知'|urlencode}-->" style="float:right;">更多  >></a>
+			</td>
+		<!--{/section}-->
+		
+		<!--{section name="news" loop=$company_news_list}-->
+		
+			<td width="50%">
+				<strong><!--{$COMPANY_NEWS_LABEL|default:'公告'}-->:</strong>
+				<a type="popup" href="?scriptname=news&action=company&newsid=<!--{$company_news_list[news].SEQ_NO}-->" >
+				<strong><!--{$company_news_list[news].SUBJECT}--></strong><!--{$company_news_list[news].IS_NEW}--></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;<!--{$company_news_list[news].CREATE_DATE}-->
+				<a href="?scriptname=ESNH001&appdesc=<!--{$COMPANY_NEWS_LABEL|default:'公告'|urlencode}-->" style="float:right;">更多  >></a>
+			</td>
+		<!--{/section}-->
+		</tr>
+	</table>

@@ -1,0 +1,92 @@
+
+</head>
+<body class="page-container">
+	<!--{if $is_salary_slip_grant == 'Y'}-->
+	<div class="span-9">
+		<!--{include file="block_box_header.html" title=$SALARY_SLIP_LABEL showLine=1}-->
+		<a
+			href="?scriptname=ESNC006&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$SALARY_SLIP_LABEL}-->">
+			<img src="<!--{$IMG_DIR}-->/money_salary_slip.png" alt="" />
+		</a>
+		<!--{$SALARY_SLIP_TEXT}-->
+		<div align="right">
+			<a
+				href="?scriptname=ESNC006&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$SALARY_SLIP_LABEL}-->">
+				<img src="<!--{$IMG_DIR}-->/view.gif" alt="" />
+			</a>
+		</div>
+		<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{/if}-->
+	
+	<!--{if $is_ss_pay_grant == 'Y'}-->
+	<div class="span-9">
+		<!--{include file="block_box_header.html" title=$SS_PAY_LABEL showLine=1}-->
+		<a
+			href="?scriptname=ESNC002&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$SS_PAY_LABEL}-->">
+			<img src="<!--{$IMG_DIR}-->/money_ss.png" alt="" />
+		</a>
+		<!--{$SS_PAY_TEXT}-->
+		<div align="right">
+			<a
+				href="?scriptname=ESNC002&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$SS_PAY_LABEL}-->">
+				<img src="<!--{$IMG_DIR}-->/view.gif" alt="" />
+			</a>
+		</div>
+		<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{/if}-->
+	
+	<!--{if $is_personal_tax_grant == 'Y'}-->
+	<div class="span-9">
+		<!--{include file="block_box_header.html" title=$PERSONAL_TAX_LABEL showLine=1}-->
+		<a
+			href="?scriptname=ESNC003&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$PERSONAL_TAX_LABEL}-->">
+			<img src="<!--{$IMG_DIR}-->/money_tax.png" alt="" />
+		</a>
+		<!--{$PERSONAL_INCOME_TAX_TEXT}-->
+		<div align="right">
+			<a
+				href="?scriptname=ESNC003&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$PERSONAL_TAX_LABEL}-->">
+				<img src="<!--{$IMG_DIR}-->/view.gif" alt="" />
+			</a>
+		</div>
+		<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{/if}-->
+	
+	<!--{if $is_bonus_grant == 'Y'}-->
+	<div class="span-9">
+		<!--{include file="block_box_header.html" title=$BONUS_LABEL showLine=1}-->
+		<a
+			href="?scriptname=ESNC005&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$PERSONAL_TAX_LABEL}-->">
+			<img src="<!--{$IMG_DIR}-->/money_bonus.png" alt="" />
+		</a>
+		<!--{$BONUS_TEXT}-->
+		<div align="right">
+			<a
+				href="?scriptname=ESNC005&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$PERSONAL_TAX_LABEL}-->">
+				<img src="<!--{$IMG_DIR}-->/view.gif" alt="" />
+			</a>
+		</div>
+		<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{/if}-->
+	
+	<!--{if $is_sal_adjust_grant == 'Y'}-->
+	<div class="span-9">
+		<!--{include file="block_box_header.html" title=$SALARY_ADJ_HIST_LABEL showLine=1}-->
+		<a
+			href="?scriptname=ESNC001&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$SALARY_ADJ_HIST_LABEL}-->">
+			<img src="<!--{$IMG_DIR}-->/money_adj_his.png" alt="" />
+		</a>
+		<!--{$SALARY_ADJUST_TEXT}-->
+		<div align="right">
+			<a
+				href="?scriptname=ESNC001&fromscript=<!--{$smarty.get.scriptname}-->&appdesc=<!--{$SALARY_ADJ_HIST_LABEL}-->">
+				<img src="<!--{$IMG_DIR}-->/view.gif" alt="" />
+			</a>
+		</div>
+		<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{/if}-->

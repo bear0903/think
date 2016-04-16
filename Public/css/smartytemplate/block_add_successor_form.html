@@ -1,0 +1,128 @@
+
+
+<table class="bordertable">
+	<tr>
+		<td class="column-label" width="100"><!--{$PA_PERIOD_LABEL|default:"考核期間"}-->
+			<input type="hidden" name="pa_period_seqno" value="<!--{$smarty.get.pa_period_seqno}-->"/>
+		</td>
+		<td><!--{$smarty.get.pa_period_desc|urldecode|default:$PA_DESC}--></td>
+		<td class="column-label" width="100"><!--{$ORDER_SEQ_LABEL|default:"接班人序位"}-->*</td>
+		<td>
+			<input type="text" 
+				   name="gradus[]" 
+				   id="gradus_<!--{$column_seqno}-->"
+				   class="input-text" 
+				   value="<!--{$ORDER_SEQ}-->" 
+				   required ="N"
+				   is_number="Y"
+				   title="<!--{$MUST_NUMBER_MSG|default:"請輸入接班人序位,必須為數字."}-->"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$EMP_ID_LABEL|default:"員工"}--> *</td>
+		<td>
+			<input type="hidden" 
+				   name="emp_seq_no[]" 
+			       id="emp_seq_no_<!--{$column_seqno}-->" 
+			       value="<!--{$S_EMP_SEQNO}-->"/>
+		    <input type="text" 
+		    	   name="emp_id[]" 
+		    	   id="emp_id_<!--{$column_seqno}-->" 
+		    	   class="input-lov" 
+		    	   value="<!--{$S_EMP_ID}-->"
+		    	   required = "N"
+		    	   title="<!--{$MUST_INPUT_EMP_MSG|default:"請選取員工(雙擊打開 查詢窗口)."}-->"
+		    	   readonly
+		           onclick="openw('?scriptname=emp_full_lov&fromapp=add_successor&select_type=single&columnseq=<!--{$column_seqno}-->','emplov',470,500);"/></td>
+		<td class="column-label" width="100"><!--{$EMP_NAME_LABEL|default:"姓名"}--></td>
+		<td><input type="text" class="input-text" disabled id="emp_name_<!--{$column_seqno}-->" value="<!--{$S_EMP_NAME}-->"/></td>
+	</tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$DEPT_LABEL|default:"部門"}--></td>
+		<td><input type="text" class="input-text" disabled id="dept_name_<!--{$column_seqno}-->" value="<!--{$S_DEPT_NAME}-->"/></td>
+		<td class="column-label" width="100"><!--{$TITLE_LABEL|default:"職稱"}--></td>
+		<td><input type="text" class="input-text" disabled id="emp_title_<!--{$column_seqno}-->" value="<!--{$S_TITLE_NAME}-->"/></td>
+	</tr>
+	<tr>
+        <td class="column-label" width="100"><!--{$POS_LEVEL_LABEL|default:"職等"}--></td>
+        <td><input type="text" 
+                   class="input-text" disabled 
+                  id="title_level_<!--{$column_seqno}-->"
+                  value="<!--{$S_LEVEL}-->"/></td>
+        <td class="column-label" width="100"><!--{$CAN_SUCCED_DATE_LABEL|default:"可接任時間"}-->*</td>
+        <td>
+        	<select name="approve_time[]" 
+        			id="approve_time_<!--{$column_seqno}-->"
+        			required = "N"
+        			title="<!--{$MUST_ENTRY_DATE_MSG|default:"請選取可接任時間 ."}-->">
+	            <option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+	            <!--{html_options options=$approve_time_list selected=$smarty.post.approve_time|default:$APPROVE_TIME}-->
+        	</select>
+       	</td>
+    </tr>
+    <tr>
+        <td class="column-label" width="100"><!--{$PRE3_SCORE_LABEL|default:"前三次考績"}--></td>
+        <td colspan="3">
+        	<a href="#" onclick ="openw('?scriptname=pa_score_his&block_title=<!--{$PRE3_SCORE_LABEL}-->&emp_seqno='+$('#emp_seq_no_<!--{$column_seqno}-->')[0].value,'pahis',470,500);"><!--{$PRE3_SCORE_LABEL|default:"前三次考績"}--></a>
+        	<!--{*
+        	<table class="bordertable" id="pa_score_list_<!--{$column_seqno}-->">
+        	
+        	</table>
+        	*}-->
+       	</td>
+    </tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$TASK_PA_LABEL|default:"工作表現"}-->*</td>
+		<td>
+			<select name="job_represent[]" 
+					id="job_represent_<!--{$column_seqno}-->"
+					required = "N"
+        			title="<!--{$MUST_ENTRY_TASK_PA_MSG|default:"請選取工作表現 ."}-->">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$job_represent_list selected=$smarty.post.job_represent|default:$JOB_REPRESENT}-->}-->
+			</select>
+		</td>
+		<td class="column-label" width="100"><!--{$DEV_POTENTIAL_LABEL|default:"發展潛力"}-->*</td>
+		<td>
+			<select name="possabilitiy[]" 
+					id="possabilitiy_<!--{$column_seqno}-->"
+					required = "N"
+        			title="<!--{$MUST_ENTRY_DEV_POTENTIAL_MSG|default:"請選發展潛力 ."}-->">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$possabilities_list selected=$smarty.post.possabilitiy|default:$POSSIBILITIES}-->}-->
+			</select>
+		</td>
+	</tr>
+	<tr><th colspan="4"><!--{$COMMENT_MSG|default:'以下內容與績效管理評估表之考核項目相同，若有需要可補充說明'}--></th></tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$MERIT_LABEL|default:"優點"}--></td>
+		<td colspan="3"><textarea name="merit[]"
+								  id="merit_<!--{$column_seqno}-->" 
+								  style="width:98%;"
+								  required = "N"
+        						  title="<!--{$MUST_ENTRY_MERIT_MSG|default:"請輸入優點 ."}-->"><!--{$EXCELLENCE}--></textarea></td>
+	</tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$DEMERIT_LABEL|default:"缺點"}--></td>
+		<td colspan="3"><textarea name="demerit[]"
+								  id="demerit_<!--{$column_seqno}-->" 
+								  style="width:98%;"
+								  required = "N"
+        						  title="<!--{$MUST_ENTRY_DEMERIT_MSG|default:"請輸入缺點 ."}-->"><!--{$DEFECT}--></textarea></td>
+	</tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$TRANING_KEY_POINT_LABEL|default:"培育重點"}--></td>
+		<td colspan="3"><textarea name="train_emphasis[]"
+								  id="train_emphasis_<!--{$column_seqno}-->" 
+								  style="width:98%;"
+								  required = "N"
+        						  title="<!--{$MUST_ENTRY_KEY_POINT_MSG|default:"請輸入培育重點 ."}-->"><!--{$FOSTER_PRIORITY}--></textarea></td>
+	</tr>
+	<tr>
+		<td class="column-label" width="100"><!--{$REMARK_LABEL|default:"備註"}--></td>
+		<td colspan="3"><textarea name="the_comments[]" 
+								  id="the_comments_<!--{$column_seqno}-->"
+								  rows="1" 
+								  style="width:98%;"><!--{$REMARK}--></textarea></td>
+	</tr>
+</table>

@@ -1,0 +1,68 @@
+
+<table class="bordertable" id="goal_set_tab">
+	<tr>
+		<th width="20">
+			<!--{$SEQ_LABEL|default:'序'}-->
+		</th>
+		<th>
+			<!--{$GOAL_CATALOG_LABEL|default:'目标类型'}-->
+		</th>
+		<th>
+			<!--{$WORK_GOAL_LABEL|default:'工作目标(KPI+KPI值)'}-->
+		</th>
+		<th>
+			<!--{$GOAL_WEIGHT_LABEL|default:'目标权重'}-->
+		</th>
+		<th>
+			<!--{$SEQ_LABEL|default:'序'}-->
+		</th>
+		<th>
+			<!--{$WORK_PLAN_LABEL|default:'工作计划(考核明细)'}-->
+		</th>
+		<th>
+			<!--{$PLAN_WEIGHT_LABEL|default:'计划权重'}-->
+		</th>
+		<th>
+			<!--{$ARCHIVE_DATE_LABEL|default:'达成日期'}-->
+		</th>
+		<th>
+			<!--{$OWNER_LABEL|default:'负责人'}-->
+		</th>
+		<th>
+			<!--{$REMARK_LABEL|default:'备注'}-->
+		</th>
+	</tr>
+
+	<!--{section name="i" loop=$pa_goal_list}-->
+	<tr class="master_row_<!--{$smarty.section.i.index}-->">
+		
+		<td <!--{$pa_goal_list[i].ROWSPAN}--> class="master_seqno"><!--{$pa_goal_list[i].SEQ}--></td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->><!--{$pa_goal_list[i].GOAL_TYPE_DESC}--></td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->><pre><!--{$pa_goal_list[i].WORK_GOAL}--></pre></td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->><!--{$pa_goal_list[i].GOAL_WEIGHT}--></td>
+		<!--{section name="k" loop=$pa_goal_list[i].detail max=1}-->
+		<td class="detail_seqno<!--{$smarty.section.i.index}-->">
+			<!--{$pa_goal_list[i].detail[k].SEQ}-->
+		</td>
+		<td><pre><!--{$pa_goal_list[i].detail[k].WORK_GOAL}--></pre></td>
+		<td><!--{$pa_goal_list[i].detail[k].GOAL_WEIGHT}--></td>
+		<td><!--{$pa_goal_list[i].detail[k].ARCHIVE_DATE}--></td>
+		<td><!--{$pa_goal_list[i].detail[k].WORK_OWNER}--></td>
+		<td><pre><!--{$pa_goal_list[i].detail[k].REMARK}--></pre></td>
+		<!--{/section}-->
+	</tr>
+
+	<!--{section name="j" loop=$pa_goal_list[i].detail start=1}-->
+	<tr class="master_row_<!--{$smarty.section.i.index}-->">
+		<td class="detail_seqno<!--{$smarty.section.i.index}-->">
+			<!--{$pa_goal_list[i].detail[j].SEQ}-->
+		</td>
+		<td><pre><!--{$pa_goal_list[i].detail[j].WORK_GOAL}--></pre></td>
+		<td><!--{$pa_goal_list[i].detail[j].GOAL_WEIGHT}--></td>
+		<td><!--{$pa_goal_list[i].detail[j].ARCHIVE_DATE}--></td>
+		<td><!--{$pa_goal_list[i].detail[j].WORK_OWNER}--></td>
+		<td><pre><!--{$pa_goal_list[i].detail[j].REMARK}--></pre></td>
+	</tr>
+	<!--{/section}-->
+<!--{/section}-->
+</table>

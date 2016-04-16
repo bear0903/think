@@ -1,0 +1,88 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_box_header.html" title=$BLOCK_TITLE|default:'菜單查詢' showLine=1}-->
+<!--{include file="block_box_header.html"}-->
+<form id="QueryForm" name="QueryForm" METHOD="POST" ACTION="#">
+	<table>
+	   <tr>
+			<td width="20%"><!--{$PARENT_MENU_LABEL|default:'上层菜单'}--> </td>
+			<td width="80%">
+			   <select id="function_id" class="select-input" NAME="FUNCTION_ID" REQUIRED=Y title='<!--{$MSG_INPUT_PLEASE|default:'请输入'}--><!--{$PARENT_MENU_LABEL|default:'上层菜单'}-->'>
+			   <!--{$menuCascade}-->
+			   </select>		   
+			   <input type="button" class="button-submit" VALUE=" <!--{$BTN_QRY_LABEL|default:'查询'}--> " id="doQuery">
+			</td>
+	   </tr>
+	</table>
+	<input type="hidden" name="do" value="MenuList">
+</form>
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_header.html"}-->
+<table class="bordertable">
+	<thead>
+		<tr>
+			<th><!--{$CHILD_ID_LABEL|default:'菜单代码'}--> </th>
+			<th><!--{$CHILD_NAME_LABEL|default:'菜单名称'}--> </th>
+			<th><!--{$CHILD_TYPE_LABEL|default:'类型'}-->  </th>
+			<th><!--{$CHILD_SUB_TYPE_LABEL|default:'子分類'}--></th>
+			<th><!--{$MENU_INDEX_LABEL|default:'排序'}--> </th>
+			<th><!--{$OPERATE|default:'操作'}--> </th>
+		</tr>
+	</thead>
+	<tbody>
+	<!--{section name="i" loop=$list}-->
+	<tr>
+
+	    <td><!--{$list[i].CHILD_ID}--></td>
+	    <td><!--{$list[i].CHILD_NAME}--></td>
+		<td><!--{$list[i].CHILD_TYPE}--></td>
+		<td><!--{$list[i].SUB_CHILD_TYPE}--></td>
+		<td><!--{$list[i].P_PRIOR}--></td>
+		<td>
+			<a href="javascript:doEdit('?scriptname=umd_menu_create&do=Edit&CHILD_ID=<!--{$list[i].CHILD_ID}-->&FUNCTION_ID=<!--{$list[i].FUNCTION_ID}-->');">
+				<!--{$BTN_UPDATE_LABEL|default:'修改'}-->
+			</a> 
+		    <a href="javascript:doDelete('?scriptname=umd_menu_list&do=Delete&CHILD_ID=<!--{$list[i].CHILD_ID}-->&CHILD_TYPE=<!--{$list[i].CHILD_TYPE}-->&FUNCTION_ID=<!--{$list[i].FUNCTION_ID}-->');">
+		    	<!--{$BTN_DELETE_LABEL|default:'删除'}-->
+		    </a>
+		</td>
+	</tr>
+	 <!--{/section}-->
+	 
+        <tr><td colspan="6"><!--{$pageDownUp}--></td></tr>
+	 </tbody>
+</table>
+<!--{include file="block_box_footer.html"}-->
+
+<!--{include file="block_box_footer.html"}-->
+
+<script src="../js/functions.js" language = "JavaScript" type = "text/javascript" charset = "utf-8"></script>
+<script type="text/javascript">
+    $("#doCancel").click(function(){
+           clearForm('editForm');
+    });
+    $("#doQuery").click(function(){
+          document.QueryForm.submit(); //doSave();
+    });
+
+    $("#function_id").change(function(){
+        $("#menu_code").val(this.options[this.selectedIndex].value);
+    });
+
+
+    function doDelete(url){
+        var confirm=window.confirm("<!--{$MSG_DELETE_CONFIRM|default:'确认删除?'}-->");
+        if(confirm)   location.href=url;
+    }
+    function doEdit(url){
+        location.href=url;
+    }
+    function doPermission(url){
+        location.href=url;
+    }
+</script>
+ 
+
+

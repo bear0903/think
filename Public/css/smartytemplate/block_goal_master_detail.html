@@ -1,0 +1,296 @@
+
+<style type="text/css">
+.input-date {
+	width: 70px;
+}
+
+.goal_type {
+	width: 80px;
+}
+
+.work-goal {
+	height: 98%;
+}
+
+.work-plan {
+	width: 98%;
+}
+
+.add-detail-row,.del_detail_row {
+	width: 24px;
+	height: 24px;
+}
+
+</style>
+
+
+<table class="bordertable" id="goal_set_tab">
+	<tr>
+		<td colspan="12" style="text-align: right;">
+			<button id="add_row_btn">添加目标</button>
+			<button id="del_row_btn">删除目标</button>
+		</td>
+	</tr>
+	<tr>
+		<th width="10"></th>
+		<th width="20">
+			<!--{$SEQ_LABEL|default:'序'}-->
+		</th>
+		<th>
+			<!--{$GOAL_CATALOG_LABEL|default:'目标类型'}-->
+		</th>
+		<th>
+			<!--{$WORK_GOAL_LABEL|default:'工作目标(KPI+KPI值)'}-->
+		</th>
+		<th>
+			<!--{$GOAL_WEIGHT_LABEL|default:'目标权重'}-->
+		</th>
+		<th>
+			<!--{$SEQ_LABEL|default:'序'}-->
+		</th>
+		<th>
+			<!--{$WORK_PLAN_LABEL|default:'工作计划(考核明细)'}-->
+		</th>
+		<th>
+			<!--{$PLAN_WEIGHT_LABEL|default:'计划权重'}-->
+		</th>
+		<th>
+			<!--{$ARCHIVE_DATE_LABEL|default:'达成日期'}-->
+		</th>
+		<th>
+			<!--{$OWNER_LABEL|default:'负责人'}-->
+		</th>
+		<th>
+			<!--{$REMARK_LABEL|default:'备注'}-->
+		</th>
+		<th width="40">
+			<!--{$EDIT_LABEL|default:'操作'}-->
+		</th>
+	</tr>
+
+	<!--{section name="i" loop=$pa_goal_list}-->
+	<tr class="master_row_<!--{$smarty.section.i.index}-->">
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->>
+			<!--{ if ($pa_goal_list[i].IS_APPROVED != 'Y')}-->
+			<input type="checkbox" class="master_chk" />
+			<!--{else}-->
+			<input type="hidden" name="master_id[<!--{$smarty.section.i.index}-->]" value="<!--{$pa_goal_list[i].MASTER_GOAL_SEQNO}-->">
+			<input type="hidden" name="master_is_approved[<!--{$smarty.section.i.index}-->]" value="<!--{$pa_goal_list[i].IS_APPROVED}-->">
+			&nbsp;
+			<!--{/if}-->
+		</td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}--> class="master_seqno"><!--{$pa_goal_list[i].SEQ}--></td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->>
+			<!--{ if ($pa_goal_list[i].IS_APPROVED != 'Y')}-->
+			<select class="goal_type"
+					name="goal_type[<!--{$smarty.section.i.index}-->]"
+					default="<!--{$pa_goal_list[i].GOAL_TYPE_ID}-->"
+					class="goal_type required">
+				<option value="">
+					<!--{$PLEASE_SELECT_LABEL}-->
+				</option>
+				<!--{html_options options=$goal_type_list selected=$s_goal_type_id}-->
+			</select>
+			<!--{else}-->
+			<input type="hidden" name="goal_type[<!--{$smarty.section.i.index}-->]"
+				value="<!--{$pa_goal_list[i].GOAL_TYPE_ID}-->">
+			<!--{$pa_goal_list[i].GOAL_TYPE_DESC}-->
+			<!--{/if}-->
+		</td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->>
+			<!--{ if ($pa_goal_list[i].IS_APPROVED != 'Y')}-->
+			<textarea
+				name="work_goal[<!--{$smarty.section.i.index}-->]" cols="10" rows="2"
+				class="work_goal required"><!--{$pa_goal_list[i].WORK_GOAL}--></textarea>
+			<!--{else}-->
+			<textarea style="display:none;" name="work_goal[<!--{$smarty.section.i.index}-->]"><!--{$pa_goal_list[i].WORK_GOAL}--></textarea>
+			<!--{$pa_goal_list[i].WORK_GOAL}-->
+			<!--{/if}-->
+		</td>
+		<td <!--{$pa_goal_list[i].ROWSPAN}-->> 
+			<!--{ if ($pa_goal_list[i].IS_APPROVED != 'Y')}-->
+			<input type="text" size="5"
+			name="wgoal_weight[<!--{$smarty.section.i.index}-->]"
+			value="<!--{$pa_goal_list[i].GOAL_WEIGHT}-->" class="wgoal_weight required number" />
+			<!--{else}-->
+			<input type="hidden"
+				name="wgoal_weight[<!--{$smarty.section.i.index}-->]"
+				value="<!--{$pa_goal_list[i].GOAL_WEIGHT}-->">
+			<!--{$pa_goal_list[i].GOAL_WEIGHT}-->
+			<!--{/if}-->
+		</td>
+		<!--{section name="k" loop=$pa_goal_list[i].detail max=1}-->
+		<td class="detail_seqno<!--{$smarty.section.i.index}-->">
+			<!--{$pa_goal_list[i].detail[k].SEQ}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[k].IS_APPROVED != 'Y')}-->
+			<textarea
+				name="work_plan[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"  cols="10" rows="2" 
+				class="work_plan required"><!--{$pa_goal_list[i].detail[k].WORK_GOAL}--></textarea>
+			<!--{else}-->
+			<textarea style="display:none;"
+				name="work_plan[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"><!--{$pa_goal_list[i].detail[k].WORK_GOAL}--></textarea>
+			<!--{$pa_goal_list[i].detail[k].WORK_GOAL}-->
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[k].IS_APPROVED != 'Y')}-->
+			<input type="text" size="5"
+			name="plan_weight[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"
+			value="<!--{$pa_goal_list[i].detail[k].GOAL_WEIGHT}-->"
+			class="plan_weight required number" />
+			<!--{else}-->
+			<input type="hidden" 
+			name="plan_weight[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"
+			value="<!--{$pa_goal_list[i].detail[k].GOAL_WEIGHT}-->">
+			<!--{$pa_goal_list[i].detail[k].GOAL_WEIGHT}-->
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[k].IS_APPROVED != 'Y')}-->
+			<input type="text" 
+				name="archive_date[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[k].ARCHIVE_DATE}-->"
+				class="input-date required date" />
+			<!--{else}-->
+			<input type="hidden" 
+				name="archive_date[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[k].ARCHIVE_DATE}-->"/>
+			<!--{$pa_goal_list[i].detail[k].ARCHIVE_DATE}-->
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[k].IS_APPROVED != 'Y')}-->
+			<input type="text" size="5"
+				name="work_owner[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[k].WORK_OWNER}-->"
+				class="required" />
+			<!--{else}-->
+			<input type="hidden"
+			name="work_owner[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"
+			value="<!--{$pa_goal_list[i].detail[k].WORK_OWNER}-->">
+			<!--{$pa_goal_list[i].detail[k].WORK_OWNER}-->
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[k].IS_APPROVED == 'Y')}-->
+			<input type="hidden" name="master_goal_seqno[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]" 
+			value="<!--{$pa_goal_list[i].detail[k].MASTER_GOAL_SEQNO}-->">
+			<input type="hidden" name="detail_goal_seqno[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]" 
+			value="<!--{$pa_goal_list[i].detail[k].DETAIL_GOAL_SEQNO}-->">
+			<input type="hidden" name="is_approved[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]" 
+			value="<!--{$pa_goal_list[i].detail[k].IS_APPROVED}-->">
+			
+			<textarea
+				name="old_remark[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"  cols="10" rows="2"
+				style="display:none;"><!--{$pa_goal_list[i].detail[k].REMARK}--></textarea>
+			<!--{$pa_goal_list[i].detail[k].REMARK}-->
+			<textarea
+				name="remark[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"  cols="10" rows="2"
+				class="work_plan"></textarea>
+			<!--{else}-->
+			<textarea
+				name="remark[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.k.index}-->]"  cols="10" rows="2"
+				class="work_plan"><!--{$pa_goal_list[i].detail[k].REMARK}--></textarea>
+			<!--{/if}-->
+		</td>
+		<td><button class="add-detail-row">添加工作计划</button></td>
+		<!--{/section}-->
+	</tr>
+
+	<!--{section name="j" loop=$pa_goal_list[i].detail start=1}-->
+	<tr class="master_row_<!--{$smarty.section.i.index}-->">
+		<td class="detail_seqno<!--{$smarty.section.i.index}-->">
+			<!--{$pa_goal_list[i].detail[j].SEQ}-->
+		</td>
+		<td>
+		<!--{ if ($pa_goal_list[i].detail[j].IS_APPROVED != 'Y')}-->
+			<textarea
+				name="work_plan[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"  cols="10" rows="2"
+				class="work-plan required"><!--{$pa_goal_list[i].detail[j].WORK_GOAL}--></textarea>
+		<!--{else}-->
+			<textarea style="display:none;"
+			name="work_plan[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"><!--{$pa_goal_list[i].detail[j].WORK_GOAL}--></textarea>
+		<!--{$pa_goal_list[i].detail[j].WORK_GOAL}-->
+		<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[j].IS_APPROVED != 'Y')}-->
+			<input type="text" size="5"
+				name="plan_weight[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[j].GOAL_WEIGHT}-->"
+				class="plan_weight required nubmer" />
+			<!--{else}-->
+			<input type="hidden"
+				name="plan_weight[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[j].GOAL_WEIGHT}-->"/>
+			<!--{$pa_goal_list[i].detail[j].GOAL_WEIGHT}-->
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[j].IS_APPROVED != 'Y')}-->
+			<input type="text"
+				name="archive_date[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[j].ARCHIVE_DATE}-->"
+				class="input-date required date" />
+			<!--{else}-->
+			<input type="hidden"
+				name="archive_date[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[j].ARCHIVE_DATE}-->">
+			<!--{$pa_goal_list[i].detail[j].ARCHIVE_DATE}-->
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[j].IS_APPROVED != 'Y')}-->
+			<input type="text" size="5"
+				name="work_owner[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[j].WORK_OWNER}-->"
+				class="required" />
+			<!--{else}-->
+			<input type="hidden"
+				name="work_owner[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"
+				value="<!--{$pa_goal_list[i].detail[j].WORK_OWNER}-->">
+			<!--{$pa_goal_list[i].detail[j].WORK_OWNER}-->
+			<!--{/if}-->
+		</td>
+		<td>
+		<!--{ if ($pa_goal_list[i].detail[j].IS_APPROVED == 'Y')}-->
+			<input type="hidden" name="master_goal_seqno[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]" 
+				value="<!--{$pa_goal_list[i].detail[j].MASTER_GOAL_SEQNO}-->">
+			<input type="hidden" name="detail_goal_seqno[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]" 
+				value="<!--{$pa_goal_list[i].detail[j].DETAIL_GOAL_SEQNO}-->">
+			<input type="hidden" name="is_approved[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]" 
+				value="<!--{$pa_goal_list[i].detail[j].IS_APPROVED}-->">
+			<textarea
+				name="old_remark[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"  cols="10" rows="2"
+				style="display:none;"><!--{$pa_goal_list[i].detail[j].REMARK}--></textarea>
+			<!--{$pa_goal_list[i].detail[j].REMARK}-->
+			<textarea
+				name="remark[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"  cols="10" rows="2"
+				class="work_plan"></textarea>
+			<!--{else}-->
+			<textarea
+				name="remark[<!--{$smarty.section.i.index}-->][<!--{$smarty.section.j.index}-->]"  cols="10" rows="2"
+				class="work_plan"><!--{$pa_goal_list[i].detail[j].REMARK}--></textarea>
+			<!--{/if}-->
+		</td>
+		<td>
+			<!--{ if ($pa_goal_list[i].detail[j].IS_APPROVED != 'Y')}-->
+			<button class="del_detail_row">删除工作计划</button>
+			<!--{/if}-->
+		</td>
+	</tr>
+	<!--{/section}-->
+<!--{/section}-->
+</table>
+
+<script type="text/javascript">
+	$().ready(function(){
+		$('select').each(function(){
+			$(this).val($(this).attr('default'));
+		});
+	});
+</script>
+<!-- public js file  -->
+<!--{include file="pa_goal_js.html"}-->

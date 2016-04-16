@@ -1,0 +1,50 @@
+
+<script type="text/javascript">
+   /* add to staff iframe */
+	var current_menu = '';
+	function  lightIcon(t1){
+	   if(current_menu==t1) return false;
+	   //document.getElementById(t1).src='<!--{$IMG_DIR}-->/Person.png';
+	   $('#'+t1).attr('src','<!--{$IMG_DIR}-->/Person.png');
+	}
+	function darkIcon(t1){
+		 if(current_menu==t1) return false;
+		 //document.getElementById(t1).src='<!--{$IMG_DIR}-->/2Person.png';
+		 $('#'+t1).attr('src','<!--{$IMG_DIR}-->/2Person.png');
+	}
+	function lockDarkIcon(t1){
+		if(current_menu==t1) return false;
+		 //document.getElementById(t1).src='<!--{$IMG_DIR}-->/3Person.png';
+		 $('#'+t1).attr('src','<!--{$IMG_DIR}-->/3Person.png');
+		 //if(document.getElementById(current_menu))
+		 if($('#'+current_menu))
+			 //document.getElementById(current_menu).src='<!--{$IMG_DIR}-->/Person.png';
+			 $('#'+current_menu).attr('src','<!--{$IMG_DIR}-->/Person.png');
+		 current_menu = t1;
+	}
+</script>
+</head>
+<body>
+	<!--{* left navigator menu *}-->
+	<div style="width:165px;float:left; margin-left:-15px;">
+		<!--{include file="block_box_header.html" title=$smarty.get.moduledesc}-->
+		<!--{$submenu}-->
+		<!--{include file="block_box_footer.html"}-->
+	</div>
+	<!--{* main area begin *}-->
+	<div style="float:left;margin-left:13px;overflow-y:auto;overflow-x:hidden;" id="main_content_<!--{$smarty.get.moduleid}-->">
+		<iframe frameborder="0" width="100%"
+		        marginwidth="0" marginheight="0"
+				src="?scriptname=<!--{$smarty.get.moduleid}-->&menu_offset=<!--{$smarty.get.menu_offset}-->&rand=<!--{$rand}-->" 
+		        name="<!--{$smarty.get.moduleid}-->" 
+		        id="frameid_<!--{$smarty.get.moduleid}-->"
+		        scrolling="auto"
+		        allowtransparency="true"></iframe>
+	</div>
+	<div style="clear:both;"></div>
+	<!--{* main area end *}-->
+	
+<script type="text/javascript">
+	$('#main_content_<!--{$smarty.get.moduleid}-->').width($(window).width()-235);
+	$('#main_content_<!--{$smarty.get.moduleid}-->').height($(window).height()-155);
+</script>

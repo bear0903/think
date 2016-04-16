@@ -1,0 +1,84 @@
+
+	<table class="bordertable">
+		<tr>
+			<td width="100" class="column-label"><!--{$NOCARD_DATE_LABEL}--> *</td>
+			<td>
+				<input type="text"
+					   name="nocard_date"
+					   id="nocard_date"
+					   title="Date Format: YYYY-MM-DD"
+					   value="<!--{$smarty.now|date_format:"%Y-%m-%d"}-->"
+					   style="width:82px;"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="column-label"><!--{$NOCARD_REASON_LABEL}--> *</td>
+			<td>
+				<select name="nocard_reason"
+						id="nocard_reason"
+						class="reason-select">
+				<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+				<!--{html_options options=$nocard_reason_list selected=$s_nocard_reason_id}-->
+				</select>
+			</td>
+		</tr>
+		<!--{section name="i" loop=$shiftype_list}-->
+		<tr>
+			<td class="column-label">
+                <input type="checkbox"
+					   name="shift_type_<!--{$shiftype_list[i].PARAMETER_ID}-->"
+					   id="shift_type_<!--{$shiftype_list[i].PARAMETER_ID}-->"/>
+                <!--{$shiftype_list[i].PARAMETER_VALUE|substr:2}-->
+            </td>
+			<td>
+				<!-- 
+                <select name="nocard_reason_<!--{$shiftype_list[i].PARAMETER_ID}-->"
+						id="nocard_reason_<!--{$shiftype_list[i].PARAMETER_ID}-->"
+						class="reason-select">
+					<option value=""><!--{$PLEASE_SELECT_LABEL}--></option>
+					<!--{html_options options=$nocard_reason_list selected=$s_nocard_reason_id}-->
+				</select> -->
+				<!--{include file="block_hour_minute.html" prefix="nocard_"|cat:$shiftype_list[i].PARAMETER_ID}-->			</td>
+		</tr>
+		<!--{/section}-->
+	    <tr>
+			<td class="column-label"><!--{$REMARK_LABEL}--></td>
+			<td>
+				<textarea name="remark" id="remark" style="width:200px;"></textarea>
+			</td>
+		</tr>
+		<tr>
+            <td></td>
+			<td align="center">
+				<input type="submit" name="submit" value="<!--{$SUBMIT_BTN_LABEL}-->" class="button-submit"/>
+			    <input type="submit" name="save"   value="<!--{$TMP_SUBMIT_BTN_LABEL}-->" class="button-submit" title="Save Data Only"/>
+			</td>
+		</tr>
+	</table>
+	<script src="<!--{$JS_DIR}-->/date.js" type = "text/javascript"></script>
+	<script src="<!--{$JS_DIR}-->/jquery.maskedinput.min.js" type = "text/javascript"></script>
+	<script type="text/javascript">
+		$().ready(function(){
+			var _dateFormat = "yyyy-MM-dd";
+			$("#nocard_date").mask("9999-99-99").blur(function(){
+				if ($(this).val() != ''){
+					if(!Date.isValid($(this).val(),_dateFormat)) {
+						alert('日期输入有误');
+						$(this).focus();
+						return false;
+					}
+				}
+			});
+			
+			$('#nocard_date').datepicker({
+				dateFormat:'yy-mm-dd',
+				changeMonth:true,
+				changeYear:true,
+			 	showOn: "button",
+			 	buttonImage: "../img/date.png",
+			 	buttonImageOnly: true
+			});
+	    	
+	    	$('.ui-datepicker-trigger').attr('style','margin-left:2px;margin-bottom:-4px;');
+		});
+	</script>

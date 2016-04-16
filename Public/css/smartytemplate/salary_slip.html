@@ -1,0 +1,46 @@
+
+</head>
+<body class="page-container">
+<!--{include file="block_salary_period.html"}-->
+<!--{include file="block_box_header.html"}-->
+<table class="bordertable">
+	<tr>
+		<th nowrap><!--{$ROW_NO_LABEL}--></th>
+		<th nowrap><!--{$SALARY_YM_LABEL}--></th>
+		<th nowrap><!--{$FACT_SALARY_LABEL}--></th>
+		<th nowrap><!--{$FIX_SALARY_LABEL}--></th>
+		<th nowrap><!--{$TEMPORARY_SALARY_LABEL}--></th>
+		<th nowrap><!--{$OVERTIME_SALARY_LABEL}--></th>
+		<th nowrap><!--{$LEAVE_SALARY_LABEL}--></th>
+		<th nowrap><!--{$INSURANCE_SALARY_LABEL}--></th>
+		<th nowrap><!--{$TAX_AMOUNT_LABEL}--></th>
+		<th nowrap><!--{$WELFARE_AMOUNT_LABEL}--></th>
+		<!-- {* 福利金 *}-->
+		<th nowrap><!--{$SALARY_TAX_LABEL}--></th>
+		<th nowrap><!--{$VIEW_RESULT_LABEL}--></th>
+	</tr>
+	<!--{section name="salary_form" loop=$salary_form_list}-->
+	<tr>
+		<td align="center"><!--{$smarty.section.salary_form.index+1}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].PERIOD_DETAIL_ID1}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].EMP_TOTAL_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].FIX_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].TEMP_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].OVERTIME_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].ABSENCE_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].INSURE_EMP_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].TAX_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].WELFARE_AMOUNT|string_format:"%.2f"|number_format:2}--></td>
+		<td align="center"><!--{$salary_form_list[salary_form].SALARY_TAX|string_format:"%.2f"|number_format:2}--></td>
+		<td>
+			<a href="?scriptname=salary_slip_detail&salary_period_id=<!--{$salary_form_list[salary_form].PERIOD_DETAIL_ID}-->&emp_seq_no=<!--{$salary_form_list[salary_form].EMP_SEQ_NO}-->&salary_key_id=<!--{$salary_form_list[salary_form].PERIODSALARY_RESULT_ID}-->&period_year=<!--{$year}-->&period_month=<!--{$month}-->&appdesc=<!--{$BLOCK_TITLE}-->">
+			<img src="<!--{$IMG_DIR}-->/pe.png" width="16" height="16" border="0"> </a>
+		</td>
+	</tr>
+	<!--{sectionelse}-->
+	<tr>
+		<td colspan="12"><!--{include file="block_info.html" msg_txt=$NO_DATA_FOUND_MSG}--></td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{include file="block_box_footer.html"}-->
