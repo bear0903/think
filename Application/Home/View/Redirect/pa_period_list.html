@@ -1,0 +1,80 @@
+
+<!--{if count($pa_goal_list)> 0  || count($pa_goal_edit_list) > 0}-->
+<table class="bordertable">
+	<tr><td class="column-label" colspan="5"><!--{"期初目标设定"}--></td></tr>
+	<tr>
+		<th width="40"><!--{$YEAR_LABEL}--></th>
+        <th width="120"><!--{$PA_PERIOD_LABEL}--></th>
+        <th width="160"><!--{$SELF_PERIOD_DATE_LABEL}--></th>
+        <!--{if count($pa_goal_edit_list)>0 }-->
+        <th width="120"><!--{'状态'}--></th>
+        <th width="120"><!--{'审核日期'}--></th>
+        <th><!--{'主管备注'}--></th>
+        <!--{/if}-->
+        <th nowrap><!--<"填寫"}--></th>
+	</tr>
+	<!--{section name="i" loop=$pa_goal_list}-->
+	<tr>
+		<td><!--{$pa_goal_list[i].PA_YEAR}--></td>
+		<td><!--{$pa_goal_list[i].PA_PERIOD_DESC}--></td>
+		<td><!--{$pa_goal_list[i].PA_BEGIN_DATE}-->~<br/><!--{$pa_goal_list[i].PA_END_DATE}--></td>
+		<td nowrap>
+			<a href="../ess/redirect.php?scriptname=pa_goal_setting&pa_seqno=<!--{$pa_goal_list[i].PA_FORM_SEQNO}-->">填写</a>
+		</td>
+	</tr>
+	<!--{/section}-->
+	<!--{if count($pa_goal_edit_list)>0 }-->
+	<!--{section name="j" loop=$pa_goal_edit_list}-->
+	
+	<!--{if $pa_goal_edit_list[j].IS_MGR_MODIFY == 'Y' }--><!-- <strong>[主管有修改内容]</strong> --><!--{/if}-->
+	<tr>
+		<td><!--{$pa_goal_edit_list[j].PA_YEAR}--></td>
+		<td><!--{$pa_goal_edit_list[j].PA_PERIOD_DESC}--></td>
+		<td><!--{$pa_goal_edit_list[j].PA_BEGIN_DATE}-->~<br/><!--{$pa_goal_edit_list[j].PA_END_DATE}--></td>
+		<td><!--{$pa_goal_edit_list[j].FORM_STATUS}--></td>
+		<td><!--{$pa_goal_edit_list[j].MGR_APPROVE_DATE}--></td>
+		<td><!--{$pa_goal_edit_list[j].MGR_COMMENT}--></td>
+		<td nowrap>
+			<a href="../ess/redirect.php?scriptname=pa_goal_edit&pa_seqno=<!--{$pa_goal_edit_list[j].PA_FORM_SEQNO}-->">修改</a>
+		</td>
+	</tr>
+	<!--{/section}-->
+	<!--{/if}-->
+</table>
+<!--{/if}-->
+
+<!--{if count($pa_goal_emp_list)> 0  }-->
+<table class="bordertable">
+	<tr><td class="column-label" colspan="6"><!--{"期初目标审核"}--></td></tr>
+	<tr>
+		<th width="40"><!--{$YEAR_LABEL}--></th>
+        <th><!--{$PA_PERIOD_LABEL}--></th>
+        <th><!--{$SELF_PERIOD_DATE_LABEL}--></th>
+        <th><!--{'员工代码'}-->
+        <th><!--{'姓名'}-->
+        <th><!--{'提交时间'}-->
+        <th width="100"></th>
+	</tr>
+	<!--{section name="i" loop=$pa_goal_emp_list}-->
+	<tr>
+		<td><!--{$pa_goal_emp_list[i].PA_YEAR}--></td>
+		<td><!--{$pa_goal_emp_list[i].PA_PERIOD_DESC}--></td>
+		<td><!--{$pa_goal_emp_list[i].PA_BEGIN_DATE}-->~<br/><!--{$pa_goal_emp_list[i].PA_END_DATE}--></td>
+		<td><!--{$pa_goal_emp_list[i].EMP_ID}--></td>
+		<td><!--{$pa_goal_emp_list[i].EMP_NAME}--></td>
+		<td><!--{$pa_goal_emp_list[i].SUBMIT_DATE}--></td>
+		<td nowrap>
+			<a href="../ess/redirect.php?scriptname=pa_goal_setting_view&pa_seqno=<!--{$pa_goal_emp_list[i].PA_FORM_SEQNO}-->&empseqno=<!--{$pa_goal_emp_list[i].EMP_SEQNO}-->">查看</a>
+		</td>
+	</tr>
+	<!--{/section}-->
+</table>
+<!--{/if}-->
+
+<!--{if count($pa_period_list)>0 }-->
+<!--{include file="../../ess/smartytemplate/block_pa_period_list.html"}-->
+<!--{/if}-->
+
+<!--{if count($pa_forms_list)>0 }-->
+<!--{include file="../../ess/smartytemplate/block_can_pa_forms.html"}-->
+<!--{/if}-->

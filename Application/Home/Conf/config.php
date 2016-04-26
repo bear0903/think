@@ -9,5 +9,16 @@ return array(
 	'DB_PWD' =>'hcp',
 	'DB_CHARSET'=>'utf8',
 	'DB_PORT'=>'1521',
-	'DB_DEBUG'=>true	
+	'DB_DEBUG'=>true,	
+		
+/*		'TMPL_ENGINE_TYPE'  => 'Smarty',
+		'TMPL_ENGINE_CONFIG'  => array(
+				'caching'	=> true,
+				'template_air' => TMPL_PATH,
+				'compile'	   => TEMP_PATH,
+				'cache_air'	   => CACHE_PATH,
+				'left_delimiter'  => '{',
+				'right_delimiter' => '}',
+		),*/
+		
 );

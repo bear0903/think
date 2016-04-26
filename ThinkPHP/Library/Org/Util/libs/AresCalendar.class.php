@@ -14,7 +14,12 @@
  *  $LastChangedDate: 2014-04-04 15:17:10 +0800 (周五, 04 四月 2014) $
  \****************************************************************************/
 //include_once("AresCalendarCN.php");
-class SolarCalendar {
+namespace Org\Util\libs;
+use Think\Controller;
+use Think\Mode;
+
+//include_once("AresCalendarCN.php");
+class AresCalendar {
 	public $startDay = 0;
 	public $startMonth = 1;
 	public $year;
@@ -26,19 +31,19 @@ class SolarCalendar {
 	public $calendar;
 	public $url; // link to self page, for refresh current page
 	
-	public $dayNamesMultiLang = array ("zhs" => array ("日", "一", "二", "三", "四", "五", "六" ), 
-										"zht" => array ("日", "一", "二", "三", "四", "五", "六" ), 
-										"us" => array ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
-	public $monthNamesMultiLang = array ("zhs" => array ("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"),
-	 "zht" => array ("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" ), 
-	 "us" => array ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
+	public $dayNamesMultiLang = array ("ZHS" => array ("日", "一", "二", "三", "四", "五", "六" ), 
+										"ZHT" => array ("日", "一", "二", "三", "四", "五", "六" ), 
+										"US" => array ("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"));
+	public $monthNamesMultiLang = array ("ZHS" => array ("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"),
+	 "ZHT" => array ("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" ), 
+	 "US" => array ("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
 	
 	public $daysInMonth = array (31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 );
 	
 	public $legendColors = array ("today" => "#FFD6EB", 
 								"weekendBgColor" => "#93FF93", 
 								"weekendFtColor" => "#6600FF", 
-								"legalHoliday" => "#C641C6", 
+								"legalholiday" => "#C641C6", 
 								"exceptionDay" => "#F8EDC6", 
 								"unschedule" => "#C6C3C6", 
 								"fontcolor" => "#000000", 
@@ -61,6 +66,7 @@ class SolarCalendar {
 	 * @author Dennis 
 	 */
 	function __construct($year, $month, $company_id, $emp_seq_no, $language = "zhs",$url='') {
+		
 		global $g_db_sql;
 		$this->DBConn = &$g_db_sql;
 		$this->year = $year;
@@ -69,6 +75,8 @@ class SolarCalendar {
 		$this->dayNames = $this->dayNamesMultiLang[$this->defaultLang];
 		$this->monthNames = $this->monthNamesMultiLang[$this->defaultLang];
 		$this->calendar = $this->GetMyCalendar($year, $month, $company_id, $emp_seq_no);
+		//dump($this->calendar = $this->GetMyCalendar($year, $month, $company_id, $emp_seq_no));
+		
 		$this->url = $url;
 	}// end Calendar()
 	
@@ -84,21 +92,27 @@ class SolarCalendar {
 	 *	@last update: 2006-04-17 14:25:42  by dennis
 	 */
 	function GetMyCalendar($year, $month, $company_id, $emp_seq_no) {
-		$sql_string = <<<eof
-			select to_char(my_day,'YYYY-MM-DD') as my_day,
-				   workgroup_name,
-				   to_char(in_time,'YYYY-MM-DD') as shift_in_time,
-				   to_char(in_time,'YYYY-MM-DD HH24:MI:SS')  as in_time,
-				   to_char(out_time,'YYYY-MM-DD HH24:MI:SS') as out_time,
-				   holiday_code,
-				   holiday
-			  from ehr_calendar_v
-			 where company_id = '$company_id'
-			   and emp_seq_no = '$emp_seq_no'
-			   and to_char(my_day, 'YYYYMM') = to_char(to_date('$year$month','YYYYMM'),'YYYYMM')
-eof;
+		$model = M();
+		$sql ="select to_char(my_day,'YYYY-MM-DD') as my_day,
+				workgroup_name,
+           to_char(in_time,'YYYY-MM-DD') as shift_in_time,
+           to_char(in_time,'YYYY-MM-DD HH24:MI:SS') as in_time,
+           to_char(out_time,'YYYY-MM-DD HH24:MI:SS') as out_time,
+           holiday_code,
+           holiday
+        from ehr_calendar_v
+       where company_id = '".$company_id."'
+         and emp_seq_no = '".$emp_seq_no."'
+         and to_char(my_day, 'YYYYMM') = to_char(to_date('".$year."".$month."','YYYYMM'),'YYYYMM')
+				";
+// 		dump($sql);
+// 		exit();
+		//return $this->DBConn->CacheGetArray(self::DATA_CACHE_SECCOND,$sql_string );
+		$day_work = $model->query($sql);
+		return $day_work;	
+
 		//$this->DBConn->debug = 1;
-		return $this->DBConn->CacheGetArray(self::DATA_CACHE_SECCOND,$sql_string );
+		//return $this->DBConn->CacheGetArray(self::DATA_CACHE_SECCOND,$sql_string );
 	}
 	
 	function getDayNames() {
@@ -142,13 +156,13 @@ eof;
 		$_fullDay = $this->formatNumber($day );
 		$link = "";
 		
-		if (is_array($this->calendar)&& isset($this->calendar[$day - 1]["SHIFT_IN_TIME"])&& $this->calendar[$day - 1]["SHIFT_IN_TIME"] == "$year-$_fullMonth-$_fullDay" && isset($this->calendar[$day - 1]["ABSENCE_NAME"] )) {
+		if (is_array($this->calendar)&& isset($this->calendar[$day - 1]["shift_in_time"])&& $this->calendar[$day - 1]["shift_in_time"] == "$year-$_fullMonth-$_fullDay" && isset($this->calendar[$day - 1]["absence_name"] )) {
 			$link = "<a href=\"";
 			$link .= $this->leaveDetailUrl;
 			$link .= "&myday=";
-			$link .= $this->calendar[$day - 1]["SHIFT_IN_TIME"];
+			$link .= $this->calendar[$day - 1]["shift_in_time"];
 			$link .= "\">";
-			$link .= $this->calendar[$day - 1]["ABSENCE_NAME"];
+			$link .= $this->calendar[$day - 1]["absence_name"];
 			$link .= "</a>";
 		}
 		return $link;
@@ -190,10 +204,10 @@ eof;
 		$dday = 0;
 		if (is_array($this->calendar)&& count($this->calendar)> 0) {
 			
-			$pieces = explode("-", $this->calendar[0]["SHIFT_IN_TIME"] );
+			$pieces = explode("-", $this->calendar[0]["shift_in_time"] );
 			$startworktime = mktime(0, 0, 0, $pieces[1], $pieces[2], $pieces[0] ); //工作开始时间戳
 			$starttime = mktime(0, 0, 0, $month, $day, $year ); //每月的开始时间戳
-			$startday = substr($this->calendar[0]["SHIFT_IN_TIME"], - 2 ); //开始工作时间日期
+			$startday = substr($this->calendar[0]["shift_in_time"], - 2 ); //开始工作时间日期
 
 			if (substr($startday, 0, 1)> 0) {
 				$startday = $startday;
@@ -205,34 +219,38 @@ eof;
 			} else {
 				$dday = $day;
 			}
-			
-			if (isset($this->calendar[$dday - 1]["SHIFT_IN_TIME"])&& ("$starttime" > "$startworktime" or ($this->calendar[$dday - 1]["SHIFT_IN_TIME"] == "$year-$_fullMonth-$_fullDay"))) {
+
+			if (isset($this->calendar[$dday - 1]["shift_in_time"]) && ("$starttime" > "$startworktime" or ($this->calendar[$dday - 1]["shift_in_time"] == "$year-$_fullMonth-$_fullDay"))) {
+
 				//预设是正常工作日
+				//echo '123';
 				$_cellAtts["bgcolor"] = $this->legendColors["normalDay"];
-				$_tooltipHtml = $this->calendar[$dday - 1]["WORKGROUP_NAME"];
-				$_tooltipHtml .= "\n-------------------\n" . $this->calendar[$dday - 1]["IN_TIME"];
-				$_tooltipHtml .= "\n" . $this->calendar[$dday - 1]["OUT_TIME"];
+				//echo '456';
+				$_tooltipHtml = $this->calendar[$dday - 1]["workgroup_name"];
+				$_tooltipHtml .= "\n-------------------\n" . $this->calendar[$dday - 1]["in_time"];
+				$_tooltipHtml .= "\n" . $this->calendar[$dday - 1]["out_time"];
 				
-				if ((isset($this->calendar[$dday - 1]["HOLIDAY_CODE"])&& $this->calendar[$dday - 1]["HOLIDAY_CODE"] == "S")) {
+				if ((isset($this->calendar[$dday - 1]["holiday_code"])&& $this->calendar[$dday - 1]["holiday_code"] == "S")) {
+					//exit();
 					// get week-end day bgcolor and fontcolor
 					$_cellAtts["bgcolor"] = $this->legendColors["weekendBgColor"];
 					$_cellAtts["ftcolor"] = $this->legendColors["weekendFtColor"];
-					$_tooltipHtml = "\n" . $this->calendar[$dday - 1]["HOLIDAY"];
+					$_tooltipHtml = "\n" . $this->calendar[$dday - 1]["holiday"];
 				} // end 周末               
 				
 
 				// 国定假日
-				if (isset($this->calendar[$dday - 1]["HOLIDAY_CODE"])&& $this->calendar[$dday - 1]["HOLIDAY_CODE"] == "H") {
+				if (isset($this->calendar[$dday - 1]["holiday_code"])&& $this->calendar[$dday - 1]["holiday_code"] == "H") {
 					// get legal holiday bgcolor and name
-					$_cellAtts["bgcolor"] = $this->legendColors["legalHoliday"];
-					$_tooltipHtml = "\n" . $this->calendar[$dday - 1]["HOLIDAY"] . "\n";
+					$_cellAtts["bgcolor"] = $this->legendColors["legalholiday"];
+					$_tooltipHtml = "\n" . $this->calendar[$dday - 1]["holiday"] . "\n";
 				} // end 国定假日
 			}
 		}
 		if ($dday>0){
-    		$_cellAtts['distext'] = isset($this->calendar[$dday - 1]["HOLIDAY"]) ? 
-    		                        $this->calendar[$dday - 1]["HOLIDAY"] : 
-    		                        (isset($this->calendar[$dday - 1]["WORKGROUP_NAME"]) ? $this->calendar[$dday - 1]["WORKGROUP_NAME"] : '');
+    		$_cellAtts['distext'] = isset($this->calendar[$dday - 1]["holiday"]) ? 
+    		                        $this->calendar[$dday - 1]["holiday"] : 
+    		                        (isset($this->calendar[$dday - 1]["workgroup_name"]) ? $this->calendar[$dday - 1]["workgroup_name"] : '');
 		}
 		// 今天的背景色优先级最高
 		$_cellAtts["bgcolor"] = $year . $_fullMonth . $_fullDay == date("Ymd")? $this->legendColors["today"] : $_cellAtts["bgcolor"];
@@ -293,28 +311,34 @@ eof;
 		
 		$a = $this->adjustDate($m, $y );
 		$month = $a[0];
+		
 		$year = $a[1];
 		
 		$daysInMonth = $this->getDaysInMonth($month, $year );
 		$date = getdate(mktime(12, 0, 0, $month, 1, $year));
 		
 		$first = $date["wday"];
+		
 		$monthName = $this->monthNames[$month - 1];
+		
 		
 		$prev = $this->adjustDate($month - 1, $year );
 		$next = $this->adjustDate($month + 1, $year );
-		
+		 
 		if ($showYear == 1) {
-			$prevYear = $this->getCalendarLink($month, $year - 1 );
-			$prevMonth = $this->getCalendarLink($prev[0], $prev[1] );
-			$nextYear = $this->getCalendarLink($month, $year + 1 );
-			$nextMonth = $this->getCalendarLink($next[0], $next[1] );
+			$prevYear = getCalendarLink($month, $year - 1 );
+			$prevMonth = getCalendarLink($prev[0], $prev[1] );
+			$nextYear = getCalendarLink($month, $year + 1 );
+			$nextMonth = getCalendarLink($next[0], $next[1] );
+			//echo $prevYear;
+			
 		} else {
 			$prevYear = "";
 			$prevMonth = "";
 			$nextYear = "";
 			$nextMonth = "";
 		}
+		
 		$header = (($showYear > 0) ? " " . $year : "") . "年" . $monthName."月";
 		$s .= "<table class=\"bordertable\" width=\"100%\" border=\"1\" cellpadding=\"8\" cellspace=\"5\" style=\"border-color:#d4d0c8;\">\n";
 		$s .= "<tr>\n";
@@ -323,14 +347,14 @@ eof;
 		$s .= "</td>\n";
 		$s .= "</tr>\n";
 		
-		if ($this->_showHeaderBar)
+		if ($_showHeaderBar)
 		{
     		$s .= "<tr>\n";
-    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($prevMonth == "") ? " " : "<a href=\"$prevYear\"><img src=\"../img/first.png\" border=\"0\" alt=\"Previous year\"/>") . "</a></td>\n";
-    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($prevMonth == "") ? " " : "<a href=\"$prevMonth\"><img src=\"../img/previous.png\" border=\"0\" alt=\"Previous month\"/>") . "</a></td>\n";
+    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($prevMonth == "") ? " " : "<a href=\"{$prevYear}\"><img src=\"../img/first.png\" border=\"0\" alt=\"Previous year\"/>") . "</a></td>\n";
+    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($prevMonth == "") ? " " : "<a href=\"{$prevMonth}\"><img src=\"../img/previous.png\" border=\"0\" alt=\"Previous month\"/>") . "</a></td>\n";
     		$s .= "<td style=\"text-align:center;\" valign=\"top\" colspan=\"3\" style=\"text-align:center;\"><a href=\"" . $this->url . "&month=".date("m")."&year=".date("Y")."\">今天:" . date("Y-m-d"). "</a></td>\n";
-    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($nextMonth == "") ? " " : "<a href=\"$nextMonth\"><img src=\"../img/next.png\" border=\"0\" alt=\"Next month\"//>") . "</a></td>\n";
-    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($nextMonth == "") ? " " : "<a href=\"$nextYear\"><img src=\"../img/last.png\" border=\"0\" alt=\"Next year\"/>") . "</a></td>\n";
+    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($nextMonth == "") ? " " : "<a href=\"{$nextMonth}\"><img src=\"../img/next.png\" border=\"0\" alt=\"Next month\"//>") . "</a></td>\n";
+    		$s .= "<td style=\"text-align:center;\" valign=\"top\">" . (($nextMonth == "") ? " " : "<a href=\"{$nextYear}\"><img src=\"../img/last.png\" border=\"0\" alt=\"Next year\"/>") . "</a></td>\n";
     		$s .= "</tr>\n";
 		}
 		$s .= "<tr>\n";
@@ -445,7 +469,7 @@ eof;
 	
 	public function setHeaderBarOff()
 	{
-	    $this->_showHeaderBar = false;
+	    return $_showHeaderBar = false;
 	}
 }// end class 
 

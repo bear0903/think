@@ -3,10 +3,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><!--<?php echo ($title); ?>--></title>
-	<link rel = "icon" href = "<!--<?php echo ($IMG_DIR); ?>-->/ares.ico" type = "image/x-icon"/>
-	<link rel = "shortcut icon" href = "<!--<?php echo ($IMG_DIR); ?>-->/ares.ico"/>
-	<link rel="stylesheet" href="<!--<?php echo ($CSS_DIR); ?>-->/jqueryui/themes/redmond/jquery.ui.all.css" type="text/css" />
-	<link rel="stylesheet" href="<!--<?php echo ($CSS_DIR); ?>-->/layout/layout.min.css" type="text/css">
+	<link rel = "icon" href = "/think/Public/img/ares.ico" type = "image/x-icon"/>
+	<link rel = "shortcut icon" href = "/think/Public/img/ares.ico"/>
+	<link rel="stylesheet" href="/think/Public/css/jqueryui/themes/redmond/jquery.ui.all.css" type="text/css" />
+	<link rel="stylesheet" href="/think/Public/css/layout/layout.min.css" type="text/css" />
 	<!--[if lte IE 7]>
 		<style type="text/css"> body { font-size: 85%; } </style>
 	<![endif]-->
@@ -52,7 +52,7 @@
 			padding:0;
 		} 
 		#accordion ul li{ 
-			background:url(<!--<?php echo ($IMG_DIR); ?>-->/Person.png) no-repeat;
+			background:url(/think/Public/img/Person.png) no-repeat;
 			list-style-type:none;
 			text-indent:18px;
 			margin-left:-10px;
@@ -63,29 +63,29 @@
 <body>
 <div class="ui-layout-north">
 	<div id="logo">
-		<img src="<!--<?php echo ($company_logo); ?>-->">
+		<img src="/think/Public/img/logo.gif">
 	</div>
 	<div id="topnav">
 		<div id="topmenu">
 			<!--{if $smarty.session.user.is_manager}-->
 			<a href="../mgr/redirect.php">
-				<img title="<!--<?php echo ($MSS_LINK_LABEL); ?>-->" src="<!--<?php echo ($IMG_DIR); ?>-->/icon_md.png" border="0"/>
+				<img title="<!--<?php echo ($MSS_LINK_LABEL); ?>-->" src="/think/Public/img/icon_md.png" border="0"/>
 			</a>
 			<!--{/if}-->
 			<a id="myobj" href="?scriptname=year_objective&appdesc=<!--<?php echo (urlencode($OBJ_LINK_LABEL)); ?>-->">
-				<img title="<!--<?php echo ($OBJ_LINK_LABEL); ?>-->" src="<!--<?php echo ($IMG_DIR); ?>-->/icon_obj.png" alt="<!--<?php echo ($OBJ_LABEL); ?>-->" border="0"/>
+				<img title="<!--<?php echo ($OBJ_LINK_LABEL); ?>-->" src="/think/Public/img/icon_obj.png" alt="<!--<?php echo ($OBJ_LABEL); ?>-->" border="0"/>
 			</a>	
 			<a href="?scriptname=job_desc" id="myjd">
-				<img title="<!--<?php echo ($MY_JD_LINK_LABEL); ?>-->" src="<!--<?php echo ($IMG_DIR); ?>-->/icon_jd.png" border="0"/>
+				<img title="<!--<?php echo ($MY_JD_LINK_LABEL); ?>-->" src="/think/Public/img/icon_jd.png" border="0"/>
 			</a>
 			<a href="?scriptname=about" id="about">
-				<img title="<!--<?php echo ($ABOUT_LINK_LABEL); ?>-->" src="<!--<?php echo ($IMG_DIR); ?>-->/icon_about.png" border="0"/>
+				<img title="<!--<?php echo ($ABOUT_LINK_LABEL); ?>-->" src="/think/Public/img/icon_about.png" border="0"/>
 			</a>
 			<a href="../docs/eHRUserGuideESS_<!--<?php echo ($smarty["session"]["user"]["language"]); ?>-->.pdf" id="help"  target="_blank">
-				<img title="<!--<?php echo ($HELP_LINK_LABEL); ?>-->" src="<!--<?php echo ($IMG_DIR); ?>-->/icon_help.png"  border="0"/></a>
+				<img title="<!--<?php echo ($HELP_LINK_LABEL); ?>-->" src="/think/Public/img/icon_help.png"  border="0"/></a>
 			<!--{if empty($smarty.session.sspi.user)}-->
 		    <a href="#" id="logout">
-		    	<img title="<!--<?php echo ($smarty["session"]["user"]["user_name"]); ?>--> <!--<?php echo ($LOGOUT_LINK_LABEL); ?>-->" src="<!--<?php echo ($IMG_DIR); ?>-->/icon_exit.png"  border="0"/>
+		    	<img title="<!--<?php echo ($smarty["session"]["user"]["user_name"]); ?>--> <!--<?php echo ($LOGOUT_LINK_LABEL); ?>-->" src="/think/Public/img/icon_exit.png"  border="0"/>
 		    </a>
 		    <!--{/if}-->
 	    </div>
@@ -93,34 +93,32 @@
 	<div id="tophuman"></div>
 </div><!-- end top -->
 
-<div class="ui-layout-west" style="display:none;">
+<div class="ui-layout-west" >
+				<!-- style="display:none;" -->
 	<div class="header" style="height:20px;text-indent:5px;">
-		Welcome,<!--<?php echo ($smarty["session"]["user"]["emp_name"]); ?>-->
+		Welcome,TestRYH
 	</div>
 	<div class="ui-layout-content" id="accordion">
-		<!--{section name="i" loop=$menu_list}-->
-		<h4><a href="?scriptname=<!--<?php echo ($menu_list[i]["menu_code"]); ?>-->" target="mainFrame"><!--<?php echo ($menu_list[i]["menu_text"]); ?>--></a></h4>
+		<?php if(is_array($menu_list)): foreach($menu_list as $key=>$c1): ?><h4><a href="1111" target="mainFrame">
+		<?php echo ($c1["menu_text"]); ?></a></h4>
 		<div>
 			<ul>
-				<!--{section name="j" loop = $menu_list[i]}-->
-					<!--{if $menu_list[i][j].menu_code != ''}-->
-					<li><a href="?scriptname=<!--<?php echo ($menu_list[i][j]["menu_code"]); ?>-->&appdesc=<!--<?php echo (urlencode($menu_list[i][j]["menu_text"])); ?>-->" target="mainFrame"><!--<?php echo ($menu_list[i][j]["menu_text"]); ?>--></a></li>
-					<!--{/if}-->
-				<!--{/section}-->
+				<?php if(is_array($c1["menu_id"])): foreach($c1["menu_id"] as $key=>$c2): if($c2["menu_code"] != 'E'): ?><li><a href="<?php echo ($c2["menu_code"]); ?>" target="mainFrame"><?php echo ($c2["menu_text"]); ?></a></li><?php endif; endforeach; endif; ?>
 			</ul>
-		</div>
+		</div><?php endforeach; endif; ?>	
 		<!--{/section}-->
 	</div>
 </div>
+<?php if($menu_list_second ['father_id'] == $menu_list['menu_code']): endif; ?>
 <!--left end-->
 <div class="ui-layout-center content">
-	<iframe name="mainFrame" src="?scriptname=ESNH000" frameborder="0" height="99%" width="100%"  scrolling="auto"></iframe>
+	<iframe name="mainFrame" src="ESNH000" frameborder="0" height="99%" width="100%"  scrolling="auto"></iframe>
 </div>
 <!--right end-->
-<script type="text/javascript" src="<!--<?php echo ($JS_DIR); ?>-->/jqueryui/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="<!--<?php echo ($JS_DIR); ?>-->/jqueryui/jquery-ui-1.8.11.custom.min.js"></script>
-<script type="text/javascript" src="<!--<?php echo ($JS_DIR); ?>-->/jquery.layout.min-1.2.0.js"></script>
-<script type="text/javascript" src="<!--<?php echo ($JS_DIR); ?>-->/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="/think/Public/js/jqueryui/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/think/Public/js/jqueryui/jquery-ui-1.8.11.custom.min.js"></script>
+<script type="text/javascript" src="/think/Public/js/jquery.layout.min-1.2.0.js"></script>
+<script type="text/javascript" src="/think/Public/js/jquery.cookie.min.js"></script>
 <script type="text/javascript">
 	var pageLayout;
 	$(document).ready(function(){

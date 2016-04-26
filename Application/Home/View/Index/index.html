@@ -156,16 +156,14 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
 .select{background-color: none;}
 
 --></style>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>艾加Portal</title>
 </head>
 <body>
 <div id="con">
-  
   <div class="login-div" id="login-div">
-     <form name="frm_logon" action="/think/index.php/Home/Index/login"
+     <form name="frm_logon" action="__MODULE__/Index/login"
 				autocomplete='off' id="frm_logon" method="post" role="form">
      <div class="loginbox" id="loginbox">
        <div class="loginboxtop">
@@ -174,6 +172,7 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
          <a href="">HCP Portal</a>
          </div>
        </div>
+
        <div id="k1" class="k1">
        
        <input id="username" name="username" class="one" type="text" value="请输入账号" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='text';}else{this.className='y4';} " onblur="if(!value) {value=defaultValue;this.className='y6';this.type='text';}else{this.className='y5';} " 
@@ -184,18 +183,19 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
        <input id="password" name="password" class="two" type="text" value="请输入密码" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}" onblur="if(!value) {value=defaultValue;this.className='y6'; this.type='text';}else{this.className='y5';}"
        																						onfocus="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}">
        </div>
-       
+
        <div id="k3" class="k3">
 		<select name="lang" id="lang" class="three" onclick="f1()" onfocus="f1()">
 	     <!-- onchange="document.location='index.php?lang='+this.value;" -->
 	    
-	    <option value="0">请选择</option>
+	    <!-- <option value="0">请选择</option> -->
 	    <!-- <volist name="langlist" id="vo1">
 	    <option value="{$vo1.lang}" selected>{$langlist}</option>
 	    </volist> -->
+
 	    <foreach name="Mut" item="vo">
-							<option value="{$vo.language_code}" <if condition="($vo.id eq $data.id)"></if>>
-								{$vo.language_code}/{$vo.language_name}
+							<option value="{$vo.language_code}">
+							{$vo.language_code}/{$vo.language_name}
 							</option>
 						</foreach>
 	   </select>
@@ -203,13 +203,12 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
 		</div>
 		<div id="k4" class="k4">
 		
+	    	
 		<select name="companyno" id="companyno" class="four" >
-		<option value="0">请选择</option>
-	    	<!-- <volist name="cpnlist" id="vo2">
-	    	<option value="{$vo2.companyno}" selected>{$cpnlist}</option>
-	    	
+		<!-- <option value="0">请选择</option> -->
+		<!-- <volist name="Com" id="vo4">
+	    	<option value="{$vo4.segment_name}" selected>{$vo4.segment_name}</option>    	
 	    	</volist> -->
-	    	
 	    	<foreach name="Com" item="vo">
 							<option value="{$vo.segment_no_sz}" <if condition="($vo.id eq $data.id)"></if>>
 								{$vo.segment_no_sz}/{$vo.segment_name}
@@ -436,7 +435,6 @@ function f2(){
             });
         });
     </script>
-
 <!-- <script type="text/javascript">
 $(function(){
     $('#bg').height($(window).height());

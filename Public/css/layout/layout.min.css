@@ -1,0 +1,153 @@
+.ui-layout-west .ui-layout-content {
+	padding: 1ex .5em 2em 22px;
+}
+
+.ui-layout-north {
+	border-bottom: none;
+}
+
+.ui-layout-west {
+	background-color: #F9F9F9;
+	border: 1px solid #A6C9E2;
+	border-left: 0;
+	overflow: auto;
+}
+
+.ui-layout-center {
+	background-color: #FFF;
+	border: 1px solid #A6C9E2;
+	padding: 5px;
+	overflow: auto;
+}
+
+.header {
+	border-bottom: 1px solid #A6C9E2;
+	text-align: left;
+	padding: 0;
+	position: relative;
+	overflow: hidden;
+	font-size: 12px;
+	padding: 2px 0;
+}
+
+.ui-layout-resizer-sliding {
+	opacity: .1;
+	filter: alpha(opacity =   10);
+	background-color: #999;
+}
+
+.ui-layout-resizer-sliding:hover {
+	opacity: 1;
+	filter: alpha(opacity =   100);
+}
+
+.ui-layout-resizer-north-dragging,.ui-layout-resizer-north:hover {
+	background: url(/think/Public/img/layout/resizable-n.gif) repeat-x center;
+}
+
+.ui-layout-resizer-south-dragging,.ui-layout-resizer-south:hover {
+	background: url(/think/Public/img/layout/resizable-s.gif) repeat-x center;
+}
+
+.ui-layout-resizer-west-dragging,.ui-layout-resizer-west-open:hover {
+	background: url(/think/Public/img/layout/resizable-w.gif) repeat-y center;
+}
+
+.ui-layout-resizer-east-dragging,.ui-layout-resizer-east-open:hover {
+	background: url(/think/Public/img/layout/resizable-e.gif) repeat-y center;
+}
+
+* html .ui-layout-resizer-south {
+	background: url(/think/Public/img/layout/resizable-s.gif) repeat-x center
+		!important;
+}
+
+* html .ui-layout-resizer-west-open {
+	background: url(/think/Public/img/layout/resizable-w.gif) repeat-y center
+		!important;
+}
+
+* html .ui-layout-resizer-east-open {
+	background: url(/think/Public/img/layout/resizable-e.gif) repeat-y center
+		!important;
+}
+
+.ui-layout-toggler-north-open,.ui-layout-toggler-south-closed {
+	background: url(/think/Public/img/layout/toggle-up.gif) no-repeat center bottom;
+}
+
+.ui-layout-toggler-north-closed,.ui-layout-toggler-south-open {
+	background: url(/think/Public/img/layout/toggle-dn.gif) no-repeat center top;
+}
+
+.ui-layout-toggler-east-closed,.ui-layout-toggler-west-open {
+	background: url(/think/Public/img/layout/toggle-lt.gif) no-repeat center right;
+}
+
+.ui-layout-toggler-east-open {
+	background: url(/think/Public/img/layout/toggle-rt.gif) no-repeat center left;
+}
+
+.ui-layout-resizer-west-closed {
+	background-color: #DDD;
+	border-top: 1px solid #A6C9E2;
+	border-bottom: 1px solid #A6C9E2;
+	border-left: 1px solid #A6C9E2;
+}
+
+.ui-layout-resizer-west-closed:hover {
+	background-color: #E6E6E6;
+}
+
+.ui-layout-resizer-west-closed:hover .content {
+	color: #C30;
+}
+
+.ui-layout-toggler-west-closed {
+	background-color: #EEE;
+	border-top: 1px solid #FFF;
+	border-left: 1px solid #FFF;
+	border-bottom: 1px solid #A6C9E2;
+}
+
+.ui-layout-toggler-west-closed:hover {
+	background-color: #F6F6F6;
+}
+
+.ui-layout-toggler-west-closed .content {
+	color: #033;
+	font-size: 12px !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+	padding-right: 1px;
+}
+
+.ui-layout-north #topnav{	
+	background: url("/think/Public/img/ess-logo.png") center top no-repeat #fff;
+}
+
+.ui-layout-north #tophuman{	
+	background: url("/think/Public/img/human.png") right top no-repeat #fff;
+	float:left;
+	width:20%;
+	height:78px;
+}
+
+.ui-layout-north-mss #topnav {
+	background: url("/think/Public/img/mss-logo.png") center top no-repeat #fff;
+}
+
+.ui-layout-north .ui-layout-west .header a {
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+}
+
+.ui-layout-west .header span {
+	position: absolute;
+	white-space: nowrap;
+}

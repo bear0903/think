@@ -1,0 +1,114 @@
+/* for print*/
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.noprint {
+	display: none;
+}
+/*
+.idcard-size {
+	margin:0;
+	padding:0px;
+	width:194.09px;
+	height:316.26px;
+	text-align:center;
+	font-weight:900;	
+	font-family:標楷體;
+}
+.idcard-size .logo-area{
+	margin:auto;
+}
+.idcard-size .company-name{
+	font-size:16px;
+    font-weight:900;
+	letter-spacing:16px;
+	margin:auto;
+}
+.idcard-size .emp-photo{
+	margin:auto;
+}
+.idcard-size .emp-id{
+	margin:auto;
+	font-size:16px;
+}
+.idcard-size .emp-name{
+	font-size:16px;
+	margin:auto;
+}
+.idcard-size .dept-name{
+	font-size:16px;
+	margin:auto;
+}
+.idcard-size .barcode{
+	height:20px;
+	width: 180px;
+	margin:auto;
+}*/
+.idcard-size {
+	margin: 0;
+	padding: 0;
+	width: 204.09px; /* 54mm */
+	height: 321.26px; /* 85mm */
+	text-align: center;
+	font-weight: 900;
+	font-size: 18px;
+	/*border: 1px solid #ccc;*/
+	font-family: 標楷體;
+}
+
+.idcard-size .logo-area {
+	margin: auto;
+}
+
+.idcard-size .logo-area img {
+	width: 113.39px; /* 30mm */
+	height: 30.24px; /* 8mm */
+}
+
+.idcard-size .company-name {
+	text-indent: 12px;
+	letter-spacing: 14px;
+	margin: auto;
+}
+
+.idcard-size .emp-photo {
+	margin: auto;
+}
+
+.idcard-size .emp-photo img {
+	width: 98.27px; /*26mm*/
+	height: 147.40px; /*39mm*/
+}
+
+.idcard-size .emp-id {
+	height: 20px;
+	margin: auto;
+}
+
+.idcard-size .emp-name {
+	height: 20px;
+	margin: auto;
+}
+
+.idcard-size .dept-name {
+	height: 20px;
+	margin: auto;
+}
+
+.idcard-size .seperator {
+	height: 8px;
+	margin: auto;
+}
+
+.idcard-size .barcode {
+	height: 20px;
+	width: 160px;
+	margin: auto;
+	overflow-y: hidden;
+}
+
+.idcard-size:last-child {
+	page-break-after: auto;
+}

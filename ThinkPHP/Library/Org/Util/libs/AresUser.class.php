@@ -11,6 +11,11 @@
  *  $Author: dennis $
  *  $LastChangedDate: 2014-08-12 16:42:07 +0800 (閸涖劋绨�, 12 閸忣偅婀� 2014) $
  \****************************************************************************/
+
+namespace Org\Util\libs;
+use Think\Controller;
+use Think\Mode;
+
 class AresUser
 {
     // private variables
@@ -83,7 +88,8 @@ eof;
 	*/
     function GetUserInfo()
 	{
-        $sql_string = <<<eof
+    	$mod = M();
+        $sql_string = "
             select a.seg_segment_no    as company_id,
                    a.username          as user_seq_no,
                    a.psn_id            as user_emp_seq_no,
@@ -101,14 +107,17 @@ eof;
 			       b.title_grade       as title_level,
 			       b.join_date         as join_date
               from app_users_base a, ehr_employee_v b
-             where upper(a.seg_segment_no) = :company_id
-               and upper(a.username_no_sz) = :user_name
+             where upper(a.seg_segment_no) = '".$this->_companyId."'
+               and upper(a.username_no_sz) = '".$this->_userName."'
 			   and a.seg_segment_no = b.company_id(+)
 			   and a.psn_id = b.emp_seq_no(+)
-eof;
-		$this->_dBConn->SetFetchMode(ADODB_FETCH_ASSOC);
-        return $this->_dBConn->GetRow($sql_string, array ('company_id' => $this->_companyId,
-											              'user_name'  => $this->_userName));
+";
+// 		$this->_dBConn->SetFetchMode(ADODB_FETCH_ASSOC);
+//         return $this->_dBConn->GetRow($sql_string, array ('company_id' => $this->_companyId,
+// 											              'user_name'  => $this->_userName));
+		$userInfo = $mod->query($sql_string);
+		//dump($sql_string);exit();
+        return $userInfo;
     }// end function GetUserInfo()
 
    /**
@@ -382,7 +391,7 @@ eof;
 	{
 		//$this->_dBConn->debug = true;
 		$stmt = 'begin pk_erp.p_set_segment_no(:company_id); pk_menu.p_set_language(:language);pk_erp.p_set_username(:user_seq_no);end;';
-		$this->_dBConn->Execute($stmt,array('company_id'=>$this->_companyId,
+		$this->_dBConn=Execute($stmt,array('company_id'=>$this->_companyId,
 										    'language'=>$lang,
 										    'user_seq_no'=>$user_seqno));
 		// follow statement for improve performance

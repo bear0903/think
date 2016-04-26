@@ -156,14 +156,12 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
 .select{background-color: none;}
 
 --></style>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>艾加Portal</title>
 </head>
 <body>
 <div id="con">
-  
   <div class="login-div" id="login-div">
      <form name="frm_logon" action="/think/index.php/Home/Index/login"
 				autocomplete='off' id="frm_logon" method="post" role="form">
@@ -174,6 +172,7 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
          <a href="">HCP Portal</a>
          </div>
        </div>
+
        <div id="k1" class="k1">
        
        <input id="username" name="username" class="one" type="text" value="请输入账号" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='text';}else{this.className='y4';} " onblur="if(!value) {value=defaultValue;this.className='y6';this.type='text';}else{this.className='y5';} " 
@@ -184,25 +183,26 @@ background: url(Public/img/png4.png) no-repeat 3px 13px;
        <input id="password" name="password" class="two" type="text" value="请输入密码" onclick="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}" onblur="if(!value) {value=defaultValue;this.className='y6'; this.type='text';}else{this.className='y5';}"
        																						onfocus="if(this.value==defaultValue) {this.value='';this.className='y4';this.type='password';}else{this.className='y4';this.type='password'}">
        </div>
-       
+
        <div id="k3" class="k3">
 		<select name="lang" id="lang" class="three" onclick="f1()" onfocus="f1()">
 	     <!-- onchange="document.location='index.php?lang='+this.value;" -->
 	    
-	    <option value="0">请选择</option>
+	    <!-- <option value="0">请选择</option> -->
 	    <!-- <?php if(is_array($langlist)): $i = 0; $__LIST__ = $langlist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo1): $mod = ($i % 2 );++$i;?><option value="<?php echo ($vo1["lang"]); ?>" selected><?php echo ($langlist); ?></option><?php endforeach; endif; else: echo "" ;endif; ?> -->
-	    <?php if(is_array($Mut)): foreach($Mut as $key=>$vo): ?><option value="<?php echo ($vo["language_code"]); ?>" <?php if(($vo["id"] == $data.id)): endif; ?>>
-								<?php echo ($vo["language_code"]); ?>/<?php echo ($vo["language_name"]); ?>
+
+	    <?php if(is_array($Mut)): foreach($Mut as $key=>$vo): ?><option value="<?php echo ($vo["language_code"]); ?>">
+							<?php echo ($vo["language_code"]); ?>/<?php echo ($vo["language_name"]); ?>
 							</option><?php endforeach; endif; ?>
 	   </select>
 		
 		</div>
 		<div id="k4" class="k4">
 		
-		<select name="companyno" id="companyno" class="four" >
-		<option value="0">请选择</option>
-	    	<!-- <?php if(is_array($cpnlist)): $i = 0; $__LIST__ = $cpnlist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo2): $mod = ($i % 2 );++$i;?><option value="<?php echo ($vo2["companyno"]); ?>" selected><?php echo ($cpnlist); ?></option><?php endforeach; endif; else: echo "" ;endif; ?> -->
 	    	
+		<select name="companyno" id="companyno" class="four" >
+		<!-- <option value="0">请选择</option> -->
+		<!-- <?php if(is_array($Com)): $i = 0; $__LIST__ = $Com;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo4): $mod = ($i % 2 );++$i;?><option value="<?php echo ($vo4["segment_name"]); ?>" selected><?php echo ($vo4["segment_name"]); ?></option><?php endforeach; endif; else: echo "" ;endif; ?> -->
 	    	<?php if(is_array($Com)): foreach($Com as $key=>$vo): ?><option value="<?php echo ($vo["segment_no_sz"]); ?>" <?php if(($vo["id"] == $data.id)): endif; ?>>
 								<?php echo ($vo["segment_no_sz"]); ?>/<?php echo ($vo["segment_name"]); ?>
 							</option><?php endforeach; endif; ?>
@@ -427,7 +427,6 @@ function f2(){
             });
         });
     </script>
-
 <!-- <script type="text/javascript">
 $(function(){
     $('#bg').height($(window).height());

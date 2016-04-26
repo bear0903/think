@@ -514,6 +514,9 @@ $config['is_wf_installed'] = $sys->isWorkflowInstalled();
 //$config['no_multi_lang_app'] = $sys->getAppsListByType('query');
 
 // include public library file
+//echo '555';
+//dump($_SESSION);
+//exit();
 $g_tpl = new AresSmarty($config['curr_home']);
 $g_parser = new AresParser();
 

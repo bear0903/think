@@ -1017,29 +1017,7 @@ function first_login_check() {
  * @return array
  * @author Dennis 2012-08-20
  */
-function getMenuItem($menu, $pid) {
-	$menu_items = array ();
-	$idx = 0;
-	foreach ( $menu as $v ) {
-		if ($v ['P_NODEID'] == $pid) {
-			$menu_items [$idx] ['menu_code'] = $v ['NODEID'];
-			$menu_items [$idx] ['menu_text'] = $v ['NODETEXT'];
-			$idx ++;
-		}
-		if ($idx > 0) {
-			$idx1 = 0;
-			foreach ( $menu as $v ) {
-				if ($v ['P_NODEID'] == $menu_items [$idx - 1] ['menu_code']) {
-					
-					$menu_items [$idx - 1] [$idx1] ['menu_code'] = $v ['NODEID'];
-					$menu_items [$idx - 1] [$idx1] ['menu_text'] = $v ['NODETEXT'];
-					$idx1 ++;
-				}
-			}
-		}
-	}
-	return $menu_items;
-}
+
 /**
  * Get App desc by appid from $_SESSION['sys_menu']
  * 

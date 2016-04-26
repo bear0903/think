@@ -1,6 +1,9 @@
 <?php
 namespace Home\Model;
 
-class UserModel extends \Think\Model{
-	
+use Think\Model;
+class UserModel extends Model{
+	function stmt(){
+		//$this->data();
+	}
 }

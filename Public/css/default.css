@@ -1,0 +1,374 @@
+/*
+ * 共用 css
+ *  $headurl: http://192.168.0.126:9001/svn/ehr/trunk/ehr/css/default.css $
+ *  $id: default.css 1262 2009-02-24 06:42:45z boll $
+ *  $rev: 1262 $ 
+ *  $date: 2009-02-24 14:42:45 +0800 (星期二, 24 二月 2009) $
+ *  $author: boll $   
+ *  $lastchangeddate: 2009-02-24 14:42:45 +0800 (星期二, 24 二月 2009) $
+ ****************************************************************************/
+@charset "utf-8";
+body{
+	/* add by dennis 2011-09-05*/
+	background-color:transparent; 
+}
+/*
+a:link   {
+	text-decoration:   none
+}  
+a:visited   {
+	text-decoration:   none
+}  
+a:active   {
+	text-decoration:   none
+}   
+*/
+select {
+    width: 190px;
+    vertical-align: middle;
+	margin-top: -2px;
+	margin-right: 3px;
+	margin-bottom: 0px;
+}
+
+select:hover {
+    /*width: 124px;*/
+	border: 1px solid #3c636a;
+	background-color: #cee9f3;
+}
+textarea{
+	margin-top:0px;
+    margin-bottom:0px;
+}
+textarea:hover {
+	border: 1px solid #3c636a;
+	background-color: #cee9f3;
+}
+
+
+/*
+ page body 最外面的 div 的 class
+*/
+
+.page-container {
+	width: 100%;
+	margin: 0px;
+	padding:0px;
+	text-align: left;
+}
+.page-container .sidebox {
+	/*margin-top: -20px; remarked by denniss 2008-10-27*/
+	margin-bottom: 10px;
+}
+
+/*
+* 为解决 ie 7 jquery tab 下面的线居上的问题
+*/
+/*
+.page-fix-ie {
+	border-top: 1px solid #97a5b0;
+	padding-top: 10px;
+}
+*/
+/* 栏位标题*/
+.column-label {
+	font-weight: bold;
+	text-algin: right !important;
+}
+input{
+	margin-top:0px;
+    margin-bottom:0px;
+	}
+.input-text {
+	border: 1px solid #ccc;
+	background-color: #fff;
+	width: 185px;
+	vertical-align: middle;
+}
+
+.input-text:hover {
+	border: 1px solid #3c636a;
+	background: #cee9f3;
+}
+
+.input-text-display-only {
+	border: 1px solid #ccc;
+	background-color: #f1f4f6;
+	width: 185px;
+	vertical-align: middle;
+	readonly: true;
+}
+
+.input-text-lov {
+	border: 1px solid #ccc;
+	width: 185px;
+	background: url(../img/lov.png) no-repeat right;
+	background-color: #fff;
+}
+
+.input-text-lov:hover {
+	border: 1px solid #3c636a;
+	background: url(../img/lov.png) no-repeat right;
+}
+.input-textarea {
+	width: 177px;
+	rows:"4";
+}
+.select-input {
+	width: 189px;
+	vertical-align: middle;
+}
+
+.input-date {
+	border: 1px solid #ccc;
+	background: url(../img/date.png) no-repeat right;
+	background-color: #fff;
+	padding-right: 16px;
+	width: 171px;
+}
+
+.input-date:hover {
+	border: 1px solid #3c636a;
+	background: url(../img/date.png) no-repeat right;
+	background-color: #cee9f3;
+	cursor: hand;
+}
+
+.input-search {
+	border: 1px solid #ccc;
+	background: url(../img/magnifier.png) no-repeat right;
+	background-color: #fff;
+	padding-right: 16px;
+	width: 120px;
+}
+
+.input-search:hover {
+	border: 1px solid #3c636a;
+	background: url(../img/magnifier.png) no-repeat right;
+	background-color: #cee9f3;
+}
+
+.input-lov {
+	border: 1px solid #ccc;
+	background: url(../img/lov.png) no-repeat right;
+	background-color: #fff;
+	padding-right: 16px;
+	width: 105px;
+}
+
+.input-lov:hover {
+	border: 1px solid #3c636a;
+	background-color: #cee9f3;
+	cursor: hand;
+}
+
+.button-submit {
+	/*
+	background: url(../img/button-gray.gif) ;
+	background-repeat: no-repeat ;
+	border-style: none;
+	width: 94px;
+	height: 25px;
+	padding: 5px 5px 2px 0px;
+	vertical-align: middle;
+	color:#ffffff;
+	hidefocus;
+	*/
+}
+
+
+/*
+*  md 查询条件栏位指定宽度
+*/
+.input-text-search {
+	width:145px;
+}
+
+.input-lov-search {
+	width:130px;
+}
+
+.input-date-search {
+	width:130px;
+}
+.select-search {
+	width: 148px;
+	vertical-align: middle;
+}
+
+.select-operateor{
+    vertical-align: middle;
+	width: 192px;
+	margin-top: -5px;
+	#margin-top: 1px;
+	margin-right: 3px;
+	font-size:11px;
+}
+.select-save-con{
+	vertical-align: middle;
+	width: 128px;
+	height: 26px;
+	font-size:10px;
+	align: bottom;
+	margin-top:6px;
+	/*float:left;*/
+}
+
+.select-hour{
+	width:39px; 
+	#margin-top:-3px;
+	font-size:11px;
+	#height:22px;
+}
+
+/*
+* 居中显示的返回信息. 如请假申请成功与否返回的信息
+*/
+.msg-center {
+	width: 500px;
+	margin-top: 100px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.hr-border{
+	height: 1px; border: 1px solid #97a5b0;
+}
+/***********************************************/
+/*  box						                  */
+/***********************************************/
+.sidebox {
+	margin: 0px;
+	padding: 0px;
+}
+/*
+.resources li,.links td {
+	margin-left: 5px !important;
+}
+
+.resources .bordertable {
+
+	border-collapse: collapse;
+	margin-bottom:-2px;
+
+}
+.resources .bordertable td,th {
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: #e1e1e1;
+}
+*/
+/* add table style by dennis 2012-03-06*/
+
+table{max-width:100%;border-collapse:collapse;border-spacing:0;}
+.bordertable{width:100%;margin-bottom:16px;}
+.bordertable th,.bordertable td{padding:8px;line-height:16px;text-align:left;vertical-align:top;border-top:1px solid #ddd;}
+.bordertable th{font-weight:bold;}
+.bordertable thead th{vertical-align:bottom;}
+.bordertable thead:first-child tr th,.bordertable thead:first-child tr td{border-top:0;}
+.bordertable tbody+tbody{border-top:2px solid #ddd;}
+.bordertable-condensed th,.bordertable-condensed td{padding:4px 5px;}
+.bordertable{border:1px solid #ddd;border-collapse:separate;*border-collapse:collapsed;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}.bordertable th+th,.bordertable td+td,.bordertable th+td,.bordertable td+th{border-left:1px solid #ddd;}
+.bordertable thead:first-child tr:first-child th,.bordertable tbody:first-child tr:first-child th,.bordertable tbody:first-child tr:first-child td{border-top:0;}
+.bordertable thead:first-child tr:first-child th:first-child,.bordertable tbody:first-child tr:first-child td:first-child{-webkit-border-radius:4px 0 0 0;-moz-border-radius:4px 0 0 0;border-radius:4px 0 0 0;}
+.bordertable thead:first-child tr:first-child th:last-child,.bordertable tbody:first-child tr:first-child td:last-child{-webkit-border-radius:0 4px 0 0;-moz-border-radius:0 4px 0 0;border-radius:0 4px 0 0;}
+.bordertable thead:last-child tr:last-child th:first-child,.bordertable tbody:last-child tr:last-child td:first-child{-webkit-border-radius:0 0 0 4px;-moz-border-radius:0 0 0 4px;border-radius:0 0 0 4px;}
+.bordertable thead:last-child tr:last-child th:last-child,.bordertable tbody:last-child tr:last-child td:last-child{-webkit-border-radius:0 0 4px 0;-moz-border-radius:0 0 4px 0;border-radius:0 0 4px 0;}
+.bordertable-striped tbody tr:nth-child(odd) td,.bordertable-striped tbody tr:nth-child(odd) th{background-color:#f9f9f9;}
+.bordertable tbody tr:hover td,.bordertable tbody tr:hover th{background-color:#f5f5f5;}
+
+.x-box-tl {
+	background: transparent url(../img/corners.gif) no-repeat 0 0;
+	zoom: 1;
+}
+
+.x-box-tc {
+	height: 8px;
+	background: transparent url(../img/tb.gif) repeat-x 0 0;
+	overflow: hidden;
+}
+
+.x-box-tr {
+	background: transparent url(../img/corners.gif) no-repeat right -8px;
+}
+
+.x-box-ml {
+	background: transparent url(../img/l.gif) repeat-y 0;
+	padding-left: 4px;
+	overflow: hidden;
+	zoom: 1;
+}
+
+.x-box-mc {
+	background: #f1f4f6 url(../img/tb.gif) repeat-x 0 -16px;
+	padding: 2px 10px;
+	color: #393939;
+	font-size: 12px;
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+
+.x-box-mc h3 {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 2px;
+	zoom: 1;
+}
+
+.x-box-mr {
+	background: transparent url(../img/r.gif) repeat-y right;
+	padding-right: 4px;
+	overflow: hidden;
+}
+
+.x-box-bl {
+	background: transparent url(../img/corners.gif) no-repeat 0 -16px;
+	zoom: 1;
+}
+
+.x-box-bc {
+	background: transparent url(../img/tb.gif) repeat-x 0 -8px;
+	height: 8px;
+	overflow: hidden;
+}
+
+.x-box-br {
+	background: transparent url(../img/corners.gif) no-repeat right -24px;
+}
+
+.x-box-tl,.x-box-bl {
+	padding-left: 8px;
+	overflow: hidden;
+}
+
+.x-box-tr,.x-box-br {
+	padding-right: 8px;
+	overflow: hidden;
+}
+
+.x-box-title h4 {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 2px;
+	zoom: 1;
+}
+
+/*
+* Add by dennis 2013/09/17
+* workflow status
+* '00','暂存','01','提交','02','流程中','03','核准','04','驳回','05','作废','06','异常'
+*/
+.flow-status-03{
+	background:#78ef81;
+}
+.flow-status-04{
+	background:#fc5458;
+}
+.flow-status-05{
+	background:#fdbec4;
+	color:#fff;
+}
+.flow-status-06{
+	background:#fcf99c;
+}

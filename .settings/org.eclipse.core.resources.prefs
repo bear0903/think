@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
-encoding//Application/Home/Controller/IndexController.class.php=UTF-8
 encoding//Application/Home/View/Index/index.html=UTF-8
-encoding//Application/Home/View/Redirect/home.html=UTF-8
+encoding//Application/Home/View/Redirect-bak/home.html=UTF-8
+encoding//Application/Home/View/Redirect/ESNH000.html=UTF-8
+encoding//Application/Home/View/Redirect/PageFooter.html=UTF-8
+encoding//Application/Home/View/Redirect/block_personal_news_list.html=UTF-8
+encoding//Application/Home/View/Redirect/block_task_list.html=UTF-8
 encoding/<project>=UTF-8
